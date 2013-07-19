@@ -1,0 +1,15 @@
+# ~/.tmuxinator/kalite.yml
+# you can make as many tabs as you wish...
+
+project_name: kalite
+project_root: ~/src/kalite/kalite/kalite
+pre: 
+tabs:
+  - editor:
+      layout: main-vertical
+      panes:
+        - vim
+  - server:
+      layout: main-vertical
+      panes:
+        - python manage.py runserver

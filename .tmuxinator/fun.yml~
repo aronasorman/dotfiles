@@ -1,0 +1,7 @@
+# ~/.tmuxinator/fun.yml
+# you can make as many tabs as you wish...
+
+project_name: fun
+project_root: ~/
+tabs:
+  - something:

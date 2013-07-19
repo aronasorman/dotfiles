@@ -1,0 +1,12 @@
+# ~/.tmuxinator/settings.yml
+# you can make as many tabs as you wish...
+
+project_name: settings
+project_root: ~/
+socket_name: foo # Not needed.  Remove to use default socket
+tabs:
+  - editor:
+      layout: main-vertical
+      panes:
+        - vim .vimrc
+        - vim .tmux.conf

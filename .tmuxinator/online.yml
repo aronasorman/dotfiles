@@ -1,0 +1,10 @@
+# ~/.tmuxinator/online.yml
+# you can make as many tabs as you wish...
+
+project_name: online-classes
+project_root: ~/src/online-classes
+tabs:
+  - editor:
+      layout: main-vertical
+      panes:
+        - vim

@@ -1,0 +1,12 @@
+# ~/.tmuxinator/misc.yml
+# you can make as many tabs as you wish...
+
+project_name: miscellanous
+project_root: ~/src
+tabs:
+  - brew:
+      layout: main-vertical
+      panes:
+        - brew update
+        -
+  - term:
