@@ -1,0 +1,61 @@
+#!/bin/sh
+# all initialization variables go here, then custom setup and whatnot
+
+# setup for tmuxinator
+[[ -s $HOME/.tmuxinator/scripts/tmuxinator ]] && source $HOME/.tmuxinator/scripts/tmuxinator
+
+
+# ENVIRONMENT VARIABLES
+PLAN9=/Users/aronasorman/src/plan9port export PLAN9
+LIB=$HOME/lib
+SRC=$HOME/src
+EMU="-r$SRC/inferno -g1250x750 -c1" export EMU
+EDITOR='emacsclient -a="" -nw'
+#EDITOR='vim'
+GOPATH=$HOME/go
+ERL_LIBS=$SRC
+RBENV_ROOT=/usr/local/var/rbenv
+ANDROID_SDK_ROOT=/usr/local/opt/android-sdk
+export LC_ALL="en_US.UTF-8"
+
+export EDITOR
+export GOPATH
+export ERL_LIBS
+export RBENV_ROOT
+export ANDROID_SDK_ROOT
+
+# PATH VARIABLE MODIFICATIONS
+
+## adding some plan9 related utilities
+PATH=$LIB/bin:$PATH
+PATH=/usr/inferno/MacOSX/386/bin:$PATH
+PATH=$SRC/acme-utils:$PATH
+PATH=$PATH:$PLAN9/bin
+
+## for fixing Homebrew
+PATH=/usr/local/bin:/usr/local/sbin:$PATH
+
+# cabal executables
+PATH=$HOME/.cabal/bin:$PATH
+
+# texlive
+PATH=/usr/local/texlive/2012/bin/universal-darwin:$PATH
+
+# GOPATH bin
+PATH=$GOPATH/bin:$PATH
+
+export PATH
+
+alias em=$EDITOR
+alias mux='tmuxinator'
+alias ms='tmuxinator start'
+alias mo='tmuxinator open'
+alias g=git
+
+alias cl='clear'
+alias rel='source ~/lib/profile'
+alias pmpy='python manage.py'
+alias py='python'
+
+# default ruby version, courtesy of rbenv
+rbenv global 2.0.0-p0

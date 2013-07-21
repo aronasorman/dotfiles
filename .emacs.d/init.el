@@ -46,6 +46,12 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 (show-paren-mode 1)
+;; remove backup from current directories
+(defvar temporary-file-directory "/tmp")
+(setq backup-directory-alist
+            `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+            `((".*" ,temporary-file-directory t)))
 
 ;;;;; vanilla keybindings
 (global-set-key (kbd "<RET>") 'newline-and-indent)
@@ -89,7 +95,9 @@
 	    (define-key minibuffer-local-map (kbd "C-w") 'evil-delete-backward-word))
 
 (config-for "ace-jump-mode-autoloads"
-	    (require 'cl))
+	    (require 'cl)
+	    (setq ace-jump-mode-scope 'frame)
+	    )
 
 (config-for "rainbow-delimiters-autoloads"
 	    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))

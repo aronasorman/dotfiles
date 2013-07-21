@@ -1,0 +1,21 @@
+[user]
+	name = Aron Fyodor Asor
+	email = aronasorman@gmail.com
+[grep]
+	lineNumber = true
+
+[alias]
+    amend     = commit --amend -a
+    br        = branch 
+    co        = checkout
+    ds        = diff --staged
+    di        = diff
+    f         = fetch
+    fetchall  = fetch -v --all
+    ll        = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
+    lm        = !UN=$(git config user.name)&& git log --author="\"$UN\"" --pretty=format:'%h %cd %s' --date=short
+    ln        = log --graph --decorate --pretty=oneline --abbrev-commit
+    panic     = !tar cvf ../git_panic.tar *
+    st        = status
+    s         = show
+    wdiff     = diff --word-diff=plain
