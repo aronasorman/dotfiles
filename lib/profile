@@ -14,14 +14,14 @@ EDITOR='emacsclient -a="" -nw'
 #EDITOR='vim'
 GOPATH=$HOME/go
 ERL_LIBS=$SRC
-RBENV_ROOT=/usr/local/var/rbenv
+# RBENV_ROOT=/usr/local/var/rbenv
 ANDROID_SDK_ROOT=/usr/local/opt/android-sdk
 export LC_ALL="en_US.UTF-8"
 
 export EDITOR
 export GOPATH
 export ERL_LIBS
-export RBENV_ROOT
+# export RBENV_ROOT
 export ANDROID_SDK_ROOT
 
 # PATH VARIABLE MODIFICATIONS
@@ -51,6 +51,7 @@ alias mux='tmuxinator'
 alias ms='tmuxinator start'
 alias mo='tmuxinator open'
 alias g=git
+alias ga='git annex'
 
 alias cl='clear'
 alias rel='source ~/lib/profile'
@@ -58,4 +59,4 @@ alias pmpy='python manage.py'
 alias py='python'
 
 # default ruby version, courtesy of rbenv
-rbenv global 2.0.0-p0
+# rbenv global 2.0.0-p0
