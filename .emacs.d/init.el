@@ -1,12 +1,16 @@
+(require 'package)
+(unless package-archive-contents
+  (package-refresh-contents))
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (setq installed-packages '( ;; separated to make sorting the package list easier
+			   evil
 			   ace-jump-mode
 			   color-theme-molokai
 			   deft
-			   evil
 			   evil-nerd-commenter
+			   evil-leader
 			   evil-numbers
 			   evil-paredit
 			   find-things-fast
@@ -66,9 +70,6 @@
 (global-set-key (kbd "C-M-k") 'windmove-up)
 
 ;;;;; package configs
-(add-hook 'linum-mode-hook (lambda ()
-			     (require 'linum-relative)))
-(add-hook 'after-init-hook 'global-linum-mode) ;; avoid loading global-linum-mode now
 
 (add-hook 'after-init-hook 'ido-mode)
 (add-hook 'after-init-hook 'global-auto-revert-mode)
@@ -132,7 +133,8 @@
 ;; 	    (wg-load "~/.emacs.d/workgroups"))
 
 (config-for "color-theme-molokai-autoloads"
-	    (color-theme-molokai))
+	    (when (display-graphic-p)
+	      (color-theme-molokai)))
 
 (config-for "evil-paredit-autoloads"
 	    (require 'evil-paredit)
@@ -172,3 +174,10 @@
 	    (add-to-list 'evil-overriding-maps '(deft-mode-map))
 	    ;; keybindings
 	    (define-key deft-mode-map (kbd "C-w") 'evil-delete-backward-word))
+
+(config-for "linum-relative-autoloads"
+	    (add-hook 'linum-mode-hook (lambda ()
+					 (require 'linum-relative))))
+(add-hook 'prog-mode-hook 'global-linum-mode) ;; avoid loading global-linum-mode now
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(package-initialize)
