@@ -14,6 +14,7 @@
 			   evil-numbers
 			   evil-paredit
 			   find-things-fast
+			   haskell-mode
 			   ido-ubiquitous
 			   ido-vertical-mode
 			   linum-relative
@@ -24,6 +25,7 @@
 			   smartparens
 			   undo-tree
 			   virtualenv
+			   tabbar
 			   workgroups
 			   yasnippet
 			   ))
@@ -93,12 +95,11 @@
 	    ;;miscellaneous keybindings
 	    (define-key evil-normal-state-map (kbd "C-o") 'imenu)
 	    (define-key evil-normal-state-map (kbd "C-p") 'ftf-find-file)
-	    (define-key minibuffer-local-map (kbd "C-w") 'evil-delete-backward-word))
+	    )
 
 (config-for "ace-jump-mode-autoloads"
 	    (require 'cl)
-	    (setq ace-jump-mode-scope 'frame)
-	    )
+	    (setq ace-jump-mode-scope 'frame))
 
 (config-for "rainbow-delimiters-autoloads"
 	    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
@@ -167,7 +168,9 @@
 (config-for "deft-autoloads"
 	    (require 'deft)
 	    (setq deft-extension "org")
-	    (setq deft-directory "~/Dropbox/Notes")
+	    (setq deft-text-mode 'org-mode)
+	    (setq deft-auto-save-interval 60.0)
+	    (setq deft-directory "~/notes")
 	    (setq deft-use-filename-as-title 1)
 	    (global-set-key (kbd "<kp-enter>") 'deft)
 	    (add-hook 'deft-mode-hook 'turn-off-evil-mode)
@@ -175,9 +178,13 @@
 	    ;; keybindings
 	    (define-key deft-mode-map (kbd "C-w") 'evil-delete-backward-word))
 
+(config-for "haskell-mode"
+	    (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation))
+
 (config-for "linum-relative-autoloads"
 	    (add-hook 'linum-mode-hook (lambda ()
 					 (require 'linum-relative))))
+
 (add-hook 'prog-mode-hook 'global-linum-mode) ;; avoid loading global-linum-mode now
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (package-initialize)
