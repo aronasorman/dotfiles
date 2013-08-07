@@ -52,10 +52,14 @@ alias ms='tmuxinator start'
 alias mo='tmuxinator open'
 alias g=git
 alias ga='git annex'
+alias t='tmux'
+alias ta='tmux attach'
+alias tat='tmux attach -t'
+alias pa='pacaur'
 
 alias cl='clear'
 alias rel='source ~/lib/profile'
-alias pmpy='python manage.py'
+alias pm='python manage.py'
 alias py='python'
 
 # default ruby version, courtesy of rbenv
