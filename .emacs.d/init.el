@@ -7,18 +7,20 @@
 (setq installed-packages '( ;; separated to make sorting the package list easier
 			   evil
 			   ace-jump-mode
-			   color-theme-molokai
 			   deft
 			   evil-nerd-commenter
 			   evil-leader
 			   evil-numbers
 			   evil-paredit
+			   elixir-mode
 			   find-things-fast
+			   god-mode
 			   haskell-mode
 			   ido-ubiquitous
 			   ido-vertical-mode
 			   linum-relative
 			   magit
+			   multi-term
 			   paredit
 			   projectile
 			   rainbow-delimiters
@@ -79,7 +81,6 @@
 
 (config-for "evil-autoloads"
 	    (evil-mode 1)
-	    ;; don't override the following keymaps
 	    (add-to-list 'evil-overriding-maps '(eshell-mode-map))
 	    (add-hook 'eshell-mode-hook 'turn-off-evil-mode)
 	    ;; terminate emacs with C-z
@@ -92,13 +93,18 @@
 	    ;; some conveniences from my vim stint
 	    (define-key evil-normal-state-map (kbd ";") 'evil-ex)
 	    (define-key evil-normal-state-map (kbd "\\") 'evil-repeat-find-char)
-	    ;;miscellaneous keybindings
+	    ;; miscellaneous keybindings
 	    (define-key evil-normal-state-map (kbd "C-o") 'imenu)
 	    (define-key evil-normal-state-map (kbd "C-p") 'ftf-find-file)
 	    )
 
+(config-for "god-mode-autoloads"
+	    ;; (god-mode)
+	    (global-set-key (kbd "<backtab>") 'god-local-mode))
+
 (config-for "ace-jump-mode-autoloads"
 	    (require 'cl)
+	    (global-set-key (kbd "C-M-<SPC>") 'ace-jump-mode)
 	    (setq ace-jump-mode-scope 'frame))
 
 (config-for "rainbow-delimiters-autoloads"
@@ -127,7 +133,7 @@
 	      "ci" 'evilnc-comment-or-uncomment-lines)
 	    (global-evil-leader-mode 1))
 
-;; (config-for "workgroups-autoloads"
+; (config-for "workgroups-autoloads"
 ;; 	    (require 'workgroups)
 ;; 	    (setq wg-prefix-key (kbd "C-x w"))
 ;; 	    (workgroups-mode 1)
@@ -156,6 +162,7 @@
 	      (kill-buffer)
 	      (jump-to-register :magit-fullscreen))
 	    (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
+	    (global-set-key (kbd "C-x C-g") 'magit-status)
 	    (global-set-key (kbd "<f11>") 'magit-status))
 
 (config-for "smartparens-autoloads"
@@ -180,6 +187,10 @@
 
 (config-for "haskell-mode"
 	    (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation))
+
+(config-for "elixir-mode"
+	    (require 'elixir-mode)
+	    (add-hook 'elixir-mode-hook 'elixir-cos-mode))
 
 (config-for "linum-relative-autoloads"
 	    (add-hook 'linum-mode-hook (lambda ()
