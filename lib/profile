@@ -17,6 +17,7 @@ ERL_LIBS=$SRC
 # RBENV_ROOT=/usr/local/var/rbenv
 ANDROID_SDK_ROOT=/usr/local/opt/android-sdk
 export LC_ALL="en_US.UTF-8"
+export TERM=xterm-256color
 export WORKON_HOME=$SRC/virtualenvs
 source /usr/bin/virtualenvwrapper.sh
 
@@ -64,9 +65,10 @@ alias cl='clear'
 alias rel='source ~/lib/profile'
 alias pm='python manage.py'
 alias pms='python manage.py syncdb'
-alias pmsh='python manage.py shell'
+alias pmsh='python manage.py shell_plus'
 alias pmdb='python manage.py dbshell'
-alias pmr='python manage.py runserver'
+alias pmr='python manage.py runserver_plus'
+alias pmm='python manage.py migrate --all'
 alias py='python'
 
 # default ruby version, courtesy of rbenv
@@ -76,3 +78,4 @@ alias py='python'
 alias emd="$EDITOR ~/.emacs.d/init.el"
 alias emlp="$EDITOR ~/lib/profile"
 alias emt="$EDITOR ~/notes/todo.org"
+alias emgc="$EDITOR ~/.gitconfig"

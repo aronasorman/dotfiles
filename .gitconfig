@@ -6,7 +6,7 @@
 
 [alias]
     amend     = commit --amend -a
-    br        = branch 
+    br        = branch
     co        = checkout
     ds        = diff --staged
     di        = diff
@@ -17,5 +17,7 @@
     ln        = log --graph --decorate --pretty=oneline --abbrev-commit
     panic     = !tar cvf ../git_panic.tar *
     st        = status
+    sta	      = stash
     s         = show
+    r         = remote
     wdiff     = diff --word-diff=plain

@@ -20,6 +20,7 @@
 			   ido-vertical-mode
 			   linum-relative
 			   magit
+			   markdown-mode
 			   multi-term
 			   paredit
 			   projectile
@@ -186,11 +187,11 @@
 	    (define-key deft-mode-map (kbd "C-w") 'evil-delete-backward-word))
 
 (config-for "haskell-mode"
-	    (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation))
+	    (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+	    (setq haskell-program-name "ghci"))
 
 (config-for "elixir-mode"
-	    (require 'elixir-mode)
-	    (add-hook 'elixir-mode-hook 'elixir-cos-mode))
+	    (require 'elixir-mode))
 
 (config-for "linum-relative-autoloads"
 	    (add-hook 'linum-mode-hook (lambda ()
