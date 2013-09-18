@@ -21,3 +21,5 @@
     s         = show
     r         = remote
     wdiff     = diff --word-diff=plain
+[push]
+	default = simple

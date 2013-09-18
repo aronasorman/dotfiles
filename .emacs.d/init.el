@@ -97,6 +97,7 @@
 	    ;; miscellaneous keybindings
 	    (define-key evil-normal-state-map (kbd "C-o") 'imenu)
 	    (define-key evil-normal-state-map (kbd "C-p") 'ftf-find-file)
+	    (define-key evil-normal-state-map (kbd "!") 'shell-command)
 	    )
 
 (config-for "god-mode-autoloads"
@@ -139,10 +140,6 @@
 ;; 	    (setq wg-prefix-key (kbd "C-x w"))
 ;; 	    (workgroups-mode 1)
 ;; 	    (wg-load "~/.emacs.d/workgroups"))
-
-(config-for "color-theme-molokai-autoloads"
-	    (when (display-graphic-p)
-	      (color-theme-molokai)))
 
 (config-for "evil-paredit-autoloads"
 	    (require 'evil-paredit)
@@ -193,9 +190,10 @@
 (config-for "elixir-mode"
 	    (require 'elixir-mode))
 
-(config-for "linum-relative-autoloads"
-	    (add-hook 'linum-mode-hook (lambda ()
-					 (require 'linum-relative))))
+;; disabled because it slowed down emacs
+;; (config-for "linum-relative-autoloads"
+;; 	    (add-hook 'linum-mode-hook (lambda ()
+;; 					 (require 'linum-relative))))
 
 (add-hook 'prog-mode-hook 'global-linum-mode) ;; avoid loading global-linum-mode now
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
