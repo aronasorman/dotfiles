@@ -190,10 +190,9 @@
 (config-for "elixir-mode"
 	    (require 'elixir-mode))
 
-;; disabled because it slowed down emacs
-;; (config-for "linum-relative-autoloads"
-;; 	    (add-hook 'linum-mode-hook (lambda ()
-;; 					 (require 'linum-relative))))
+(config-for "linum-relative-autoloads"
+	    (add-hook 'linum-mode-hook (lambda ()
+					 (require 'linum-relative))))
 
 (add-hook 'prog-mode-hook 'global-linum-mode) ;; avoid loading global-linum-mode now
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
