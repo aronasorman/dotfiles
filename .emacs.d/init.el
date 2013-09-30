@@ -52,6 +52,7 @@
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(load-theme 'tango-dark)
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 (show-paren-mode 1)
@@ -80,33 +81,33 @@
 (add-hook 'after-init-hook 'global-auto-revert-mode)
 (add-hook 'after-init-hook 'global-hl-line-mode)
 
-(config-for "evil-autoloads"
-	    (evil-mode 1)
-	    (add-to-list 'evil-overriding-maps '(eshell-mode-map))
-	    (add-hook 'eshell-mode-hook 'turn-off-evil-mode)
-	    ;; terminate emacs with C-z
-	    (define-key evil-normal-state-map (kbd "C-z") 'suspend-frame)
-	    (define-key evil-insert-state-map (kbd "C-z") 'suspend-frame)
-	    (define-key evil-normal-state-map (kbd "<SPC>") 'ace-jump-mode)
-	    ;; terminal emacs somehow funges the escape key
-	    (define-key evil-insert-state-map (kbd "C-[") 'evil-normal-state)
-	    (define-key evil-insert-state-map (kbd "<ESC>") 'evil-normal-state)
-	    ;; some conveniences from my vim stint
-	    (define-key evil-normal-state-map (kbd ";") 'evil-ex)
-	    (define-key evil-normal-state-map (kbd "\\") 'evil-repeat-find-char)
-	    ;; miscellaneous keybindings
-	    (define-key evil-normal-state-map (kbd "C-o") 'imenu)
-	    (define-key evil-normal-state-map (kbd "C-p") 'ftf-find-file)
-	    (define-key evil-normal-state-map (kbd "!") 'shell-command)
-	    )
+;; (config-for "evil-autoloads"
+;; 	    (evil-mode 1)
+;; 	    (add-to-list 'evil-overriding-maps '(eshell-mode-map))
+;; 	    (add-hook 'eshell-mode-hook 'turn-off-evil-mode)
+;; 	    ;; terminate emacs with C-z
+;; 	    (define-key evil-normal-state-map (kbd "C-z") 'suspend-frame)
+;; 	    (define-key evil-insert-state-map (kbd "C-z") 'suspend-frame)
+;; 	    (define-key evil-normal-state-map (kbd "<SPC>") 'ace-jump-mode)
+;; 	    ;; terminal emacs somehow funges the escape key
+;; 	    (define-key evil-insert-state-map (kbd "C-[") 'evil-normal-state)
+;; 	    (define-key evil-insert-state-map (kbd "<ESC>") 'evil-normal-state)
+;; 	    ;; some conveniences from my vim stint
+;; 	    (define-key evil-normal-state-map (kbd ";") 'evil-ex)
+;; 	    (define-key evil-normal-state-map (kbd "\\") 'evil-repeat-find-char)
+;; 	    ;; miscellaneous keybindings
+;; 	    (define-key evil-normal-state-map (kbd "C-o") 'imenu)
+;; 	    (define-key evil-normal-state-map (kbd "!") 'shell-command)
+;; 	    )
+
 
 (config-for "god-mode-autoloads"
-	    ;; (god-mode)
-	    (global-set-key (kbd "<backtab>") 'god-local-mode))
+	    (god-mode)
+	    (global-set-key (kbd "C-q") 'god-mode))
 
 (config-for "ace-jump-mode-autoloads"
 	    (require 'cl)
-	    (global-set-key (kbd "C-M-<SPC>") 'ace-jump-mode)
+	    (global-set-key (kbd "M-f") 'ace-jump-mode)
 	    (setq ace-jump-mode-scope 'frame))
 
 (config-for "rainbow-delimiters-autoloads"
@@ -146,6 +147,7 @@
 	    (add-hook 'paredit-mode-hook 'evil-paredit-mode))
 
 (config-for "find-things-fast-autoloads"
+ 	    (define-key evil-normal-state-map (kbd "C-p") 'ftf-find-file)
 	    (require 'find-things-fast))
 
 (config-for "magit"
@@ -160,7 +162,7 @@
 	      (kill-buffer)
 	      (jump-to-register :magit-fullscreen))
 	    (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
-	    (global-set-key (kbd "C-x C-g") 'magit-status)
+	    (global-set-key (kbd "C-x g") 'magit-status)
 	    (global-set-key (kbd "<f11>") 'magit-status))
 
 (config-for "smartparens-autoloads"
