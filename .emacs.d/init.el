@@ -148,6 +148,8 @@
 	    (global-set-key (kbd "<f11>") 'magit-status))
 
 (config-for "smartparens-autoloads"
+	    (require 'smartparens)
+	    (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil) ; do not match the ' character
 	    (smartparens-global-mode 1))
 
 (config-for "yasnippet-autoloads"
