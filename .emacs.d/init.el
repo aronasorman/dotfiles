@@ -71,8 +71,6 @@
 (define-key emacs-lisp-mode-map (kbd "C-c C-r") 'eval-region)
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
 (global-set-key (kbd "C-M-l") 'windmove-right)
-(global-set-key (kbd "M-o") 'imenu)
-
 (global-set-key (kbd "C-M-h") 'windmove-left)
 (global-set-key (kbd "C-M-j") 'windmove-down)
 (global-set-key (kbd "C-M-k") 'windmove-up)
@@ -82,6 +80,26 @@
 (add-hook 'after-init-hook 'ido-mode)
 (add-hook 'after-init-hook 'global-auto-revert-mode)
 (add-hook 'after-init-hook 'global-hl-line-mode)
+
+;; (config-for "evil-autoloads"
+;; 	    (evil-mode 1)
+;; 	    (add-to-list 'evil-overriding-maps '(eshell-mode-map))
+;; 	    (add-hook 'eshell-mode-hook 'turn-off-evil-mode)
+;; 	    ;; terminate emacs with C-z
+;; 	    (define-key evil-normal-state-map (kbd "C-z") 'suspend-frame)
+;; 	    (define-key evil-insert-state-map (kbd "C-z") 'suspend-frame)
+;; 	    (define-key evil-normal-state-map (kbd "<SPC>") 'ace-jump-mode)
+;; 	    ;; terminal emacs somehow funges the escape key
+;; 	    (define-key evil-insert-state-map (kbd "C-[") 'evil-normal-state)
+;; 	    (define-key evil-insert-state-map (kbd "<ESC>") 'evil-normal-state)
+;; 	    ;; some conveniences from my vim stint
+;; 	    (define-key evil-normal-state-map (kbd ";") 'evil-ex)
+;; 	    (define-key evil-normal-state-map (kbd "\\") 'evil-repeat-find-char)
+;; 	    ;; miscellaneous keybindings
+;; 	    (define-key evil-normal-state-map (kbd "C-o") 'imenu)
+;; 	    (define-key evil-normal-state-map (kbd "!") 'shell-command)
+;; 	    )
+
 
 (config-for "god-mode-autoloads"
 	    (god-mode)
@@ -129,7 +147,7 @@
 	    (add-hook 'paredit-mode-hook 'evil-paredit-mode))
 
 (config-for "find-things-fast-autoloads"
- 	    (global-set-key (kbd "M-p") 'ftf-find-file)
+ 	    (define-key evil-normal-state-map (kbd "C-p") 'ftf-find-file)
 	    (require 'find-things-fast))
 
 (config-for "magit"
