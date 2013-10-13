@@ -12,7 +12,7 @@ SRC=$HOME/src
 EMU="-r$SRC/inferno -g1250x750 -c1" export EMU
 EDITOR='emacsclient -a="" -nw'
 #EDITOR='vim'
-GOPATH=$HOME/go
+GOPATH=$SRC/go
 ERL_LIBS=$SRC
 # RBENV_ROOT=/usr/local/var/rbenv
 ANDROID_SDK_ROOT=/usr/local/opt/android-sdk
