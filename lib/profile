@@ -58,8 +58,6 @@ alias ga='git annex'
 alias t='tmux'
 alias ta='tmux attach'
 alias tat='tmux attach -t'
-alias pa='pacaur'
-alias upd='pacaur -Syu'
 
 alias cl='clear'
 alias rel='source ~/lib/profile'
@@ -71,8 +69,19 @@ alias pmr='python manage.py runserver_plus'
 alias pmm='python manage.py migrate --all'
 alias py='python'
 
-# default ruby version, courtesy of rbenv
-# rbenv global 2.0.0-p0
+# OS specific aliases
+if cat /etc/*-release | grep -q "Ubuntu"
+then
+    echo 'ubuntu detected, placing ubuntu-specific aliases'
+    alias inst='sudo apt-get install'
+    alias pa='apt-get'
+    alias upd='sudo apt-get update && sudo apt-get upgrade'
+else
+    echo 'arch linux assumed, placing arch spefic stuff'
+    alias inst='sudo pacaur -S'
+    alias pa='pacaur'
+    alias upd='pacaur -Syu'
+fi
 
 # jump to editing of common files
 alias emd="$EDITOR ~/.emacs.d/init.el"
