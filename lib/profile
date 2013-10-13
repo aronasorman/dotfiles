@@ -76,11 +76,13 @@ then
     alias inst='sudo apt-get install'
     alias pa='apt-get'
     alias upd='sudo apt-get update && sudo apt-get upgrade'
+    alias sea='aptitude search'
 else
     echo 'arch linux assumed, placing arch spefic stuff'
     alias inst='sudo pacaur -S'
     alias pa='pacaur'
     alias upd='pacaur -Syu'
+    alias sea='pacaur -Ss'
 fi
 
 # jump to editing of common files
