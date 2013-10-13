@@ -132,6 +132,8 @@
 	      "cc" 'projectile-compile-project
 	      "C" 'compile
 	      "t" 'deft
+	      "." 'find-tag
+	      "u." 'pop-tag-mark
 	      "ci" 'evilnc-comment-or-uncomment-lines)
 	    (global-evil-leader-mode 1))
 
@@ -148,7 +150,7 @@
 (config-for "find-things-fast-autoloads"
 	    (require 'find-things-fast))
 
-(config-for "magit"
+(config-for "magit-autoloads"
 	    (require 'magit)
 	    (defadvice magit-status (around magit-fullscreen activate)
 	      (window-configuration-to-register :magit-fullscreen)
@@ -166,6 +168,8 @@
 (config-for "smartparens-autoloads"
 	    (require 'smartparens)
 	    (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil) ; do not match the ' character
+	    (sp-local-pair 'html-mode "{" nil :actions nil)
+	    (sp-local-pair 'html-mode "{%" "%}")
 	    (smartparens-global-mode 1))
 
 (config-for "yasnippet-autoloads"
