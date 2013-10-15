@@ -205,6 +205,9 @@
 	    (add-hook 'linum-mode-hook (lambda ()
 					 (require 'linum-relative))))
 
+;; config for org mode
+(setq org-startup-indented t)
+
 (add-hook 'prog-mode-hook 'global-linum-mode) ;; avoid loading global-linum-mode now
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (package-initialize)
