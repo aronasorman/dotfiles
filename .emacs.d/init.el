@@ -29,7 +29,7 @@
 			   undo-tree
 			   virtualenv
 			   tabbar
-			   workgroups
+			   web-mode
 			   yasnippet
 			   ))
 
