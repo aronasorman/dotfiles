@@ -62,6 +62,9 @@
 (setq auto-save-file-name-transforms
             `((".*" ,temporary-file-directory t)))
 
+;; font
+(set-face-attribute 'default nil :font "Inconsolata-13")
+
 ;;;;; vanilla keybindings
 (global-set-key (kbd "<RET>") 'newline-and-indent)
 (global-set-key (kbd "C-\\") 'delete-other-windows)
