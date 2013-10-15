@@ -146,10 +146,13 @@
 	      "ps" 'projectile-switch-project
 	      "cc" 'projectile-compile-project
 	      "C" 'compile
+	      "b" 'ido-switch-buffer
+	      "f" 'find-file
 	      "t" 'deft
 	      "." 'find-tag
 	      "u." 'pop-tag-mark
 	      "a" 'org-agenda
+	      "w" 'virtualenv-workon
 	      "ci" 'evilnc-comment-or-uncomment-lines)
 	    (global-evil-leader-mode 1))
 
