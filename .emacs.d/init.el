@@ -34,6 +34,16 @@
 			   ))
 
 ;;;;; custom functions and macros
+(defun google-it ()
+  "Googles a query or region if any."
+  (interactive)
+  (browse-url
+   (concat
+    "http://www.google.com/search?ie=utf-8&oe=utf-8&q="
+    (if mark-active
+        (buffer-substring (region-beginning) (region-end))
+      (read-string "Google: ")))))
+
 (defun install-required-packages ()
   (interactive)
   (mapcar (lambda (package)
@@ -132,6 +142,7 @@
 	    (evil-leader/set-key
 	      "gs" 'magit-status
 	      "gb" 'magit-blame-mode
+	      "go" 'google-it
 	      "ps" 'projectile-switch-project
 	      "cc" 'projectile-compile-project
 	      "C" 'compile
