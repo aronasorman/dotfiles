@@ -222,6 +222,9 @@
 ;; config for org mode
 (setq org-startup-indented t)
 
+;; load custom settings
+(load "local_init" t)
+
 (add-hook 'prog-mode-hook 'global-linum-mode) ;; avoid loading global-linum-mode now
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (package-initialize)
