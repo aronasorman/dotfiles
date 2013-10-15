@@ -132,11 +132,13 @@
 	    (evil-leader/set-key
 	      "gs" 'magit-status
 	      "gb" 'magit-blame-mode
+	      "ps" 'projectile-switch-project
 	      "cc" 'projectile-compile-project
 	      "C" 'compile
 	      "t" 'deft
 	      "." 'find-tag
 	      "u." 'pop-tag-mark
+	      "a" 'org-agenda
 	      "ci" 'evilnc-comment-or-uncomment-lines)
 	    (global-evil-leader-mode 1))
 
