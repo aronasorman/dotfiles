@@ -14,6 +14,7 @@
 			   evil-paredit
 			   elixir-mode
 			   find-things-fast
+			   js2-mode
 			   god-mode
 			   haskell-mode
 			   ido-ubiquitous
@@ -211,6 +212,9 @@
 (config-for "haskell-mode"
 	    (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 	    (setq haskell-program-name "ghci"))
+
+(config-for "js2-mode"
+	    (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode)))
 
 (config-for "elixir-mode"
 	    (require 'elixir-mode))
