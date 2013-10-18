@@ -225,6 +225,12 @@
 
 ;; config for org mode
 (setq org-startup-indented t)
+;; set shortcuts for evil mode
+(config-for "evil-autoloads"
+	    (evil-define-key 'normal org-mode-map
+	      "\\]" 'org-shiftmetaright
+	      "\\[" 'org-shiftmetaleft
+	      "\\t" 'org-todo))
 
 ;; load custom settings
 (load "local_init" t)
