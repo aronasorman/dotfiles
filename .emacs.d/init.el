@@ -154,7 +154,9 @@
 	      "-" 'split-window-below
 	      "." 'find-tag
 	      "u." 'pop-tag-mark
-	      "a" 'org-agenda
+	      "oa" 'org-agenda
+	      "oc" 'org-capture
+	      "ol" 'org-store-link
 	      "w" 'virtualenv-workon
 	      "ci" 'evilnc-comment-or-uncomment-lines)
 	    (global-evil-leader-mode 1))
@@ -227,12 +229,19 @@
 
 ;; config for org mode
 (setq org-startup-indented t)
+(setq org-todo-keywords '((sequence "TODO(t)" "IN-PROGRESS(p!)" "WAITING(w@)" "|" "DONE(d!)" "CANCELED(c@)")))
+(setq org-log-done 'note)
+(setq org-log-into-drawer t)
+(setq org-default-notes-file "~/notes/capture.org")
 ;; set shortcuts for evil mode
 (config-for "evil-autoloads"
 	    (evil-define-key 'normal org-mode-map
 	      "\\]" 'org-shiftmetaright
 	      "\\[" 'org-shiftmetaleft
-	      "\\t" 'org-todo))
+	      "\\t" 'org-todo
+	      "\\r" 'org-priority
+	      "\\l" 'org-insert-link
+	      "\\t" 'org-set-tags-command))
 
 ;; load custom settings
 (load "local_init" t)
