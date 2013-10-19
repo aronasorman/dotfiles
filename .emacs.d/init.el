@@ -150,6 +150,8 @@
 	      "b" 'ido-switch-buffer
 	      "f" 'find-file
 	      "t" 'deft
+	      "|" 'split-window-right
+	      "-" 'split-window-below
 	      "." 'find-tag
 	      "u." 'pop-tag-mark
 	      "a" 'org-agenda
