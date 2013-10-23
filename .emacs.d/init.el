@@ -158,6 +158,7 @@
 	      "b" 'ido-switch-buffer
 	      "f" 'find-file
 	      "t" 'deft
+	      "d" 'ido-dired
 	      "m" 'mu4e
 	      "|" (lambda () (interactive) (split-window-right) (windmove-right))
 	      "-" (lambda () (interactive) (split-window-below) (windmove-down))
@@ -266,6 +267,8 @@
 			       "\n* TODO %?\n")))
 
 ;; set shortcuts for evil mode
+(global-set-key (kbd "C-c C-l") 'org-store-link)
+(global-set-key (kbd "C-c C-a") 'org-capture)
 (config-for "evil-autoloads"
 	    (evil-define-key 'normal org-mode-map
 	      "\\]" 'org-shiftmetaright
