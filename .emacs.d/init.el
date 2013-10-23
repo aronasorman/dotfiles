@@ -150,6 +150,7 @@
 	      "b" 'ido-switch-buffer
 	      "f" 'find-file
 	      "t" 'deft
+	      "m" 'mu4e
 	      "|" (lambda () (interactive) (split-window-right) (windmove-right))
 	      "-" (lambda () (interactive) (split-window-below) (windmove-down))
 	      "." 'find-tag
@@ -266,8 +267,17 @@
 	      "\\l" 'org-insert-link
 	      "\\t" 'org-set-tags-command))
 
-;; load custom settings
-(load "local_init" t)
+;; mu and mu4e
+(add-to-list 'load-path (concat-dir src-dir "dotfiles/mu4e"))
+(require 'mu4e)
+(require 'org-mu4e)
+(config-for "evil-autoloads"
+	    (add-to-list 'evil-emacs-state-modes 'mu4e-main-mode)
+	    (add-to-list 'evil-emacs-state-modes 'mu4e-view-mode)
+	    (add-to-list 'evil-emacs-state-modes 'mu4e-compose-mode)
+	    (add-to-list 'evil-emacs-state-modes 'mu4e-headers-mode)
+	    (add-hook 'mu4e-message-mode 'turn-on-visual-line-mode))
+(setq mu4e-maildir "~/mail")
 
 (add-hook 'prog-mode-hook 'global-linum-mode) ;; avoid loading global-linum-mode now
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -278,7 +288,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes (quote ("47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
- '(org-agenda-files (quote ("~/notes/todo.org"))))
+ '(org-agenda-files (quote ("~/notes/todo.org")))
+ '(send-mail-function (quote smtpmail-send-it))
+ '(smtpmail-smtp-server "smtp.gmail.com")
+ '(smtpmail-smtp-service 587))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
