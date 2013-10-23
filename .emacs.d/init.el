@@ -150,9 +150,10 @@
 	      "b" 'ido-switch-buffer
 	      "f" 'find-file
 	      "t" 'deft
-	      "|" 'split-window-right
-	      "-" 'split-window-below
+	      "|" (lambda () (interactive) (split-window-right) (windmove-right))
+	      "-" (lambda () (interactive) (split-window-below) (windmove-down))
 	      "." 'find-tag
+	      "(" 'paredit-wrap-round
 	      "u." 'pop-tag-mark
 	      "oa" 'org-agenda
 	      "oc" 'org-capture
