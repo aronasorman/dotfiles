@@ -235,6 +235,7 @@
 (setq org-log-into-drawer t)
 (setq org-default-notes-file "~/notes/capture.org")
 (setq org-capture-templates `(("f" "For all things FLE related")
+
 			      ("fp" "partnership" entry
 			       (file+olp "~/notes/todo.org" "FLE" "partnerships")
 			       "\n* TODO  %?\n"
@@ -245,10 +246,16 @@
 			      ("fb" "bugs found or FIXMEs in code" entry
 			       (file+olp "~/notes/todo.org" "FLE" "dev")
 			       "\n* TODO found in %f: %?\n FILE: %a")
+
 			      ("p" "Personal stuff not really related to any project")
+
 			      ("pw" "TODOs related to workflow" entry
 			       (file+olp "~/notes/todo.org" "Personal" "workflow")
-			       "\n* TODO %?\n %^G")))
+			       "\n* TODO %?\n %^G")
+			      ("pt" "Small tasks not really related to anything" entry
+			       (file+olp "~/notes/todo.org" "Personal" "random")
+			       "\n* TODO %?\n")))
+
 ;; set shortcuts for evil mode
 (config-for "evil-autoloads"
 	    (evil-define-key 'normal org-mode-map
