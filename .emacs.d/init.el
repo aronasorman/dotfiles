@@ -234,6 +234,21 @@
 (setq org-log-done 'note)
 (setq org-log-into-drawer t)
 (setq org-default-notes-file "~/notes/capture.org")
+(setq org-capture-templates `(("f" "For all things FLE related")
+			      ("fp" "partnership" entry
+			       (file+olp "~/notes/todo.org" "FLE" "partnerships")
+			       "\n* TODO  %?\n"
+			       :prepend t)
+			      ("fd" "development overall tasks" entry
+			       (file+olp "~/notes/todo.org" "FLE" "dev")
+			       "\n* TODO  %?\n %^{DEADLINE}p %^{SCHEDULED}p")
+			      ("fb" "bugs found or FIXMEs in code" entry
+			       (file+olp "~/notes/todo.org" "FLE" "dev")
+			       "\n* TODO found in %f: %?\n FILE: %a")
+			      ("p" "Personal stuff not really related to any project")
+			      ("pw" "TODOs related to workflow" entry
+			       (file+olp "~/notes/todo.org" "Personal" "workflow")
+			       "\n* TODO %?\n %^G")))
 ;; set shortcuts for evil mode
 (config-for "evil-autoloads"
 	    (evil-define-key 'normal org-mode-map
@@ -255,7 +270,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default))))
+ '(custom-safe-themes (quote ("47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
+ '(org-agenda-files (quote ("~/notes/todo.org"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
