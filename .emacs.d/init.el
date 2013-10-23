@@ -278,6 +278,14 @@
 	      "\\l" 'org-insert-link
 	      "\\t" 'org-set-tags-command))
 
+;; web-mode
+(config-for "web-mode"
+	    (require 'web-mode)
+	    (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+	    (add-hook 'web-mode-hook 'turn-off-smartparens-mode)
+	    (setq web-mode-engines-alist
+		  '(("django" . "\\.html\\'"))))
+
 ;; mu and mu4e
 (add-to-list 'load-path (concat-dir src-dir "dotfiles/mu4e"))
 (require 'mu4e)
