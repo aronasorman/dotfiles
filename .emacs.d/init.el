@@ -45,6 +45,14 @@
         (buffer-substring (region-beginning) (region-end))
       (read-string "Google: ")))))
 
+(defun concat-dir (x y)
+  (concat x "/" y))
+
+(defvar src-dir "~/src")
+
+;; load custom settings
+(load "local_init" t)
+
 (defun install-required-packages ()
   (interactive)
   (mapcar (lambda (package)
