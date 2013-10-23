@@ -293,9 +293,9 @@
 (config-for "evil-autoloads"
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-main-mode)
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-view-mode)
-	    (add-to-list 'evil-emacs-state-modes 'mu4e-compose-mode)
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-headers-mode)
-	    (add-hook 'mu4e-message-mode 'turn-on-visual-line-mode))
+	    (add-hook 'mu4e-message-mode-hook 'turn-on-visual-line-mode)
+	    (add-hook 'mu4e-compose-mode-hook 'evil-local-mode))
 (setq mu4e-maildir "~/mail")
 
 (add-hook 'prog-mode-hook 'global-linum-mode) ;; avoid loading global-linum-mode now
