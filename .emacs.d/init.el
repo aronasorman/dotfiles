@@ -120,6 +120,7 @@
 	    (define-key evil-normal-state-map (kbd "C-o") 'imenu)
 	    (define-key evil-normal-state-map (kbd "C-p") 'ftf-find-file)
 	    (define-key evil-normal-state-map (kbd "!") 'shell-command)
+	    (add-to-list 'evil-emacs-state-modes 'grep-mode)
 	    )
 
 (config-for "god-mode-autoloads"
@@ -167,6 +168,7 @@
 	      "u." 'pop-tag-mark
 	      "oa" 'org-agenda
 	      "oc" 'org-capture
+	      "ot" 'org-todo-list
 	      "ol" 'org-store-link
 	      "w" 'virtualenv-workon
 	      "ci" 'evilnc-comment-or-uncomment-lines)
@@ -218,6 +220,7 @@
 	    (setq deft-auto-save-interval 60.0)
 	    (setq deft-directory "~/notes")
 	    (setq deft-use-filename-as-title 1)
+	    (setq org-return-follows-link t)
 	    (global-set-key (kbd "<kp-enter>") 'deft)
 	    (add-hook 'deft-mode-hook 'turn-off-evil-mode)
 	    (add-to-list 'evil-overriding-maps '(deft-mode-map))
@@ -252,13 +255,16 @@
 			       :prepend t)
 			      ("fd" "development overall tasks" entry
 			       (file+olp "~/notes/todo.org" "FLE" "dev")
-			       "\n* TODO  %?\n %^{DEADLINE}p %^{SCHEDULED}p")
+			       "\n* TODO  %?\nDEADLINE: %(org-time-stamp nil)\n%^{SCHEDULED}p")
 			      ("fb" "bugs found or FIXMEs in code" entry
 			       (file+olp "~/notes/todo.org" "FLE" "dev")
 			       "\n* TODO found in %f: %?\n FILE: %a")
 
 			      ("p" "Personal stuff not really related to any project")
 
+			      ("pb" "List of books borrowed that have to be returned" entry
+			       (file+olp "~/notes/todo.org" "Personal" "books to return")
+			       "\n* TODO %? \nDEADLINE: %(org-time-stamp nil)\n")
 			      ("pw" "TODOs related to workflow" entry
 			       (file+olp "~/notes/todo.org" "Personal" "workflow")
 			       "\n* TODO %?\n %^G")
@@ -279,12 +285,12 @@
 	      "\\t" 'org-set-tags-command))
 
 ;; web-mode
-(config-for "web-mode"
+(config-for "web-mode-autoloads"	; weird. it's a major mode, but we need the *-autoloads
 	    (require 'web-mode)
-	    (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+	    (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
 	    (add-hook 'web-mode-hook 'turn-off-smartparens-mode)
 	    (setq web-mode-engines-alist
-		  '(("django" . "\\.html\\'"))))
+		  '(("django" . "\\.html$"))))
 
 ;; mu and mu4e
 (add-to-list 'load-path (concat-dir src-dir "dotfiles/mu4e"))
@@ -294,11 +300,37 @@
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-main-mode)
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-view-mode)
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-headers-mode)
-	    (add-hook 'mu4e-message-mode-hook 'turn-on-visual-line-mode)
+	    (add-hook 'mu4e-view-mode-hook 'turn-on-visual-line-mode)
 	    (add-hook 'mu4e-compose-mode-hook 'evil-local-mode))
 (setq mu4e-maildir "~/mail")
 
-(add-hook 'prog-mode-hook 'global-linum-mode) ;; avoid loading global-linum-mode now
+(defvar local/mu4e-account-specific-settings)
+(setq local/mu4e-account-specific-settings
+      '(("fastmail"
+	 (user-mail-address "aronasorman@fastmail.fm")
+	 (smtpmail-smtp-server "mail.messagingengine.com")
+	 (smtpmail-smtp-service 587))
+	("learningequality"
+	 (user-mail-address "aron@learningequality.org")
+	 (smtpmail-smtp-server "smtp.gmail.com")
+	 (smtpmail-smtp-service 587))))
+
+(defun local/mu4e-set-account-settings ()
+  "Set the account for composing a message."
+  (let* ((account
+	  (completing-read (format "Compose with account: (%s) "
+				   (mapconcat #'(lambda (var) (car var)) local/mu4e-account-specific-settings "/"))
+			   (mapcar #'(lambda (var) (car var)) local/mu4e-account-specific-settings)
+			   nil t nil nil (caar local/mu4e-account-specific-settings)))
+	 (account-vars (cdr (assoc account local/mu4e-account-specific-settings))))
+    (if account-vars
+	(mapc #'(lambda (var)
+		  (set (car var) (cadr var)))
+	      account-vars)
+      (error "No email account found"))))
+(add-hook 'mu4e-compose-pre-hook 'local/mu4e-set-account-settings)
+
+(Add-hook 'prog-mode-hook 'global-linum-mode) ;; avoid loading global-linum-mode now
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (package-initialize)
 (custom-set-variables
