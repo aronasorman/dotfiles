@@ -156,6 +156,7 @@
 	      "ps" 'projectile-switch-project
 	      "cc" 'projectile-compile-project
 	      "C" 'compile
+	      "sl" 'sort-lines
 	      "b" 'ido-switch-buffer
 	      "f" 'find-file
 	      "t" 'deft
