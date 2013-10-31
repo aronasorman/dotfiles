@@ -306,6 +306,16 @@
 	    (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
 	    (add-hook 'mu4e-view-mode-hook 'epa-mail-mode))
 (setq mu4e-maildir "~/mail")
+(setenv "GPGKEY" "0B78EF87")
+(let ((gpg-agent (executable-find "gpg-agent")))
+  (if gpg-agent
+      (let* ((gpg-agent-cmd (shell-command-to-string "gpg-agent --daemon"))
+	     (gpg-agent-info-var (first (split-string gpg-agent-cmd ";")))
+	     (gpg-agent-info (second (split-string gpg-agent-info-var "="))))
+	(message "gpg-agent found. Activating for Emacs...")
+	(setenv "GPG_AGENT_INFO" gpg-agent-info))
+    (message "gpg-agent exectuable not found. Oh well.")))
+(setq mml2015-use 'epg)
 
 (defvar local/mu4e-account-specific-settings)
 (setq local/mu4e-account-specific-settings
