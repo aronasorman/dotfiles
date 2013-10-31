@@ -301,7 +301,9 @@
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-view-mode)
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-headers-mode)
 	    (add-hook 'mu4e-view-mode-hook 'turn-on-visual-line-mode)
-	    (add-hook 'mu4e-compose-mode-hook 'evil-local-mode))
+	    (add-hook 'mu4e-compose-mode-hook 'evil-local-mode)
+	    (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
+	    (add-hook 'mu4e-view-mode-hook 'epa-mail-mode))
 (setq mu4e-maildir "~/mail")
 
 (defvar local/mu4e-account-specific-settings)
