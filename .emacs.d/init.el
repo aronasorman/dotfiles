@@ -271,7 +271,12 @@
 			       "\n* TODO %?\n %^G")
 			      ("pt" "Small tasks not really related to anything" entry
 			       (file+olp "~/notes/todo.org" "Personal" "random")
-			       "\n* TODO %?\n")))
+			       "\n* TODO %?\n")
+
+			      ("c" "Record a transaction to the ledger file.")
+			      ("cg" "Generic transaction" plain
+			       (file "~/notes/transactions.ldgr.gpg")
+			       "\n%<%Y/%m/%d> %^{description}\n%?")))
 
 ;; set shortcuts for evil mode
 (global-set-key (kbd "C-c C-l") 'org-store-link)
@@ -283,7 +288,54 @@
 	      "\\t" 'org-todo
 	      "\\r" 'org-priority
 	      "\\l" 'org-insert-link
+	      "\\bt" 'org-babel-tangle
 	      "\\t" 'org-set-tags-command))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((R . t)
+   (ditaa . t)
+   (dot . t)
+   (emacs-lisp . t)
+   (gnuplot . t)
+   (haskell . t)
+   (latex . t)
+   (ledger . t)         ;this is the important one for this tutorial
+   (ocaml . nil)
+   (octave . t)
+   (python . t)
+   (ruby . t)
+   (sh . t)
+   (sql . t)))
+(add-to-list 'org-babel-tangle-lang-exts '("ledger" . "ldgr"))
+
+;; ledger-mode
+(add-to-list 'load-path "~/.emacs.d/ledger-mode")
+(require 'ledger)
+(add-to-list 'auto-mode-alist '("\\.ldgr$" . ledger-mode))
+(setenv "LEDGER_FILE" "/home/aronasorman/notes/transactions.ldgr")
+(setq ledger-file (getenv "LEDGER_FILE"))
+(setq ledger-file-encrypted (concat ledger-file ".gpg"))
+
+(defun decrypt-ledger-file ()
+  (if (not (executable-find "gpg"))
+      (error "No gpg executable found.")
+      (start-process "gpg" "*ledger decryption*" "gpg"
+		     "--output" ledger-file
+		     "--decrypt" ledger-file-encrypted)))
+
+(defun delete-ledger-file ()
+  (delete-file ledger-file))
+
+(defmacro decrypt-ledger-for-defun (fun-name)
+  `(defadvice ,fun-name (around read-from-encrypted-ledger activate)
+     (decrypt-ledger-file)
+     ad-do-it
+     (delete-ledger-file)))
+
+(decrypt-ledger-for-defun ledger-report)
+(decrypt-ledger-for-defun ledger-report-redo)
+(add-to-list 'evil-emacs-state-modes 'ledger-report-mode)
 
 ;; web-mode
 (config-for "web-mode-autoloads"	; weird. it's a major mode, but we need the *-autoloads
@@ -343,7 +395,7 @@
       (error "No email account found"))))
 (add-hook 'mu4e-compose-pre-hook 'local/mu4e-set-account-settings)
 
-(Add-hook 'prog-mode-hook 'global-linum-mode) ;; avoid loading global-linum-mode now
+(add-hook 'prog-mode-hook 'global-linum-mode) ;; avoid loading global-linum-mode now
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (package-initialize)
 (custom-set-variables
@@ -353,6 +405,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes (quote ("47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
  '(org-agenda-files (quote ("~/notes/todo.org")))
+ '(safe-local-variable-values (quote ((major-mode quote ledger-mode) (major-mode . ledger-mode))))
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 587))
