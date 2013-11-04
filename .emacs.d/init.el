@@ -323,12 +323,11 @@
 (defun decrypt-ledger-file ()
   (if (not (executable-find "gpg"))
       (error "No gpg executable found.")
-      (start-process "gpg" "*ledger decryption*" "gpg"
-		     "--output" ledger-file
-		     "--decrypt" ledger-file-encrypted)))
+      (epa-decrypt-file ledger-file-encrypted)))
 
 (defun delete-ledger-file ()
-  (delete-file ledger-file))
+  (delete-file ledger-file)
+  (message "unencrypted ledger file deleted"))
 
 (defmacro decrypt-ledger-for-defun (fun-name)
   `(defadvice ,fun-name (around read-from-encrypted-ledger activate)
@@ -338,7 +337,8 @@
 
 (decrypt-ledger-for-defun ledger-report)
 (decrypt-ledger-for-defun ledger-report-redo)
-(add-to-list 'evil-emacs-state-modes 'ledger-report-mode)
+(config-for "evil-autoloads"
+	    (add-to-list 'evil-emacs-state-modes 'ledger-report-mode))
 
 ;; web-mode
 (config-for "web-mode-autoloads"	; weird. it's a major mode, but we need the *-autoloads
@@ -408,7 +408,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes (quote ("47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
  '(org-agenda-files (quote ("~/notes/todo.org")))
- '(safe-local-variable-values (quote ((major-mode quote ledger-mode) (major-mode . ledger-mode))))
+ '(safe-local-variable-values (quote ((ledger-master-file . "transactions.ldgr") (major-mode quote ledger-mode) (major-mode . ledger-mode))))
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 587))
