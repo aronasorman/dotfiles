@@ -80,6 +80,7 @@
             `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
             `((".*" ,temporary-file-directory t)))
+(setq reb-re-syntax 'string)
 
 ;; font
 (set-face-attribute 'default nil :font "Inconsolata-14")
@@ -398,7 +399,29 @@
       (error "No email account found"))))
 (add-hook 'mu4e-compose-pre-hook 'local/mu4e-set-account-settings)
 
-(add-hook 'prog-mode-hook 'global-linum-mode) ;; avoid loading global-linum-mode now
+(defun local/insert-transaction-to-ledger ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (re-search-forward "\\($[[:digit:]]+.[[:digit:]].\\).+transaction to \\([[:word:]\\|[:space:]]+\\) on [[:digit:]]")
+    (let* ((default-price (match-string 1))
+	   (default-payee (match-string 2))
+	   (price (read-string (concat "Amount transferred (default " default-price "):") nil nil default-price))
+	   (payee (read-string (concat "Paid to (default " default-payee "):") nil nil default-payee))
+	   (paid-to-category (read-string "Payee category:" "expenses:food"))
+	   (paid-from-category (read-string "Paid from category:" "assets:checking:chase")))
+      (with-current-buffer (find-file-noselect ledger-file-encrypted)
+	(goto-char (point-max))
+	(newline)
+	(insert (format-time-string "%Y/%m/%d ") payee)
+	(newline)
+	(insert " " paid-to-category "  " price)
+	(newline)
+	(insert " " paid-from-category)
+	(newline)))))
+(define-key 'mu4e-view-mode-map (kbd "l") 'local/insert-transaction-to-ledger) ;; change once we can process more email types
+
+(add-hook 'prog-mode-hook 'linum-mode) ;; avoid loading global-linum-mode now
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (package-initialize)
 (custom-set-variables
