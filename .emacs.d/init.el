@@ -205,6 +205,9 @@
 
 (config-for "smartparens-autoloads"
 	    (require 'smartparens)
+	    (add-hook 'emacs-lisp-mode-hook (lambda ()
+					      (turn-off-smartparens-mode)
+					      (paredit-mode 1)))
 	    (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil) ; do not match the ' character
 	    (sp-local-pair 'html-mode "{" nil :actions nil)
 	    (sp-local-pair 'html-mode "{%" "%}")
