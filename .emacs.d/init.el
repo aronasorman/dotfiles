@@ -410,7 +410,8 @@
 	   (payee (read-string (concat "Paid to (default " default-payee "):") nil nil default-payee))
 	   (paid-to-category (read-string "Payee category:" "expenses:food"))
 	   (paid-from-category (read-string "Paid from category:" "assets:checking:chase")))
-      (with-current-buffer (find-file-noselect ledger-file-encrypted)
+      (window-configuration-to-register :before-transaction-insert)  ; note: factor out into a with-configuration
+      (with-current-buffer (find-file ledger-file-encrypted)
 	(goto-char (point-max))
 	(newline)
 	(insert (format-time-string "%Y/%m/%d ") payee)
@@ -418,7 +419,11 @@
 	(insert " " paid-to-category "  " price)
 	(newline)
 	(insert " " paid-from-category)
-	(newline)))))
+	(newline)
+	(if (y-or-n-p "Save ledger?")
+	    (save-buffer)
+	  (revert-buffer t t)))
+      (jump-to-register :before-transaction-insert))))
 (define-key 'mu4e-view-mode-map (kbd "l") 'local/insert-transaction-to-ledger) ;; change once we can process more email types
 
 (add-hook 'prog-mode-hook 'linum-mode) ;; avoid loading global-linum-mode now
