@@ -82,6 +82,10 @@
             `((".*" ,temporary-file-directory t)))
 (setq reb-re-syntax 'string)
 
+(display-time)
+(add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+(global-set-key (kbd "C-M-\\") 'fill-paragraph)
+
 ;; font
 (set-face-attribute 'default nil :font "Inconsolata-14")
 
