@@ -61,4 +61,6 @@ def backup(files):
 
 if __name__ == '__main__':
     print "Initiating backup."
-    backup(sys.argv[1:])
+    files = sys.argv[1:]
+    print "Creating backups for %s." % files
+    backup(files)
