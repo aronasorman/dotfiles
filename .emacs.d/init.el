@@ -17,6 +17,7 @@
 			   js2-mode
 			   god-mode
 			   haskell-mode
+			   helm
 			   ido-ubiquitous
 			   ido-vertical-mode
 			   linum-relative
@@ -103,7 +104,7 @@
 
 ;;;;; package configs
 
-(add-hook 'after-init-hook 'ido-mode)
+;; (add-hook 'after-init-hook 'ido-mode)
 (add-hook 'after-init-hook 'global-auto-revert-mode)
 (add-hook 'after-init-hook 'global-hl-line-mode)
 
@@ -123,9 +124,10 @@
 	    (define-key evil-normal-state-map (kbd "\\") 'evil-repeat-find-char)
 	    ;; miscellaneous keybindings
 	    (define-key evil-normal-state-map (kbd "C-o") 'imenu)
-	    (define-key evil-normal-state-map (kbd "C-p") 'ftf-find-file)
+	    (define-key evil-normal-state-map (kbd "C-p") 'helm-cmd-t)
 	    (define-key evil-normal-state-map (kbd "!") 'shell-command)
 	    (add-to-list 'evil-emacs-state-modes 'grep-mode)
+	    (add-to-list 'evil-emacs-state-modes 'eshell-mode)
 	    )
 
 (config-for "god-mode-autoloads"
@@ -146,11 +148,19 @@
 (config-for "projectile-autoloads"
 	    (projectile-global-mode 1))
 
-(config-for "ido-ubiquitous-autoloads"
-	    (ido-ubiquitous-mode 1))
+;; (config-for "ido-ubiquitous-autoloads"
+;; 	    (ido-ubiquitous-mode 1))
 
-(config-for "ido-vertical-mode-autoloads"
-	    (ido-vertical-mode 1))
+;; (config-for "ido-vertical-mode-autoloads"
+;; 	    (ido-vertical-mode 1))
+
+(config-for "helm-autoloads" ;; helm is now fast enough! hooray!
+	    (setq helm-ff-transformer-show-only-basename nil)
+	    (global-set-key (kbd "M-x") 'helm-M-x))
+
+(defun local/find-file-in-project ()
+  (interactive)
+  (helm))
 
 (config-for "evil-leader-autoloads"
 	    (setq evil-leader/leader ",")
@@ -162,10 +172,10 @@
 	      "cc" 'projectile-compile-project
 	      "C" 'compile
 	      "sl" 'sort-lines
-	      "b" 'ido-switch-buffer
+	      "b" 'helm-buffers-list
 	      "f" 'find-file
 	      "t" 'deft
-	      "d" 'ido-dired
+	      "d" 'dired
 	      "m" 'mu4e
 	      "|" (lambda () (interactive) (split-window-right) (windmove-right))
 	      "-" (lambda () (interactive) (split-window-below) (windmove-down))
