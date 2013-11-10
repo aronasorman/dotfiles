@@ -375,6 +375,8 @@
 	    (add-hook 'mu4e-compose-mode-hook 'evil-local-mode)
 	    (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
 	    (add-hook 'mu4e-view-mode-hook 'epa-mail-mode))
+(add-to-list 'mu4e-bookmarks '("flag:flagged" "All flagged email" ?F))
+(add-to-list 'mu4e-bookmarks '("flag:flagged AND date:today..now" "Flagged email for today" ?f))
 (setq mu4e-maildir "~/mail")
 (setenv "GPGKEY" "0B78EF87")
 (let ((gpg-agent (executable-find "gpg-agent")))
