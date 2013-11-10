@@ -442,6 +442,17 @@
       (jump-to-register :before-transaction-insert))))
 (define-key 'mu4e-view-mode-map (kbd "l") 'local/insert-transaction-to-ledger) ;; change once we can process more email types
 
+;; run backup script
+(defvar local/files-to-backup `(,(pwd) "~/notes"))
+(defun local/run-backup ()
+  (interactive)
+  (let ((files (mapconcat 'identity local/files-to-backup " ")))
+      (async-shell-command (format "python ~/src/dotfiles/scripts/backup.py %s" files))))
+(add-hook 'midnight-hook 'local/run-backup)
+
+;; midnight mode
+(midnight-delay-set 'midnight-delay "6:00am")
+
 (add-hook 'prog-mode-hook 'linum-mode) ;; avoid loading global-linum-mode now
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (package-initialize)
@@ -451,6 +462,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes (quote ("47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
+ '(midnight-mode t nil (midnight))
  '(org-agenda-files (quote ("~/notes/todo.org")))
  '(safe-local-variable-values (quote ((ledger-master-file . "transactions.ldgr") (major-mode quote ledger-mode) (major-mode . ledger-mode))))
  '(send-mail-function (quote smtpmail-send-it))
