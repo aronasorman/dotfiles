@@ -11,9 +11,9 @@ def archive_name(date=None):
         date = datetime.date.today()
 
     if is_weekly_backup():
-        return date.strftime("Weekly home backup for week %W, %m/%Y")
+        return date.strftime("Weekly %W/%m/%Y")
     else:
-        return date.strftime("Daily home backup on %A, %d/%m/%Y")
+        return date.strftime("Daily %d/%m/%Y")
 
 def tarsnap(mode, archive=None, keyfile="~/crypt/write-only.key", files=None):
     keyfile = os.path.expanduser(keyfile)
