@@ -11,7 +11,7 @@ def archive_name(date=None):
         date = datetime.date.today()
 
     if is_weekly_backup():
-        return date.strftime("Weekly %W/%m/%Y")
+        return date.strftime("Weekly %W %Y")
     else:
         return date.strftime("Daily %d/%m/%Y")
 

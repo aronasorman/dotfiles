@@ -443,7 +443,10 @@
 (define-key 'mu4e-view-mode-map (kbd "l") 'local/insert-transaction-to-ledger) ;; change once we can process more email types
 
 ;; run backup script
-(defvar local/files-to-backup `(,(pwd) "~/notes"))
+(setq local/files-to-backup '("~/notes" "~/mail" "~/crypt"))
+(setq local/files-to-backup (cl-concatenate 'list
+					    local/files-to-backup
+					    (split-string (shell-command-to-string "find ~/.emacs.d/ -name '*.el'") "\n")))
 (defun local/run-backup ()
   (interactive)
   (let ((files (mapconcat 'identity local/files-to-backup " ")))
