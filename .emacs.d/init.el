@@ -185,6 +185,7 @@
 	      "oa" 'org-agenda
 	      "oc" 'org-capture
 	      "ot" 'org-todo-list
+	      "oo" (lambda () (interactive) (org-tags-view t))
 	      "ol" 'org-store-link
 	      "w" 'virtualenv-workon
 	      "ci" 'evilnc-comment-or-uncomment-lines)
@@ -289,12 +290,7 @@
 			       "\n* TODO %?\n %^G")
 			      ("pt" "Small tasks not really related to anything" entry
 			       (file+olp "~/notes/todo.org" "Personal" "random")
-			       "\n* TODO %?\n")
-
-			      ("c" "Record a transaction to the ledger file.")
-			      ("cg" "Generic transaction" plain
-			       (file "~/notes/transactions.ldgr.gpg")
-			       "\n%<%Y/%m/%d> %^{description}\n%?")))
+			       "\n* TODO %?\n")))
 
 ;; set shortcuts for evil mode
 (global-set-key (kbd "C-c C-l") 'org-store-link)
