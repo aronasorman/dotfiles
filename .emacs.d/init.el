@@ -267,30 +267,14 @@
 (setq org-log-done 'note)
 (setq org-log-into-drawer t)
 (setq org-default-notes-file "~/notes/capture.org")
-(setq org-capture-templates `(("f" "For all things FLE related")
-
-			      ("fp" "partnership" entry
-			       (file+olp "~/notes/todo.org" "FLE" "partnerships")
-			       "\n* TODO  %?\n"
-			       :prepend t)
-			      ("fd" "development overall tasks" entry
-			       (file+olp "~/notes/todo.org" "FLE" "dev")
-			       "\n* TODO  %?\nDEADLINE: %(org-time-stamp nil)\n%^{SCHEDULED}p")
-			      ("fb" "bugs found or FIXMEs in code" entry
-			       (file+olp "~/notes/todo.org" "FLE" "dev")
-			       "\n* TODO found in %f: %?\n FILE: %a")
-
-			      ("p" "Personal stuff not really related to any project")
-
-			      ("pb" "List of books borrowed that have to be returned" entry
-			       (file+olp "~/notes/todo.org" "Personal" "books to return")
+(setq org-capture-templates `(("f" "For all things FLE related" entry
+			       (file+olp "~/notes/todo.org" "FLE")
 			       "\n* TODO %? \nDEADLINE: %(org-time-stamp nil)\n")
-			      ("pw" "TODOs related to workflow" entry
-			       (file+olp "~/notes/todo.org" "Personal" "workflow")
-			       "\n* TODO %?\n %^G")
-			      ("pt" "Small tasks not really related to anything" entry
-			       (file+olp "~/notes/todo.org" "Personal" "random")
-			       "\n* TODO %?\n")))
+
+			      ("p" "Personal stuff" entry
+			       (file+olp "~/notes/todo.org" "Personal")
+			       "\n* TODO %? \n")
+			      ))
 
 ;; set shortcuts for evil mode
 (global-set-key (kbd "C-c C-l") 'org-store-link)
@@ -463,6 +447,7 @@
  '(custom-safe-themes (quote ("47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
  '(midnight-mode t nil (midnight))
  '(org-agenda-files (quote ("~/notes/todo.org")))
+ '(org-modules (quote (org-bbdb org-bibtex org-crypt org-docview org-gnus org-info org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m org-invoice)))
  '(safe-local-variable-values (quote ((ledger-master-file . "transactions.ldgr") (major-mode quote ledger-mode) (major-mode . ledger-mode))))
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.gmail.com")
