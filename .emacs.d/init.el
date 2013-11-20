@@ -279,6 +279,10 @@
 ;; set shortcuts for evil mode
 (global-set-key (kbd "C-c C-l") 'org-store-link)
 (global-set-key (kbd "C-c C-a") 'org-capture)
+(global-set-key (kbd "C-c C-x C-i") 'org-clock-in)
+(global-set-key (kbd "C-c C-x C-l") 'org-clock-in-last)
+(global-set-key (kbd "C-c C-x C-o") 'org-clock-out)
+(global-set-key (kbd "C-c C-x C-j") 'org-clock-goto)
 (config-for "evil-autoloads"
 	    (evil-define-key 'normal org-mode-map
 	      "\\]" 'org-shiftmetaright
