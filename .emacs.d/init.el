@@ -2,8 +2,9 @@
 (unless package-archive-contents
   (package-refresh-contents))
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+                         ;; ("melpa" . "http://melpa.milkbox.net/packages/")
+			 ("marmalade" . "http://marmalade-repo.org/packages/")
+			 ))
 (setq installed-packages '( ;; separated to make sorting the package list easier
 			   evil
 			   ace-jump-mode
