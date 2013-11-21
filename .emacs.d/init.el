@@ -25,6 +25,7 @@
 			   magit
 			   markdown-mode
 			   multi-term
+			   org-trello
 			   paredit
 			   projectile
 			   rainbow-delimiters
@@ -313,6 +314,9 @@
    (sh . t)
    (sql . t)))
 (add-to-list 'org-babel-tangle-lang-exts '("ledger" . "ldgr"))
+
+;; (config-for "org-trello-autoloads"
+;; 	    (add-hook 'org-mode-hook 'org-trello-mode))
 
 ;; ledger-mode
 (add-to-list 'load-path "~/.emacs.d/ledger-mode")
