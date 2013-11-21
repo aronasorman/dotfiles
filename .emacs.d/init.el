@@ -271,11 +271,11 @@
 (setq org-log-into-drawer t)
 (setq org-default-notes-file "~/notes/capture.org")
 (setq org-capture-templates `(("f" "For all things FLE related" entry
-			       (file+olp "~/notes/todo.org" "FLE")
+			       (file "~/notes/todo/fle.org")
 			       "\n* TODO %? \nDEADLINE: %(org-time-stamp nil)\n")
 
 			      ("p" "Personal stuff" entry
-			       (file+olp "~/notes/todo.org" "Personal")
+			       (file "~/notes/todo/personal.org")
 			       "\n* TODO %? \n")
 			      ))
 
@@ -453,7 +453,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes (quote ("47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
  '(midnight-mode t nil (midnight))
- '(org-agenda-files (quote ("~/notes/todo.org")))
+ '(org-agenda-files (quote ("~/notes/todo/personal.org" "~/notes/todo/habits.org" "~/notes/todo/fle.org")))
  '(org-modules (quote (org-bbdb org-bibtex org-crypt org-docview org-gnus org-info org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m org-invoice)))
  '(safe-local-variable-values (quote ((ledger-master-file . "transactions.ldgr") (major-mode quote ledger-mode) (major-mode . ledger-mode))))
  '(send-mail-function (quote smtpmail-send-it))
