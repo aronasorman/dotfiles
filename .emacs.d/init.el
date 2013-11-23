@@ -2,7 +2,7 @@
 (unless package-archive-contents
   (package-refresh-contents))
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ;; ("melpa" . "http://melpa.milkbox.net/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")
 			 ("marmalade" . "http://marmalade-repo.org/packages/")
 			 ))
 (setq installed-packages '( ;; separated to make sorting the package list easier
@@ -25,7 +25,8 @@
 			   magit
 			   markdown-mode
 			   multi-term
-			   org-trello
+                           o-blog
+			   ;; org-trello
 			   paredit
 			   projectile
 			   rainbow-delimiters
@@ -314,6 +315,10 @@
    (sh . t)
    (sql . t)))
 (add-to-list 'org-babel-tangle-lang-exts '("ledger" . "ldgr"))
+
+;; org blog
+(config-for "org-blog-autoloads"
+            (require 'org-blog))
 
 ;; (config-for "org-trello-autoloads"
 ;; 	    (add-hook 'org-mode-hook 'org-trello-mode))
