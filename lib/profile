@@ -85,6 +85,32 @@ else
     alias sea='pacaur -Ss'
 fi
 
+# jmp commands
+export MARKPATH=$HOME/marks
+function jmp {
+    cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
+}
+function mark {
+    mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
+}
+function unmark {
+    rm -i "$MARKPATH/$1"
+}
+function marks {
+    ls -l "$MARKPATH" | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
+}
+
+# tab completion for jmp, bash edition
+_completemarks() {
+  local curw=${COMP_WORDS[COMP_CWORD]}
+  local wordlist=$(find $MARKPATH -type l -printf "%f\n")
+  COMPREPLY=($(compgen -W '${wordlist[@]}' -- "$curw"))
+  return 0
+}
+
+complete -F _completemarks jmp unmark
+
+
 # jump to editing of common files
 alias emd="$EDITOR ~/.emacs.d/init.el"
 alias emlp="$EDITOR ~/lib/profile"
