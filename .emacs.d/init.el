@@ -85,6 +85,8 @@
 (setq auto-save-file-name-transforms
             `((".*" ,temporary-file-directory t)))
 (setq reb-re-syntax 'string)
+(setq-default indent-tabs-mode nil) ;; fuck tabs
+(setq-default truncate-lines t)
 
 (display-time)
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
