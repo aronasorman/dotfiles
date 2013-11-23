@@ -133,8 +133,8 @@
 	    (define-key evil-normal-state-map (kbd "!") 'shell-command)
 	    (add-to-list 'evil-emacs-state-modes 'grep-mode)
 	    (add-to-list 'evil-emacs-state-modes 'eshell-mode)
-	    (define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
-	    (define-key evil-normal-state-map (kbd "C-x") 'evil-numbers/dec-at-pt)
+	    (define-key evil-normal-state-map (kbd "C-a +") 'evil-numbers/inc-at-pt)
+	    (define-key evil-normal-state-map (kbd "C-a -") 'evil-numbers/dec-at-pt)
 )
 
 (config-for "god-mode-autoloads"
