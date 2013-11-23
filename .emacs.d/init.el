@@ -281,6 +281,14 @@
 			      ("p" "Personal stuff" entry
 			       (file "~/notes/todo/personal.org")
 			       "\n* TODO %? \n")
+
+                              ("r" "Timesheet reports for time spent per task")
+                              ("rd" "Generate daily report" entry
+                               (file+headline "~/notes/reports.org" "daily")
+                               "* %<%Y-%m-%d> %?\n %(insert-clock-table-summary 'today)")
+                              ("rw" "Generate weekly report" entry
+                               (file+headline "~/notes/reports.org" "weekly")
+                               "* %<%Y-W%V> %?\n %(insert-clock-table-summary 'thisweek)")
 			      ))
 
 ;; set shortcuts for evil mode
@@ -317,6 +325,16 @@
    (sh . t)
    (sql . t)))
 (add-to-list 'org-babel-tangle-lang-exts '("ledger" . "ldgr"))
+
+;; generate reports for the given date
+(defun insert-clock-table-summary (date)
+  (save-excursion
+    (org-clock-report)
+    ;; (search-backward "#+BEGIN: clocktable")
+    (end-of-line)
+    (insert (format " :scope agenda :block %s" date))
+    (org-clock-report)
+    ""))                                ; return empty string so we dont affect the result
 
 ;; org blog
 (config-for "org-blog-autoloads"
