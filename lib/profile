@@ -34,6 +34,7 @@ PATH=$LIB/bin:$PATH
 PATH=/usr/inferno/MacOSX/386/bin:$PATH
 PATH=$SRC/acme-utils:$PATH
 PATH=$PATH:$PLAN9/bin
+PATH=$PATH:$SRC/elixir/bin
 
 ## for fixing Homebrew
 PATH=/usr/local/bin:/usr/local/sbin:$PATH
