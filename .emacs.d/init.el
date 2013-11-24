@@ -277,6 +277,8 @@
 (setq org-log-done 'note)
 (setq org-log-into-drawer t)
 (setq org-default-notes-file "~/notes/capture.org")
+(setq org-html-doctype "html5")
+(setq org-html-html5-fancy t)
 (setq org-capture-templates `(("f" "For all things FLE related" entry
 			       (file "~/notes/todo/fle.org")
 			       "\n* TODO %? \nDEADLINE: %(org-time-stamp nil)\n")
@@ -288,10 +290,12 @@
                               ("r" "Timesheet reports for time spent per task")
                               ("rd" "Generate daily report" entry
                                (file+headline "~/notes/reports.org" "daily")
-                               "* %<%Y-%m-%d> %?\n %(insert-clock-table-summary 'today)")
+                               "* %<%Y-%m-%d> %?\n %(insert-clock-table-summary 'today)"
+                               :prepend t)
                               ("rw" "Generate weekly report" entry
                                (file+headline "~/notes/reports.org" "weekly")
-                               "* %<%Y-W%V> %?\n %(insert-clock-table-summary 'thisweek)")
+                               "* %<%Y-W%V> %?\n %(insert-clock-table-summary 'thisweek)"
+                               :prepend t)
 			      ))
 
 ;; set shortcuts for evil mode
@@ -339,9 +343,15 @@
     (org-clock-report)
     ""))                                ; return empty string so we dont affect the result
 
-;; org blog
-(config-for "org-blog-autoloads"
-            (require 'org-blog))
+
+;; org project settings for site and blog
+(setq org-publish-project-alist
+      '(("blog"
+         :base-directory "~/src/aronasorman.github.io"
+         :recursive t
+         :publishing-directory "build")))
+
+
 
 ;; (config-for "org-trello-autoloads"
 ;; 	    (add-hook 'org-mode-hook 'org-trello-mode))
@@ -486,6 +496,7 @@
  '(custom-safe-themes (quote ("47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
  '(midnight-mode t nil (midnight))
  '(org-agenda-files (quote ("~/notes/todo/personal.org" "~/notes/todo/habits.org" "~/notes/todo/fle.org")))
+ '(org-html-table-default-attributes (quote (:border "2" :cellspacing "5" :cellpadding "6" :rules "groups" :frame "hsides")))
  '(org-modules (quote (org-bbdb org-bibtex org-crypt org-docview org-gnus org-info org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m org-invoice)))
  '(safe-local-variable-values (quote ((ledger-master-file . "transactions.ldgr") (major-mode quote ledger-mode) (major-mode . ledger-mode))))
  '(send-mail-function (quote smtpmail-send-it))
