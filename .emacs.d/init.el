@@ -269,6 +269,9 @@
 					 (require 'linum-relative))))
 
 ;; config for org mode
+;;;; require custom org file
+(add-to-list 'load-path "~/.emacs.d/org/lisp")
+(add-to-list 'load-path "~/.emacs.d/org/contrib/lisp")
 (setq org-startup-indented t)
 (setq org-todo-keywords '((sequence "TODO(t)" "IN-PROGRESS(p!)" "WAITING(w@)" "|" "DONE(d!)" "CANCELED(c@)")))
 (setq org-log-done 'note)
