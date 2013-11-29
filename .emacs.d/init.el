@@ -163,6 +163,7 @@
 
 (config-for "helm-autoloads" ;; helm is now fast enough! hooray!
 	    (setq helm-ff-transformer-show-only-basename nil)
+            (helm-mode t)
 	    (global-set-key (kbd "M-x") 'helm-M-x))
 
 (defun local/find-file-in-project ()
