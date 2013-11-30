@@ -1,6 +1,4 @@
 (require 'package)
-(unless package-archive-contents
-  (package-refresh-contents))
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")
 			 ("marmalade" . "http://marmalade-repo.org/packages/")
@@ -8,6 +6,7 @@
 (setq installed-packages '( ;; separated to make sorting the package list easier
 			   evil
 			   ace-jump-mode
+                           auto-complete
 			   deft
 			   evil-nerd-commenter
 			   evil-leader
@@ -19,6 +18,7 @@
 			   god-mode
 			   haskell-mode
 			   helm
+                           helm-cmd-t
 			   ido-ubiquitous
 			   ido-vertical-mode
 			   linum-relative
@@ -34,9 +34,14 @@
 			   undo-tree
 			   virtualenv
 			   tabbar
+                           use-package
 			   web-mode
 			   yasnippet
 			   ))
+
+;; load packages
+(package-initialize)
+(require 'use-package)
 
 ;;;;; custom functions and macros
 (defun google-it ()
@@ -89,8 +94,13 @@
 (setq-default truncate-lines t)
 
 (display-time)
+(column-number-mode t)
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-(global-set-key (kbd "C-M-\\") 'fill-paragraph)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(bind-key "C-M-\\" 'fill-paragraph)
+
+(add-hook 'after-init-hook 'global-auto-revert-mode)
+(add-hook 'after-init-hook 'global-hl-line-mode)
 
 ;; font
 (set-face-attribute 'default nil :font "Inconsolata-14")
@@ -109,70 +119,65 @@
 
 ;;;;; package configs
 
-;; (add-hook 'after-init-hook 'ido-mode)
-(add-hook 'after-init-hook 'global-auto-revert-mode)
-(add-hook 'after-init-hook 'global-hl-line-mode)
+;; auto-complete
+(use-package auto-complete
+  :init (progn
+          (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict"))
+  :config (progn
+            (use-package auto-complete-config)
+            (ac-config-default)))
 
-(config-for "evil-autoloads"
-	    (evil-mode 1)
-	    (add-to-list 'evil-overriding-maps '(eshell-mode-map))
-	    (add-hook 'eshell-mode-hook 'turn-off-evil-mode)
-	    ;; terminate emacs with C-z
-	    (define-key evil-normal-state-map (kbd "C-z") 'suspend-frame)
-	    (define-key evil-insert-state-map (kbd "C-z") 'suspend-frame)
-	    (define-key evil-normal-state-map (kbd "<SPC>") 'ace-jump-mode)
-	    ;; terminal emacs somehow funges the escape key
-	    (define-key evil-insert-state-map (kbd "C-[") 'evil-normal-state)
-	    (define-key evil-insert-state-map (kbd "<ESC>") 'evil-normal-state)
-	    ;; some conveniences from my vim stint
-	    (define-key evil-normal-state-map (kbd ";") 'evil-ex)
-	    (define-key evil-normal-state-map (kbd "\\") 'evil-repeat-find-char)
-	    ;; miscellaneous keybindings
-	    (define-key evil-normal-state-map (kbd "C-o") 'imenu)
-	    (define-key evil-normal-state-map (kbd "C-p") 'helm-cmd-t)
-	    (define-key evil-normal-state-map (kbd "!") 'shell-command)
-	    (add-to-list 'evil-emacs-state-modes 'grep-mode)
-	    (add-to-list 'evil-emacs-state-modes 'eshell-mode)
-	    (define-key evil-normal-state-map (kbd "C-a +") 'evil-numbers/inc-at-pt)
-	    (define-key evil-normal-state-map (kbd "C-a -") 'evil-numbers/dec-at-pt)
-)
+(use-package evil
+  :init (progn
+          (add-to-list 'evil-emacs-state-modes 'grep-mode)
+          (add-to-list 'evil-emacs-state-modes 'eshell-mode)
+          (bind-key "<SPC>" 'ace-jump-mode evil-normal-state-map)
+          (bind-key ";" 'evil-ex evil-normal-state-map)
+          (bind-key "\\" 'evil-repeat-find-char evil-normal-state-map)
+          (bind-key "C-o" 'imenu evil-normal-state-map)
+          (bind-key "!" 'shell-command evil-normal-state-map))
+  :config (progn
+            (evil-mode t)))
 
-(config-for "god-mode-autoloads"
-	    ;; (god-mode)
-	    (global-set-key (kbd "<backtab>") 'god-local-mode))
+(use-package helm-cmd-t
+  :init (bind-key "C-p" 'helm-cmd-t evil-normal-state-map))
 
-(config-for "ace-jump-mode-autoloads"
-	    (require 'cl)
-	    (global-set-key (kbd "C-M-<SPC>") 'ace-jump-mode)
-	    (setq ace-jump-mode-scope 'frame))
+(use-package evil-numbers
+  :init (progn
+          (bind-key "C-a +" 'evil-numbers/inc-at-pt evil-normal-state-map)
+          (bind-key "C-a -" 'evil-numbers/dec-at-pt evil-normal-state-map)))
 
-(config-for "rainbow-delimiters-autoloads"
-	    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+(use-package ace-jump-mode
+  :init (progn
+          (setq ace-jump-mode-scope 'frame))
+  :config (progn
+            (require 'cl)))
 
-(config-for "paredit-autoloads"
-	    (add-hook 'lisp-mode-hook 'paredit-mode))
+(use-package rainbow-delimiters
+  :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
-(config-for "projectile-autoloads"
-	    (projectile-global-mode 1))
+(use-package paredit
+  :init (progn
+          (add-hook 'lisp-mode-hook 'paredit-mode))
+  :config (progn
+            (use-package evil-paredit
+              :init (add-hook 'paredit-mode-hook 'evil-paredit-mode))))
 
-;; (config-for "ido-ubiquitous-autoloads"
-;; 	    (ido-ubiquitous-mode 1))
+(use-package projectile
+  :init (progn
+          (projectile-global-mode t)))
 
-;; (config-for "ido-vertical-mode-autoloads"
-;; 	    (ido-vertical-mode 1))
+(use-package helm
+  :init (progn
+          (setq helm-ff-transformer-show-only-basename nil)
+          (bind-key "M-x" 'helm-M-x)
+          (helm-mode t)))
 
-(config-for "helm-autoloads" ;; helm is now fast enough! hooray!
-	    (setq helm-ff-transformer-show-only-basename nil)
-            (helm-mode t)
-	    (global-set-key (kbd "M-x") 'helm-M-x))
-
-(defun local/find-file-in-project ()
-  (interactive)
-  (helm))
-
-(config-for "evil-leader-autoloads"
-	    (setq evil-leader/leader ",")
-	    (evil-leader/set-key
+(use-package evil-leader
+  :init (progn
+          (setq evil-leader/leader ",")
+          (global-evil-leader-mode t))
+  :config (evil-leader/set-key
 	      "gs" 'magit-status
 	      "gb" 'magit-blame-mode
 	      "go" 'google-it
@@ -196,108 +201,89 @@
 	      "oo" (lambda () (interactive) (org-tags-view t))
 	      "ol" 'org-store-link
 	      "w" 'virtualenv-workon
-	      "ci" 'evilnc-comment-or-uncomment-lines)
-	    (global-evil-leader-mode 1))
+	      "ci" 'evilnc-comment-or-uncomment-lines))
 
-; (config-for "workgroups-autoloads"
-;; 	    (require 'workgroups)
-;; 	    (setq wg-prefix-key (kbd "C-x w"))
-;; 	    (workgroups-mode 1)
-;; 	    (wg-load "~/.emacs.d/workgroups"))
+(use-package magit
+  :init (progn
+          (bind-key "q" 'magit-quit-session magit-status-mode-map)
+          (defadvice magit-status (around magit-fullscreen activate)
+            (window-configuration-to-register :magit-fullscreen)
+            ad-do-it
+            (delete-other-windows))
+          (defun magit-quit-session ()
+            "Restores the previous window configuration and kills the magit buffer"
+            (interactive)
+            (kill-buffer)
+            (jump-to-register :magit-fullscreen))))
 
-(config-for "evil-paredit-autoloads"
-	    (require 'evil-paredit)
-	    (add-hook 'paredit-mode-hook 'evil-paredit-mode))
-
-(config-for "find-things-fast-autoloads"
-	    (require 'find-things-fast))
-
-(config-for "magit-autoloads"
-	    (require 'magit)
-	    (defadvice magit-status (around magit-fullscreen activate)
-	      (window-configuration-to-register :magit-fullscreen)
-	      ad-do-it
-	      (delete-other-windows))
-	    (defun magit-quit-session ()
-	      "Restores the previous window configuration and kills the magit buffer"
-	      (interactive)
-	      (kill-buffer)
-	      (jump-to-register :magit-fullscreen))
-	    (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
-	    (global-set-key (kbd "C-x C-g") 'magit-status)
-	    (global-set-key (kbd "<f11>") 'magit-status))
-
-(config-for "smartparens-autoloads"
-	    (require 'smartparens)
-	    (add-hook 'emacs-lisp-mode-hook (lambda ()
-					      (turn-off-smartparens-mode)
-					      (paredit-mode 1)))
-	    (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil) ; do not match the ' character
+(use-package smartparens
+  :init (progn
+          (add-hook 'emacs-lisp-mode-hook (lambda ()
+                                            (turn-off-smartparens-mode)))
+          (smartparens-global-mode t))
+  :config (progn
 	    (sp-local-pair 'html-mode "{" nil :actions nil)
-	    (sp-local-pair 'html-mode "{%" "%}")
-	    (smartparens-global-mode 1))
+	    (sp-local-pair 'html-mode "{%" "%}")))
 
-(config-for "yasnippet-autoloads"
-	    (require 'yasnippet)
-	    (yas-global-mode 1))
+(use-package yasnippet
+  :init (add-hook 'prog-mode-hook 'yas-minor-mode)
+  :config (yas/reload-all))
 
-(config-for "deft-autoloads"
-	    (require 'deft)
-	    (setq deft-extension "org")
-	    (setq deft-text-mode 'org-mode)
-	    (setq deft-auto-save-interval 60.0)
-	    (setq deft-directory "~/notes")
-	    (setq deft-use-filename-as-title 1)
-	    (setq org-return-follows-link t)
-	    (global-set-key (kbd "<kp-enter>") 'deft)
-	    (add-hook 'deft-mode-hook 'turn-off-evil-mode)
-	    (add-to-list 'evil-overriding-maps '(deft-mode-map))
-	    ;; keybindings
-	    (define-key deft-mode-map (kbd "C-w") 'evil-delete-backward-word))
+(use-package deft
+  :init (progn
+          (setq deft-extension "org")
+          (setq deft-text-mode 'org-mode)
+          (setq deft-auto-save-interval 60.0)
+          (setq deft-directory "~/notes")
+          (setq deft-use-filename-as-title t)
+          (setq org-return-follows-link t)
+          (add-hook 'deft-mode-hook 'turn-off-evil-mode)
+          (add-to-list 'evil-overriding-maps '(deft-mode-map))
+          (bind-key "C-w" 'evil-delete-backward-word deft-mode-map)))
 
-(config-for "haskell-mode"
-	    (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-	    (setq haskell-program-name "ghci"))
+(use-package haskell-mode
+  :init (progn
+          (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+          (setq haskell-program-name "ghci")))
 
-(config-for "js2-mode"
-	    (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode)))
+(use-package js2-mode
+  :mode ("\\.js$" . js2-mode))
 
-(config-for "elixir-mode"
-	    (require 'elixir-mode))
+(use-package elixir-mode)
 
-(config-for "linum-relative-autoloads"
-	    (add-hook 'linum-mode-hook (lambda ()
-					 (require 'linum-relative))))
+(use-package linum-relative)
 
 ;; config for org mode
 ;;;; require custom org file
-(add-to-list 'load-path "~/.emacs.d/org/lisp")
-(add-to-list 'load-path "~/.emacs.d/org/contrib/lisp")
-(setq org-startup-indented t)
-(setq org-todo-keywords '((sequence "TODO(t)" "IN-PROGRESS(p!)" "WAITING(w@)" "|" "DONE(d!)" "CANCELED(c@)")))
-(setq org-log-done 'note)
-(setq org-log-into-drawer t)
-(setq org-default-notes-file "~/notes/capture.org")
-(setq org-html-doctype "html5")
-(setq org-html-html5-fancy t)
-(setq org-capture-templates `(("f" "For all things FLE related" entry
-			       (file "~/notes/todo/fle.org")
-			       "\n* TODO %? \nDEADLINE: %(org-time-stamp nil)\n")
+(use-package org
+  :load-path ("~/.emacs.d/org/lisp"  "~/.emacs.d/org/contrib/lisp")
+  :init (progn
+          (setq org-startup-indented t)
+          (setq org-todo-keywords '((sequence "TODO(t)" "IN-PROGRESS(p!)" "WAITING(w@)" "|" "DONE(d!)" "CANCELED(c@)")))
+          (setq org-log-done 'note)
+          (setq org-log-into-drawer t)
+          (setq org-default-notes-file "~/notes/capture.org")
+          (setq org-html-doctype "html5")
+          (setq org-html-html5-fancy t)
+          (setq org-capture-templates `(("f" "For all things FLE related" entry
+                                         (file "~/notes/todo/fle.org")
+                                         "\n* TODO %? \nDEADLINE: %(org-time-stamp nil)\n")
 
-			      ("p" "Personal stuff" entry
-			       (file "~/notes/todo/personal.org")
-			       "\n* TODO %? \n")
+                                        ("p" "Personal stuff" entry
+                                         (file "~/notes/todo/personal.org")
+                                         "\n* TODO %? \n")
 
-                              ("r" "Timesheet reports for time spent per task")
-                              ("rd" "Generate daily report" entry
-                               (file+headline "~/notes/reports.org" "daily")
-                               "* %<%Y-%m-%d> %?\n %(insert-clock-table-summary 'today)"
-                               :prepend t)
-                              ("rw" "Generate weekly report" entry
-                               (file+headline "~/notes/reports.org" "weekly")
-                               "* %<%Y-W%V> %?\n %(insert-clock-table-summary 'thisweek)"
-                               :prepend t)
-			      ))
+                                        ("r" "Timesheet reports for time spent per task")
+                                        ("rd" "Generate daily report" entry
+                                         (file+headline "~/notes/reports.org" "daily")
+                                         "* %<%Y-%m-%d> %?\n %(insert-clock-table-summary 'today)"
+                                         :prepend t)
+                                        ("rw" "Generate weekly report" entry
+                                         (file+headline "~/notes/reports.org" "weekly")
+                                         "* %<%Y-W%V> %?\n %(insert-clock-table-summary 'thisweek)"
+                                         :prepend t)
+                                        ))
+          ))
 
 ;; set shortcuts for evil mode
 (global-set-key (kbd "C-c C-l") 'org-store-link)
@@ -352,18 +338,14 @@
          :recursive t
          :publishing-directory "build")))
 
-
-
-;; (config-for "org-trello-autoloads"
-;; 	    (add-hook 'org-mode-hook 'org-trello-mode))
-
 ;; ledger-mode
-(add-to-list 'load-path "~/.emacs.d/ledger-mode")
-(require 'ledger)
-(add-to-list 'auto-mode-alist '("\\.ldgr$" . ledger-mode))
-(setenv "LEDGER_FILE" "/home/aronasorman/notes/transactions.ldgr")
-(setq ledger-file (getenv "LEDGER_FILE"))
-(setq ledger-file-encrypted (concat ledger-file ".gpg"))
+(use-package ledger
+  :mode ("\\.ldgr$" . ledger-mode)
+  :load-path  "~/.emacs.d/ledger-mode"
+  :init (progn
+          (setenv "LEDGER_FILE" "/home/aronasorman/notes/transactions.ldgr")
+          (setq ledger-file (getenv "LEDGER_FILE"))
+          (setq ledger-file-encrypted (concat ledger-file ".gpg"))))
 
 (defun decrypt-ledger-file ()
   (if (not (executable-find "gpg"))
@@ -386,39 +368,40 @@
 	    (add-to-list 'evil-emacs-state-modes 'ledger-report-mode))
 
 ;; web-mode
-(config-for "web-mode-autoloads"	; weird. it's a major mode, but we need the *-autoloads
-	    (require 'web-mode)
-	    (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-	    (add-hook 'web-mode-hook 'turn-off-smartparens-mode)
-	    (setq web-mode-engines-alist
-		  '(("django" . "\\.html$"))))
+(use-package web-mode
+  :mode ("\\.html$" . web-mode)
+  :init (progn
+          (add-hook 'web-mode-hook 'turn-off-smartparens-mode)
+          (setq web-mode-engines-alist
+                '(("django" . "\\.html$")))))
 
 ;; mu and mu4e
-(add-to-list 'load-path (concat-dir src-dir "dotfiles/mu4e"))
-(require 'mu4e)
-(require 'org-mu4e)
-(config-for "evil-autoloads"
+(use-package mu4e
+  :load-path "~/src/dotfiles/mu4e"
+  :init (progn
+          (add-to-list 'mu4e-bookmarks '("flag:flagged" "All flagged email" ?F))
+          (add-to-list 'mu4e-bookmarks '("flag:flagged AND date:today..now" "Flagged email for today" ?f))
+          (setq mu4e-maildir "~/mail")
+          (setenv "GPGKEY" "0B78EF87")
+          ;; startup GPG agent
+          (let ((gpg-agent (executable-find "gpg-agent")))
+            (if gpg-agent
+                (let* ((gpg-agent-cmd (shell-command-to-string "gpg-agent --daemon"))
+                       (gpg-agent-info-var (first (split-string gpg-agent-cmd ";")))
+                       (gpg-agent-info (second (split-string gpg-agent-info-var "="))))
+                  (message "gpg-agent found. Activating for Emacs...")
+                  (setenv "GPG_AGENT_INFO" gpg-agent-info))
+              (message "gpg-agent exectuable not found. Oh well.")))
+          (setq mml2015-use 'epg))
+  :config (progn
+            (use-package org-mu4e)
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-main-mode)
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-view-mode)
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-headers-mode)
 	    (add-hook 'mu4e-view-mode-hook 'turn-on-visual-line-mode)
 	    (add-hook 'mu4e-compose-mode-hook 'evil-local-mode)
 	    (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
-	    (add-hook 'mu4e-view-mode-hook 'epa-mail-mode))
-(add-to-list 'mu4e-bookmarks '("flag:flagged" "All flagged email" ?F))
-(add-to-list 'mu4e-bookmarks '("flag:flagged AND date:today..now" "Flagged email for today" ?f))
-(setq mu4e-maildir "~/mail")
-(setenv "GPGKEY" "0B78EF87")
-(let ((gpg-agent (executable-find "gpg-agent")))
-  (if gpg-agent
-      (let* ((gpg-agent-cmd (shell-command-to-string "gpg-agent --daemon"))
-	     (gpg-agent-info-var (first (split-string gpg-agent-cmd ";")))
-	     (gpg-agent-info (second (split-string gpg-agent-info-var "="))))
-	(message "gpg-agent found. Activating for Emacs...")
-	(setenv "GPG_AGENT_INFO" gpg-agent-info))
-    (message "gpg-agent exectuable not found. Oh well.")))
-(setq mml2015-use 'epg)
-
+	    (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)))
 (defvar local/mu4e-account-specific-settings)
 (setq local/mu4e-account-specific-settings
       '(("fastmail"
@@ -445,38 +428,12 @@
       (error "No email account found"))))
 (add-hook 'mu4e-compose-pre-hook 'local/mu4e-set-account-settings)
 
-(defun local/insert-transaction-to-ledger ()
-  (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (re-search-forward "\\($[[:digit:]]+.[[:digit:]].\\).+transaction to \\([[:word:]\\|[:space:]]+\\) on [[:digit:]]")
-    (let* ((default-price (match-string 1))
-	   (default-payee (match-string 2))
-	   (price (read-string (concat "Amount transferred (default " default-price "):") nil nil default-price))
-	   (payee (read-string (concat "Paid to (default " default-payee "):") nil nil default-payee))
-	   (paid-to-category (read-string "Payee category:" "expenses:food"))
-	   (paid-from-category (read-string "Paid from category:" "assets:checking:chase")))
-      (window-configuration-to-register :before-transaction-insert)  ; note: factor out into a with-configuration
-      (with-current-buffer (find-file ledger-file-encrypted)
-	(goto-char (point-max))
-	(newline)
-	(insert (format-time-string "%Y/%m/%d ") payee)
-	(newline)
-	(insert " " paid-to-category "  " price)
-	(newline)
-	(insert " " paid-from-category)
-	(newline)
-	(if (y-or-n-p "Save ledger?")
-	    (save-buffer)
-	  (revert-buffer t t)))
-      (jump-to-register :before-transaction-insert))))
-(define-key 'mu4e-view-mode-map (kbd "l") 'local/insert-transaction-to-ledger) ;; change once we can process more email types
-
 ;; run backup script
 (setq local/files-to-backup '("~/notes" "~/mail" "~/crypt"))
 (setq local/files-to-backup (cl-concatenate 'list
 					    local/files-to-backup
 					    (split-string (shell-command-to-string "find ~/.emacs.d/ -name '*.el'") "\n")))
+
 (defun local/run-backup ()
   (interactive)
   (let ((files (mapconcat 'identity local/files-to-backup " ")))
@@ -484,11 +441,9 @@
 (add-hook 'midnight-hook 'local/run-backup)
 
 ;; midnight mode
-(midnight-delay-set 'midnight-delay "6:00am")
+;; (midnight-delay-set 'midnight-delay "6:00am")
 
 (add-hook 'prog-mode-hook 'linum-mode) ;; avoid loading global-linum-mode now
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-(package-initialize)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
