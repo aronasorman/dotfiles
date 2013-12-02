@@ -13,14 +13,11 @@
 			   evil-numbers
 			   evil-paredit
 			   elixir-mode
-			   find-things-fast
+                           flycheck-mode
 			   js2-mode
-			   god-mode
 			   haskell-mode
 			   helm
                            helm-cmd-t
-			   ido-ubiquitous
-			   ido-vertical-mode
 			   linum-relative
 			   magit
 			   markdown-mode
@@ -121,6 +118,7 @@
 
 ;; auto-complete
 (use-package auto-complete
+  :diminish auto-complete-mode
   :init (progn
           (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict"))
   :config (progn
@@ -157,17 +155,21 @@
   :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
 (use-package paredit
+  :diminish paredit-mode
   :init (progn
-          (add-hook 'lisp-mode-hook 'paredit-mode))
+          (add-hook 'lisp-mode-hook 'paredit-mode)
+          (add-hook 'emacs-lisp-mode-hook 'paredit-mode))
   :config (progn
             (use-package evil-paredit
               :init (add-hook 'paredit-mode-hook 'evil-paredit-mode))))
 
 (use-package projectile
+  :diminish projectile-mode
   :init (progn
           (projectile-global-mode t)))
 
 (use-package helm
+  :diminish helm-mode
   :init (progn
           (setq helm-ff-transformer-show-only-basename nil)
           (bind-key "M-x" 'helm-M-x)
@@ -226,8 +228,15 @@
 	    (sp-local-pair 'html-mode "{%" "%}")))
 
 (use-package yasnippet
+  :diminish yas-minor-mode
   :init (add-hook 'prog-mode-hook 'yas-minor-mode)
   :config (yas/reload-all))
+
+(use-package undo-tree
+  :diminish undo-tree-mode)
+
+(use-package eldoc
+  :diminish eldoc-mode)
 
 (use-package deft
   :init (progn
@@ -366,6 +375,9 @@
 (decrypt-ledger-for-defun ledger-report-redo)
 (config-for "evil-autoloads"
 	    (add-to-list 'evil-emacs-state-modes 'ledger-report-mode))
+
+(use-package flycheck
+  :init (add-hook 'prog-mode-hook 'flycheck-mode))
 
 ;; web-mode
 (use-package web-mode
