@@ -13,7 +13,6 @@
 			   evil-numbers
 			   evil-paredit
 			   elixir-mode
-                           flycheck-mode
 			   js2-mode
 			   haskell-mode
 			   helm
@@ -272,6 +271,7 @@
           (setq org-log-done 'note)
           (setq org-log-into-drawer t)
           (setq org-default-notes-file "~/notes/capture.org")
+          (add-to-list 'org-export-backends 'md)
           (setq org-html-doctype "html5")
           (setq org-html-html5-fancy t)
           (setq org-capture-templates `(("f" "For all things FLE related" entry
@@ -383,6 +383,7 @@
 (use-package web-mode
   :mode ("\\.html$" . web-mode)
   :init (progn
+          (setq web-mode-code-indent-offset 4)
           (add-hook 'web-mode-hook 'turn-off-smartparens-mode)
           (setq web-mode-engines-alist
                 '(("django" . "\\.html$")))))
@@ -464,12 +465,14 @@
  '(custom-safe-themes (quote ("47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
  '(midnight-mode t nil (midnight))
  '(org-agenda-files (quote ("~/notes/todo/personal.org" "~/notes/todo/habits.org" "~/notes/todo/fle.org")))
+ '(org-export-backends (quote (ascii html icalendar latex md odt)))
  '(org-html-table-default-attributes (quote (:border "2" :cellspacing "5" :cellpadding "6" :rules "groups" :frame "hsides")))
- '(org-modules (quote (org-bbdb org-bibtex org-crypt org-docview org-gnus org-info org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m org-invoice)))
+ '(org-modules (quote (org-bbdb org-bibtex org-crypt org-docview org-gnus org-habit org-id org-info org-inlinetask org-invoice org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m org-invoice)))
  '(safe-local-variable-values (quote ((ledger-master-file . "transactions.ldgr") (major-mode quote ledger-mode) (major-mode . ledger-mode))))
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.gmail.com")
- '(smtpmail-smtp-service 587))
+ '(smtpmail-smtp-service 587)
+ '(web-mode-code-indent-offset 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
