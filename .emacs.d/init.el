@@ -3,38 +3,6 @@
                          ("melpa" . "http://melpa.milkbox.net/packages/")
 			 ("marmalade" . "http://marmalade-repo.org/packages/")
 			 ))
-(setq installed-packages '( ;; separated to make sorting the package list easier
-			   evil
-			   ace-jump-mode
-                           auto-complete
-			   deft
-			   evil-nerd-commenter
-			   evil-leader
-			   evil-numbers
-			   evil-paredit
-			   elixir-mode
-			   js2-mode
-			   haskell-mode
-			   helm
-                           helm-cmd-t
-			   linum-relative
-			   magit
-			   markdown-mode
-			   multi-term
-                           o-blog
-			   ;; org-trello
-			   paredit
-			   projectile
-			   rainbow-delimiters
-			   smartparens
-			   undo-tree
-			   virtualenv
-			   tabbar
-                           use-package
-			   web-mode
-			   yasnippet
-			   ))
-
 ;; load packages
 (package-initialize)
 (require 'use-package)
@@ -57,19 +25,6 @@
 
 ;; load custom settings
 (load "local_init" t)
-
-(defun install-required-packages ()
-  (interactive)
-  (mapcar (lambda (package)
-	    (or (package-installed-p package)
-		(if (y-or-n-p (format "Package %s is missing. Install?" package))
-		  (package-install package))))
-	  installed-packages))
-(add-hook 'after-init-hook 'install-required-packages)
-
-(defmacro config-for (pkg &rest body)
-  `(eval-after-load ,pkg
-     '(progn ,@body)))
 
 ;;;;; vanilla emacs config
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -99,7 +54,7 @@
 (add-hook 'after-init-hook 'global-hl-line-mode)
 
 ;; font
-(set-face-attribute 'default nil :font "Inconsolata-14")
+(set-face-attribute 'default nil :font "Inconsolata-11")
 
 ;;;;; vanilla keybindings
 (global-set-key (kbd "<RET>") 'newline-and-indent)
@@ -117,14 +72,17 @@
 
 ;; auto-complete
 (use-package auto-complete
+  :ensure t
   :diminish auto-complete-mode
   :init (progn
           (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict"))
   :config (progn
-            (use-package auto-complete-config)
+            (use-package auto-complete-config
+              :ensure t)
             (ac-config-default)))
 
 (use-package evil
+  :ensure t
   :init (progn
           (add-to-list 'evil-emacs-state-modes 'grep-mode)
           (add-to-list 'evil-emacs-state-modes 'eshell-mode)
@@ -137,37 +95,45 @@
             (evil-mode t)))
 
 (use-package helm-cmd-t
+  :ensure t
   :init (bind-key "C-p" 'helm-cmd-t evil-normal-state-map))
 
 (use-package evil-numbers
+  :ensure t
   :init (progn
           (bind-key "C-a +" 'evil-numbers/inc-at-pt evil-normal-state-map)
           (bind-key "C-a -" 'evil-numbers/dec-at-pt evil-normal-state-map)))
 
 (use-package ace-jump-mode
+  :ensure t
   :init (progn
           (setq ace-jump-mode-scope 'frame))
   :config (progn
             (require 'cl)))
 
 (use-package rainbow-delimiters
+  :ensure t
   :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
 (use-package paredit
+  :ensure t
   :diminish paredit-mode
   :init (progn
           (add-hook 'lisp-mode-hook 'paredit-mode)
           (add-hook 'emacs-lisp-mode-hook 'paredit-mode))
   :config (progn
             (use-package evil-paredit
+              :ensure t
               :init (add-hook 'paredit-mode-hook 'evil-paredit-mode))))
 
 (use-package projectile
+  :ensure t
   :diminish projectile-mode
   :init (progn
           (projectile-global-mode t)))
 
 (use-package helm
+  :ensure t
   :diminish helm-mode
   :init (progn
           (setq helm-ff-transformer-show-only-basename nil)
@@ -175,6 +141,7 @@
           (helm-mode t)))
 
 (use-package evil-leader
+  :ensure t
   :init (progn
           (setq evil-leader/leader ",")
           (global-evil-leader-mode t))
@@ -205,6 +172,7 @@
 	      "ci" 'evilnc-comment-or-uncomment-lines))
 
 (use-package magit
+  :ensure t
   :init (progn
           (bind-key "q" 'magit-quit-session magit-status-mode-map)
           (defadvice magit-status (around magit-fullscreen activate)
@@ -218,6 +186,7 @@
             (jump-to-register :magit-fullscreen))))
 
 (use-package smartparens
+  :ensure t
   :init (progn
           (add-hook 'emacs-lisp-mode-hook (lambda ()
                                             (turn-off-smartparens-mode)))
@@ -227,17 +196,21 @@
 	    (sp-local-pair 'html-mode "{%" "%}")))
 
 (use-package yasnippet
+  :ensure t
   :diminish yas-minor-mode
   :init (add-hook 'prog-mode-hook 'yas-minor-mode)
   :config (yas/reload-all))
 
 (use-package undo-tree
+  :ensure t
   :diminish undo-tree-mode)
 
 (use-package eldoc
+  :ensure t
   :diminish eldoc-mode)
 
 (use-package deft
+  :ensure t
   :init (progn
           (setq deft-extension "org")
           (setq deft-text-mode 'org-mode)
@@ -250,20 +223,25 @@
           (bind-key "C-w" 'evil-delete-backward-word deft-mode-map)))
 
 (use-package haskell-mode
+  :ensure t
   :init (progn
           (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
           (setq haskell-program-name "ghci")))
 
 (use-package js2-mode
+  :ensure t
   :mode ("\\.js$" . js2-mode))
 
-(use-package elixir-mode)
+(use-package elixir-mode
+  :ensure t)
 
-(use-package linum-relative)
+(use-package linum-relative
+  :ensure t)
 
 ;; config for org mode
 ;;;; require custom org file
 (use-package org
+  :ensure t
   :load-path ("~/.emacs.d/org/lisp"  "~/.emacs.d/org/contrib/lisp")
   :init (progn
           (setq org-startup-indented t)
@@ -377,10 +355,12 @@
 	    (add-to-list 'evil-emacs-state-modes 'ledger-report-mode))
 
 (use-package flycheck
+  :ensure t
   :init (add-hook 'prog-mode-hook 'flycheck-mode))
 
 ;; web-mode
 (use-package web-mode
+  :ensure t
   :mode ("\\.html$" . web-mode)
   :init (progn
           (setq web-mode-code-indent-offset 4)
@@ -390,6 +370,7 @@
 
 ;; mu and mu4e
 (use-package mu4e
+  :ensure t
   :load-path "~/src/dotfiles/mu4e"
   :init (progn
           (add-to-list 'mu4e-bookmarks '("flag:flagged" "All flagged email" ?F))
@@ -407,7 +388,8 @@
               (message "gpg-agent exectuable not found. Oh well.")))
           (setq mml2015-use 'epg))
   :config (progn
-            (use-package org-mu4e)
+            (use-package org-mu4e
+              :ensure t)
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-main-mode)
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-view-mode)
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-headers-mode)
