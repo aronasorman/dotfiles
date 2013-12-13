@@ -183,7 +183,27 @@
             "Restores the previous window configuration and kills the magit buffer"
             (interactive)
             (kill-buffer)
-            (jump-to-register :magit-fullscreen))))
+            (jump-to-register :magit-fullscreen)))
+  :config (progn
+            (bind-key "C-p" 'magit-pr/open-pull-request magit-status-mode-map)))
+
+(defvar github-ids-contributed-to '("aronasorman" "learningequality"))
+(defun magit-pr/url (compare-repo)
+  (let ((current-branch (first (vc-git-branches)))
+        (repo-name  (helm-basename (magit-get-top-dir))))
+    (format "https://github.com/aronasorman/%s/compare/%s:master...%s" repo-name compare-repo current-branch)))
+
+(defun magit-pr/ask-id-to-compare-against ()
+  (interactive)
+  (completing-read "ID to contribute to: "
+                   github-ids-contributed-to
+                   nil
+                   'confirm))
+
+(defun magit-pr/open-pull-request ()
+  (interactive)
+  (let ((user-id (magit-pr/ask-id-to-compare-against)))
+    (browse-url (magit-pr/url user-id))))
 
 (use-package smartparens
   :ensure t
