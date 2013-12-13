@@ -1,6 +1,6 @@
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")
+                         ;; ("melpa" . "http://melpa.milkbox.net/packages/")
 			 ("marmalade" . "http://marmalade-repo.org/packages/")
 			 ))
 ;; load packages
@@ -78,7 +78,7 @@
           (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict"))
   :config (progn
             (use-package auto-complete-config
-              :ensure t)
+              )
             (ac-config-default)))
 
 (use-package evil
@@ -309,15 +309,14 @@
 (global-set-key (kbd "C-c C-x C-l") 'org-clock-in-last)
 (global-set-key (kbd "C-c C-x C-o") 'org-clock-out)
 (global-set-key (kbd "C-c C-x C-j") 'org-clock-goto)
-(config-for "evil-autoloads"
-	    (evil-define-key 'normal org-mode-map
-	      "\\]" 'org-shiftmetaright
-	      "\\[" 'org-shiftmetaleft
-	      "\\t" 'org-todo
-	      "\\r" 'org-priority
-	      "\\l" 'org-insert-link
-	      "\\bt" 'org-babel-tangle
-	      "\\t" 'org-set-tags-command))
+(evil-define-key 'normal org-mode-map
+  "\\]" 'org-shiftmetaright
+  "\\[" 'org-shiftmetaleft
+  "\\t" 'org-todo
+  "\\r" 'org-priority
+  "\\l" 'org-insert-link
+  "\\bt" 'org-babel-tangle
+  "\\t" 'org-set-tags-command)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -381,8 +380,7 @@
 
 (decrypt-ledger-for-defun ledger-report)
 (decrypt-ledger-for-defun ledger-report-redo)
-(config-for "evil-autoloads"
-	    (add-to-list 'evil-emacs-state-modes 'ledger-report-mode))
+(add-to-list 'evil-emacs-state-modes 'ledger-report-mode)
 
 (use-package flycheck
   :ensure t
@@ -400,7 +398,6 @@
 
 ;; mu and mu4e
 (use-package mu4e
-  :ensure t
   :load-path "~/src/dotfiles/mu4e"
   :init (progn
           (add-to-list 'mu4e-bookmarks '("flag:flagged" "All flagged email" ?F))
@@ -418,8 +415,7 @@
               (message "gpg-agent exectuable not found. Oh well.")))
           (setq mml2015-use 'epg))
   :config (progn
-            (use-package org-mu4e
-              :ensure t)
+            (use-package org-mu4e)
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-main-mode)
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-view-mode)
 	    (add-to-list 'evil-emacs-state-modes 'mu4e-headers-mode)
