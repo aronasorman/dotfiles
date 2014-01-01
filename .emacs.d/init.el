@@ -205,7 +205,7 @@
   (let ((user-id (magit-pr/ask-id-to-compare-against)))
     (browse-url (magit-pr/url user-id))))
 
-(use-package clojure-mode
+(use-package slime
   :ensure t)
 
 (use-package cider
