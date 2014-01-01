@@ -68,6 +68,16 @@
 (global-set-key (kbd "C-M-j") 'windmove-down)
 (global-set-key (kbd "C-M-k") 'windmove-up)
 
+;; debug line shortcuts
+(setq debug-line-alist
+      '((python-mode . "import pdb; pdb.set_trace()")))
+
+(defun insert-debug-line ()
+  (interactive)
+  (let ((debug-line (cdr (assoc major-mode debug-line-alist))))
+    (insert debug-line)))
+(bind-key "C-x d" 'insert-debug-line)
+
 ;;;;; package configs
 
 ;; auto-complete
