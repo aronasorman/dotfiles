@@ -208,13 +208,6 @@
 (use-package slime
   :ensure t)
 
-(use-package cider
-  :load-path "~/.emacs.d/cider"
-  :init (progn
-          (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-          (setq nrepl-hide-special-buffers nil)
-          (add-hook 'clojure-mode-hook 'cider-mode)))
-
 (use-package smartparens
   :ensure t
   :init (progn
