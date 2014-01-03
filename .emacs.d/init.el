@@ -1,10 +1,12 @@
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ;; ("melpa" . "http://melpa.milkbox.net/packages/")
+                         ; ("melpa" . "http://melpa.milkbox.net/packages/")
 			 ("marmalade" . "http://marmalade-repo.org/packages/")
 			 ))
 ;; load packages
 (package-initialize)
+
+(add-to-list 'load-path "~/.emacs.d/use-package")
 (require 'use-package)
 
 ;;;;; custom functions and macros
@@ -269,7 +271,7 @@
   :ensure t)
 
 (use-package linum-relative
-  :ensure t)
+  :load-path "~/.emacs.d/linum-relative")
 
 ;; config for org mode
 ;;;; require custom org file
