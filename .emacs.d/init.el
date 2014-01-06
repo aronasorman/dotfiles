@@ -1,6 +1,6 @@
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ; ("melpa" . "http://melpa.milkbox.net/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")
 			 ("marmalade" . "http://marmalade-repo.org/packages/")
 			 ))
 ;; load packages
@@ -107,7 +107,7 @@
             (evil-mode t)))
 
 (use-package helm-cmd-t
-  :ensure t
+  :load-path "~/.emacs.d/helm-cmd-t"
   :init (bind-key "C-p" 'helm-cmd-t evil-normal-state-map))
 
 (use-package evil-numbers
