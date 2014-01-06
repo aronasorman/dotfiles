@@ -22,5 +22,6 @@
     r         = remote
     wdiff     = diff --word-diff=plain
     m	      = merge
+	exec = "!exec "
 [push]
 	default = simple
