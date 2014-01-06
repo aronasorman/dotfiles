@@ -60,6 +60,8 @@ alias ga='git annex'
 alias t='tmux'
 alias ta='tmux attach'
 alias tat='tmux attach -t'
+alias sd="sudo docker"
+alias sdr="sudo docker run"
 
 alias cl='clear'
 alias rel='source ~/lib/profile'
