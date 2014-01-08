@@ -454,21 +454,6 @@
       (error "No email account found"))))
 (add-hook 'mu4e-compose-pre-hook 'local/mu4e-set-account-settings)
 
-;; run backup script
-(setq local/files-to-backup '("~/notes" "~/mail" "~/crypt"))
-(setq local/files-to-backup (cl-concatenate 'list
-					    local/files-to-backup
-					    (split-string (shell-command-to-string "find ~/.emacs.d/ -name '*.el'") "\n")))
-
-(defun local/run-backup ()
-  (interactive)
-  (let ((files (mapconcat 'identity local/files-to-backup " ")))
-      (async-shell-command (format "python ~/src/dotfiles/scripts/backup.py %s" files))))
-(add-hook 'midnight-hook 'local/run-backup)
-
-;; midnight mode
-;; (midnight-delay-set 'midnight-delay "6:00am")
-
 (add-hook 'prog-mode-hook 'linum-mode) ;; avoid loading global-linum-mode now
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
