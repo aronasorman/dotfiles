@@ -401,6 +401,14 @@
           (setq web-mode-engines-alist
                 '(("django" . "\\.html$")))))
 
+;; yaml mode
+(use-package yaml-mode
+  :ensure t)
+
+;; rust mode
+(use-package rust-mode
+  :ensure t)
+
 ;; mu and mu4e
 (use-package mu4e
   :load-path "~/src/dotfiles/mu4e"
