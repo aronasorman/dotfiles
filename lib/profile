@@ -71,7 +71,7 @@ alias pmsh='python manage.py shell_plus'
 alias pmdb='python manage.py dbshell'
 alias pmr='python manage.py runserver_plus'
 alias pmm='python manage.py migrate --all'
-alias py='python'
+alias py='ipython'
 
 # OS specific aliases
 if cat /etc/*-release | grep -q "Ubuntu"
