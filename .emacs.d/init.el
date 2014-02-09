@@ -409,6 +409,11 @@
 (use-package rust-mode
   :ensure t)
 
+(use-package clojure-mode
+  :ensure t
+  :config (use-package cider
+            :ensure t))
+
 ;; mu and mu4e
 (use-package mu4e
   :load-path "~/src/dotfiles/mu4e"
