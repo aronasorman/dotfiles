@@ -110,6 +110,18 @@
   :load-path "~/.emacs.d/helm-cmd-t"
   :init (bind-key "C-p" 'helm-cmd-t evil-normal-state-map))
 
+(use-package color-theme
+  :ensure t)
+
+(use-package sunburn
+  :load-path "~/.emacs.d/"
+  :config (color-theme-sunburn))
+
+(use-package shm
+  :load-path "~/.emacs.d/structured-haskell-mode/elisp"
+  :config (progn
+            (add-hook 'haskell-mode-hook 'structured-haskell-mode)))
+
 (use-package evil-numbers
   :ensure t
   :init (progn
@@ -267,8 +279,8 @@
   :ensure t
   :mode ("\\.js$" . js2-mode))
 
-(use-package elixir-mode
-  :ensure t)
+;; (use-package elixir-mode
+;;   :ensure t)
 
 (use-package linum-relative
   :load-path "~/.emacs.d/linum-relative")
