@@ -80,6 +80,12 @@
     (insert debug-line)))
 (bind-key "C-x d" 'insert-debug-line)
 
+(defun align-to-equals (begin end)
+  "Align region to equal signs"
+   (interactive "r")
+   (align-regexp begin end "\\(\\s-*\\)=" 1 1 ))
+(bind-key "C-x C-a" 'align-to-equals)
+
 ;;;;; package configs
 
 ;; auto-complete
