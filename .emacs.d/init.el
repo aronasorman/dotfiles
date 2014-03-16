@@ -53,7 +53,7 @@
 (bind-key "C-M-\\" 'fill-paragraph)
 
 (add-hook 'after-init-hook 'global-auto-revert-mode)
-(add-hook 'after-init-hook 'global-hl-line-mode)
+;; (add-hook 'after-init-hook 'global-hl-line-mode)
 
 ;; font
 (set-face-attribute 'default nil :font "Inconsolata-11")
