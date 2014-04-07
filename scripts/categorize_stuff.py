@@ -1,8 +1,10 @@
-import mock
+#!/usr/bin/env python
+import logging
 import os
 import shutil
 import sys
 import unittest
+
 
 HOMEDIR = os.path.expanduser("~")
 
@@ -15,6 +17,7 @@ categories = {
 
 
 class CategorizeStuffTests(unittest.TestCase):
+    import mock
 
     def test_get_category(self):
         import tempfile
@@ -38,6 +41,9 @@ class CategorizeStuffTests(unittest.TestCase):
         move_method.assert_called_once_with(os.path.join(HOMEDIR, file), os.path.join(HOMEDIR, cat))
 
 
+logging.basicConfig(format="%(asctime)s: %(message)s", level=logging.INFO, filename=os.path.join(HOMEDIR, 'logs', 'categorize_stuff.log'))
+
+
 def get_category(name):
     _name, ext = os.path.splitext(name)
     return categories.get(ext)
@@ -58,6 +64,5 @@ if __name__ == '__main__':
         for name in names:
             cat = get_category(name)
             if cat:
-                print 'Moving file %s to %s' % (name, cat)
+                logging.info('Moving file %s to %s' % (name, cat))
                 move_file_to_its_category(name, cat)
-        print 'Done.'
