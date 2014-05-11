@@ -114,7 +114,11 @@
 
 (use-package helm-cmd-t
   :load-path "~/.emacs.d/helm-cmd-t"
-  :init (bind-key "C-p" 'helm-cmd-t evil-normal-state-map))
+  :init (progn
+         (bind-key "C-p" 'helm-cmd-t evil-normal-state-map)
+         (bind-key "M-p" (lambda ()
+                           (interactive)
+                           (helm-cmd-t-git-grep (current-buffer) "")))))
 
 (use-package color-theme
   :ensure t)
