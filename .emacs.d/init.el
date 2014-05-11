@@ -152,7 +152,7 @@
 (use-package ace-window
   :load-path "~/.emacs.d"
   :init (progn
-          (bind-key "S-<SPC>" 'ace-window evil-normal-state-map))
+          (bind-key "C-c \\" (lambda () (interactive) (ace-delete-window)) evil-normal-state-map))
   :config (progn
             (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))))
 
