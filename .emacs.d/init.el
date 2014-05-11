@@ -149,6 +149,13 @@
   :config (progn
             (require 'cl)))
 
+(use-package ace-window
+  :load-path "~/.emacs.d"
+  :init (progn
+          (bind-key "S-<SPC>" 'ace-window evil-normal-state-map))
+  :config (progn
+            (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))))
+
 (use-package rainbow-delimiters
   :ensure t
   :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
