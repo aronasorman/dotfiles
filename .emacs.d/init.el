@@ -125,7 +125,7 @@
 
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
-  :config (color-theme-sanityinc-tomorrow-night))
+  :config (load-theme 'sanityinc-tomorrow-night t))
 
 ;; (use-package sunburn
 ;;   :load-path "~/.emacs.d/"
