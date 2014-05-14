@@ -85,7 +85,7 @@
   "Align region to equal signs"
    (interactive "r")
    (align-regexp begin end "\\(\\s-*\\)=" 1 1 ))
-(bind-key "C-x C-a" 'align-to-equals)
+(bind-key "C-x a a" 'align-to-equals)
 
 ;;;;; package configs
 
