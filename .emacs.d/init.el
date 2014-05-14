@@ -204,7 +204,6 @@ screen."
   "Functions to run when we switch after we switch to a different project")
 
 (defun projectile-run-action-for-current-project ()
-  (interactive)
   (let* ((current-project (projectile-project-root))
          (current-project-action (cdr (assoc-string current-project projectile-after-switch-project-actions))))
     (if current-project-action
