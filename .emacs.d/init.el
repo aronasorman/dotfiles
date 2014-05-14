@@ -117,7 +117,7 @@
   :load-path "~/.emacs.d/helm-cmd-t"
   :init (progn
          (bind-key "C-p" 'helm-cmd-t evil-normal-state-map)
-         (bind-key "M-p" (lambda ()
+         (bind-key "M-P" (lambda ()
                            (interactive)
                            (helm-cmd-t-git-grep (current-buffer) "")))))
 
