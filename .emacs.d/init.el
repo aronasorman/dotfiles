@@ -366,21 +366,24 @@ screen."
           (setq org-html-html5-fancy t)
           (setq org-capture-templates `(("f" "For all things FLE related" entry
                                          (file "~/notes/todo/fle.org")
-                                         "\n* TODO %? \nDEADLINE: %(org-time-stamp nil)\n")
+                                         ;; "\n* TODO %? \nDEADLINE: %(org-time-stamp nil)\n"
+                                         "\n* TODO %? \n"
+                                         )
 
                                         ("p" "Personal stuff" entry
                                          (file "~/notes/todo/personal.org")
                                          "\n* TODO %? \n")
 
-                                        ("r" "Timesheet reports for time spent per task")
-                                        ("rd" "Generate daily report" entry
-                                         (file+headline "~/notes/reports.org" "daily")
-                                         "* %<%Y-%m-%d> %?\n %(insert-clock-table-summary 'today)"
-                                         :prepend t)
-                                        ("rw" "Generate weekly report" entry
-                                         (file+headline "~/notes/reports.org" "weekly")
-                                         "* %<%Y-W%V> %?\n %(insert-clock-table-summary 'thisweek)"
-                                         :prepend t)
+                                        ;; activate again if we ever need timesheet reports
+                                        ;; ("r" "Timesheet reports for time spent per task")
+                                        ;; ("rd" "Generate daily report" entry
+                                        ;;  (file+headline "~/notes/reports.org" "daily")
+                                        ;;  "* %<%Y-%m-%d> %?\n %(insert-clock-table-summary 'today)"
+                                        ;;  :prepend t)
+                                        ;; ("rw" "Generate weekly report" entry
+                                        ;;  (file+headline "~/notes/reports.org" "weekly")
+                                        ;;  "* %<%Y-W%V> %?\n %(insert-clock-table-summary 'thisweek)"
+                                        ;;  :prepend t)
                                         ))
           ))
 
