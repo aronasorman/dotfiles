@@ -37,6 +37,7 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 (show-paren-mode 1)
+(global-hl-line-mode 1)
 ;; remove backup from current directories
 (defvar temporary-file-directory "/tmp")
 (setq backup-directory-alist
