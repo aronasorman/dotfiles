@@ -133,7 +133,9 @@ screen."
   (interactive "P")
   (let ((function (python-info-current-defun))
         (copy-or-message (if copy-to-clipboard
-                             (lambda (format-string &rest objects) (kill-new (format format-string objects)))
+                             (lambda (format-string &rest objects)
+                               (kill-new (format format-string objects))
+                               (message "copied to clipboard"))
                            'message)))
     (if function
         (funcall copy-or-message function)
