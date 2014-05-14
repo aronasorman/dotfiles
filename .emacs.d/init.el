@@ -196,13 +196,28 @@ screen."
 (use-package grizzl
   :ensure t)
 
+(defvar projectile-after-switch-project-actions
+  `((,(expand-file-name "~/src/ka-lite/") . ,(lambda ()
+                                               (pyvenv-workon "kalite")
+                                               (message "switched virtualenv to kalite"))))
+  "Functions to run when we switch after we switch to a different project")
+
+(defun projectile-run-action-for-current-project ()
+  (interactive)
+  (let* ((current-project (projectile-project-root))
+         (current-project-action (cdr (assoc-string current-project projectile-after-switch-project-actions))))
+    (if current-project-action
+        (funcall current-project-action)
+      (message "No action found for %s" current-project))))
+
 (use-package projectile
   :ensure t
   :diminish projectile-mode
   :config (progn
             (setq projectile-remember-window-configs t)
             (setq projectile-completion-system 'grizzl)
-            (setq projectile-switch-project-action 'projectile-dired))
+            (setq projectile-switch-project-action 'projectile-dired)
+            (add-hook 'projectile-switch-project-hook 'projectile-run-action-for-current-project))
   :init (progn
           (projectile-global-mode t)))
 
