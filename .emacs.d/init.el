@@ -120,6 +120,25 @@
                            (interactive)
                            (helm-cmd-t-git-grep (current-buffer) "")))))
 
+(use-package elpy
+  :ensure t
+  :config (progn
+            (elpy-enable)
+            (elpy-use-ipython)))
+
+(defun elpy-show-defun (copy-to-clipboard)
+  "Show the current class and method, in case they are not on
+screen."
+  (interactive "P")
+  (let ((function (python-info-current-defun))
+        (copy-or-message (if copy-to-clipboard
+                             (lambda (format-string &rest objects) (kill-new (format format-string objects)))
+                           'message)))
+    (if function
+        (funcall copy-or-message function)
+      (funcall copy-or-message "Not in a function"))))
+
+
 (use-package color-theme
   :ensure t)
 
