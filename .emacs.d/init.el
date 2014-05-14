@@ -193,11 +193,15 @@ screen."
               :ensure t
               :init (add-hook 'paredit-mode-hook 'evil-paredit-mode))))
 
+(use-package grizzl
+  :ensure t)
+
 (use-package projectile
   :ensure t
   :diminish projectile-mode
   :config (progn
             (setq projectile-remember-window-configs t)
+            (setq projectile-completion-system 'grizzl)
             (setq projectile-switch-project-action 'projectile-dired))
   :init (progn
           (projectile-global-mode t)))
