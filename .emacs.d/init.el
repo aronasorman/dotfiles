@@ -157,7 +157,9 @@ screen."
 (use-package shm
   :load-path "~/.emacs.d/structured-haskell-mode/elisp"
   :config (progn
-            (add-hook 'haskell-mode-hook 'structured-haskell-mode)))
+            (add-hook 'haskell-mode-hook 'structured-haskell-mode))
+  :init (progn
+          (bind-key "," 'self-insert-command evil-insert-state-map)))
 
 (use-package evil-numbers
   :ensure t
