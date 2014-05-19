@@ -200,10 +200,14 @@ screen."
 (use-package grizzl
   :ensure t)
 
+;; note: rewrite to something specifically for switching virtualenvs
 (defvar projectile-after-switch-project-actions
   `((,(expand-file-name "~/src/ka-lite/") . ,(lambda ()
                                                (pyvenv-workon "kalite")
-                                               (message "switched virtualenv to kalite"))))
+                                               (message "switched virtualenv to kalite")))
+    (,(expand-file-name "~/src/sipper/") . ,(lambda ()
+                                              (pyvenv-workon "sipper")
+                                              (message "switched virtualenv to sipper"))))
   "Functions to run when we switch after we switch to a different project")
 
 (defun projectile-run-action-for-current-project ()
