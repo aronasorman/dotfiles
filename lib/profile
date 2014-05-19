@@ -1,21 +1,13 @@
-#!/bin/sh
 # all initialization variables go here, then custom setup and whatnot
 
-# setup for tmuxinator
-[[ -s $HOME/.tmuxinator/scripts/tmuxinator ]] && source $HOME/.tmuxinator/scripts/tmuxinator
-
-
 # ENVIRONMENT VARIABLES
-PLAN9=/Users/aronasorman/src/plan9port export PLAN9
 LIB=$HOME/lib
 SRC=$HOME/src
-EMU="-r$SRC/inferno -g1250x750 -c1" export EMU
-EDITOR='emacsclient -a="" -nw'
-#EDITOR='vim'
+# EDITOR='emacsclient -a="" -nw'
+EDITOR='vim'
 GOPATH=$SRC/go
 ERL_LIBS=$SRC
 # RBENV_ROOT=/usr/local/var/rbenv
-ANDROID_SDK_ROOT=/usr/local/opt/android-sdk
 export LC_ALL="en_US.UTF-8"
 export TERM=xterm-256color
 export BROWSER=`which firefox` || `which chromium-browser`
@@ -29,11 +21,7 @@ export ANDROID_SDK_ROOT
 
 # PATH VARIABLE MODIFICATIONS
 
-## adding some plan9 related utilities
 PATH=$LIB/bin:$PATH
-PATH=/usr/inferno/MacOSX/386/bin:$PATH
-PATH=$SRC/acme-utils:$PATH
-PATH=$PATH:$PLAN9/bin
 PATH=$PATH:$SRC/elixir/bin
 
 ## for fixing Homebrew
@@ -43,7 +31,10 @@ PATH=/usr/local/bin:/usr/local/sbin:$PATH
 PATH=$HOME/.cabal/bin:$PATH
 
 # texlive
-PATH=/usr/local/texlive/2012/bin/universal-darwin:$PATH
+if [ "Darwin" = `uname -o` ]
+then
+    PATH=/usr/local/texlive/2012/bin/universal-darwin:$PATH
+fi
 
 # GOPATH bin
 PATH=$GOPATH/bin:$PATH
@@ -68,24 +59,24 @@ alias pm='python manage.py'
 alias pms='python manage.py syncdb'
 alias pmsh='python manage.py shell_plus'
 alias pmdb='python manage.py dbshell'
-alias pmr='python manage.py runserver_plus'
+alias pmr='python manage.py runserver'
+alias pmrr='python manage.py runserver_plus'
 alias pmm='python manage.py migrate --all'
 alias py='ipython'
 
 # OS specific aliases
 if cat /etc/*-release | grep -q "Ubuntu"
 then
-    echo 'ubuntu detected, placing ubuntu-specific aliases'
     alias inst='sudo apt-get install'
     alias pa='apt-get'
     alias upd='sudo apt-get update && sudo apt-get upgrade'
     alias sea='aptitude search'
 else
-    echo 'arch linux assumed, placing arch spefic stuff'
-    alias inst='sudo pacaur -S'
-    alias pa='pacaur'
-    alias upd='pacaur -Syu'
-    alias sea='pacaur -Ss'
+    source `which virtualenvwrapper.sh`
+    alias inst='sudo packer -S'
+    alias pa='packer'
+    alias upd='packer -Syu'
+    alias sea='packer -Ss'
 fi
 
 # jmp commands
