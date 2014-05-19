@@ -106,6 +106,7 @@
   :init (progn
           (add-to-list 'evil-emacs-state-modes 'grep-mode)
           (add-to-list 'evil-emacs-state-modes 'eshell-mode)
+          (add-to-list 'evil-emacs-state-modes 'git-rebase-mode)
           (bind-key "<SPC>" 'ace-jump-mode evil-normal-state-map)
           (bind-key ";" 'evil-ex evil-normal-state-map)
           (bind-key "\\" 'evil-repeat-find-char evil-normal-state-map)
