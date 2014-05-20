@@ -36,7 +36,6 @@
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
-(show-paren-mode 1)
 (global-hl-line-mode 1)
 ;; remove backup from current directories
 (defvar temporary-file-directory "/tmp")
@@ -307,9 +306,10 @@ screen."
 (use-package smartparens
   :ensure t
   :init (progn
-          (add-hook 'emacs-lisp-mode-hook (lambda ()
-                                            (turn-off-smartparens-mode)))
-          (smartparens-global-mode t)
+          (use-package smartparens-config)
+          (smartparens-global-mode 1)
+          (smartparens-strict-mode 1)
+          (turn-on-show-smartparens-mode)
           (sp-use-smartparens-bindings))
   :config (progn
 
