@@ -339,6 +339,9 @@ screen."
             (bind-key "(" 'sp-down-sexp evil-normal-state-map)
             (bind-key ")" 'sp-up-sexp evil-normal-state-map)
 
+            ;; turn off some bindings that conflict with how we switch windows
+            (bind-key "C-M-k" nil sp-keymap)
+
             ;; some pairs for django templates
             (sp-local-pair 'web-mode "{" nil :actions nil)
 	    (sp-local-pair 'web-mode "{%" "%}")
