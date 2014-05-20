@@ -51,7 +51,6 @@
 (column-number-mode t)
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-(bind-key "C-M-\\" 'fill-paragraph)
 
 (add-hook 'after-init-hook 'global-auto-revert-mode)
 ;; (add-hook 'after-init-hook 'global-hl-line-mode)
@@ -314,22 +313,40 @@ screen."
   :config (progn
 
             (defun wrap-with-pair (rewrap)
+              "Wrap the current sexp inside a pair. If rewrap is
+               true, change the current pair's rewrapping instead"
               (interactive "P")
               (if rewrap
                   (call-interactively 'sp-rewrap-sexp)
                 (let ((pair (string (read-char "wrap with: "))))
                   (sp-wrap-with-pair pair))))
 
+            (defun transpose-depending-on-mode (force-normal-sexp)
+              (interactive "P")
+              (let ((lisp-modes '(emacs-lisp-mode lisp-mode clojure-mode)))
+                (if (or force-normal-sexp (member major-mode lisp-modes))
+                    (sp-transpose-sexp)
+                  (sp-transpose-hybrid-sexp))))
+
             ;; make the bindings I will use most often explicit
             (bind-key "C-M-w" 'wrap-with-pair sp-keymap)
-            (bind-key "C-M-t" 'sp-transpose-sexp sp-keymap)
+            (bind-key "C-M-t" 'transpose-depending-on-mode sp-keymap)
             (bind-key "C-<right>" 'sp-forward-slurp-sexp sp-keymap)
             (bind-key "C-<left>" 'sp-backward-slurp-sexp sp-keymap)
             (bind-key "C-M-<right>" 'sp-forward-barf-sexp sp-keymap)
             (bind-key "C-M-<left>" 'sp-backward-barf-sexp sp-keymap)
+            (bind-key "C-M-\\" 'sp-splice-sexp sp-keymap)
+            (bind-key "(" 'sp-down-sexp evil-normal-state-map)
+            (bind-key ")" 'sp-up-sexp evil-normal-state-map)
 
+            ;; some pairs for django templates
             (sp-local-pair 'web-mode "{" nil :actions nil)
-	    (sp-local-pair 'web-mode "{%" "%}")))
+	    (sp-local-pair 'web-mode "{%" "%}")
+
+            ;; activate evil-paredit mode so we dont clobber pairs accidentally
+            (use-package evil-paredit
+              :ensure t
+              :init (add-hook 'smartparens-enabled-hook 'evil-paredit-mode))))
 
 (use-package yasnippet
   :ensure t
