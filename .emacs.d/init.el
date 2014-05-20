@@ -309,10 +309,19 @@ screen."
   :init (progn
           (add-hook 'emacs-lisp-mode-hook (lambda ()
                                             (turn-off-smartparens-mode)))
-          (smartparens-global-mode t))
+          (smartparens-global-mode t)
+          (sp-use-smartparens-bindings))
   :config (progn
-	    (sp-local-pair 'html-mode "{" nil :actions nil)
-	    (sp-local-pair 'html-mode "{%" "%}")))
+            ;; make the bindings I will use most often explicit
+            (bind-key "C-M-w" 'sp-rewrap-sexp sp-keymap)
+            (bind-key "C-M-t" 'sp-transpose-sexp sp-keymap)
+            (bind-key "C-<right>" 'sp-forward-slurp-sexp sp-keymap)
+            (bind-key "C-<left>" 'sp-backward-slurp-sexp sp-keymap)
+            (bind-key "C-M-<right>" 'sp-forward-barf-sexp sp-keymap)
+            (bind-key "C-M-<left>" 'sp-backward-barf-sexp sp-keymap)
+
+            (sp-local-pair 'web-mode "{" nil :actions nil)
+	    (sp-local-pair 'web-mode "{%" "%}")))
 
 (use-package yasnippet
   :ensure t
