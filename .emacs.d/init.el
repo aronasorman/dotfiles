@@ -312,8 +312,16 @@ screen."
           (smartparens-global-mode t)
           (sp-use-smartparens-bindings))
   :config (progn
+
+            (defun wrap-with-pair (rewrap)
+              (interactive "P")
+              (if rewrap
+                  (call-interactively 'sp-rewrap-sexp)
+                (let ((pair (string (read-char "wrap with: "))))
+                  (sp-wrap-with-pair pair))))
+
             ;; make the bindings I will use most often explicit
-            (bind-key "C-M-w" 'sp-rewrap-sexp sp-keymap)
+            (bind-key "C-M-w" 'wrap-with-pair sp-keymap)
             (bind-key "C-M-t" 'sp-transpose-sexp sp-keymap)
             (bind-key "C-<right>" 'sp-forward-slurp-sexp sp-keymap)
             (bind-key "C-<left>" 'sp-backward-slurp-sexp sp-keymap)
