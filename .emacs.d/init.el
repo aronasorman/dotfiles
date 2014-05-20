@@ -493,7 +493,9 @@ screen."
 
 (use-package flycheck
   :ensure t
-  :init (add-hook 'prog-mode-hook 'flycheck-mode))
+  :init (progn
+          (setq flycheck-idle-change-delay 1.5)
+          (add-hook 'prog-mode-hook 'flycheck-mode)))
 
 ;; web-mode
 (use-package web-mode
