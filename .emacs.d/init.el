@@ -337,6 +337,7 @@ screen."
             (bind-key "C-<left>" 'sp-backward-slurp-sexp sp-keymap)
             (bind-key "C-M-<right>" 'sp-forward-barf-sexp sp-keymap)
             (bind-key "C-M-<left>" 'sp-backward-barf-sexp sp-keymap)
+            (bind-key "C-S-k" 'sp-kill-hybrid-sexp sp-keymap)
             (bind-key "C-M-\\" 'sp-splice-sexp sp-keymap)
             (bind-key "(" 'sp-down-sexp evil-normal-state-map)
             (bind-key ")" 'sp-up-sexp evil-normal-state-map)
