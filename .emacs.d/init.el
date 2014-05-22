@@ -125,7 +125,9 @@
   :ensure t
   :config (progn
             (elpy-enable)
-            (elpy-use-ipython)))
+            (elpy-use-ipython)
+            ; disable flymake mode for python
+            (setq elpy-default-minor-modes (remove 'flymake-mode elpy-default-minor-modes))))
 
 (defun elpy-show-defun (copy-to-clipboard)
   "Show the current class and method, in case they are not on
