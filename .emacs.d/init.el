@@ -347,12 +347,7 @@ screen."
 
             ;; some pairs for django templates
             (sp-local-pair 'web-mode "{" nil :actions nil)
-	    (sp-local-pair 'web-mode "{%" "%}")
-
-            ;; activate evil-paredit mode so we dont clobber pairs accidentally
-            (use-package evil-paredit
-              :ensure t
-              :init (add-hook 'smartparens-enabled-hook 'evil-paredit-mode))))
+	    (sp-local-pair 'web-mode "{%" "%}")))
 
 (use-package browse-kill-ring
   :ensure t
