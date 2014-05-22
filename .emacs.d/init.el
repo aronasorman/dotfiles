@@ -109,7 +109,9 @@
           (bind-key ";" 'evil-ex evil-normal-state-map)
           (bind-key "\\" 'evil-repeat-find-char evil-normal-state-map)
           (bind-key "C-o" 'imenu evil-normal-state-map)
-          (bind-key "!" 'shell-command evil-normal-state-map))
+          (bind-key "!" 'shell-command evil-normal-state-map)
+          (bind-key "(" 'beginning-of-defun evil-normal-state-map)
+          (bind-key ")" 'end-of-defun evil-normal-state-map))
   :config (progn
             (evil-mode t)))
 
@@ -338,8 +340,8 @@ screen."
             (bind-key "C-M-<left>" 'sp-backward-barf-sexp evil-normal-state-map)
             (bind-key "C-S-k" 'sp-kill-hybrid-sexp evil-normal-state-map)
             (bind-key "C-M-\\" 'sp-splice-sexp evil-normal-state-map)
-            (bind-key "(" 'sp-down-sexp evil-normal-state-map)
-            (bind-key ")" 'sp-up-sexp evil-normal-state-map)
+            (bind-key "M-(" 'sp-backward-sexp evil-normal-state-map)
+            (bind-key "M-)" 'sp-forward-sexp evil-normal-state-map)
 
             ;; turn off some bindings that conflict with how we switch windows
             (bind-key "C-M-k" nil sp-keymap)
