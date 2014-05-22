@@ -364,7 +364,8 @@ screen."
 
 (use-package undo-tree
   :ensure t
-  :diminish undo-tree-mode)
+  :diminish undo-tree-mode
+  :config (add-to-list 'evil-emacs-state-modes 'undo-tree-mode))
 
 (use-package eldoc
   :ensure t
