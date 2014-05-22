@@ -348,6 +348,9 @@ screen."
             (sp-local-pair 'web-mode "{" nil :actions nil)
 	    (sp-local-pair 'web-mode "{%" "%}")))
 
+(use-package elixir-mode
+  :ensure t)
+
 (use-package browse-kill-ring
   :ensure t
   :config (progn
