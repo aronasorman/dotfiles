@@ -354,6 +354,11 @@ screen."
               :ensure t
               :init (add-hook 'smartparens-enabled-hook 'evil-paredit-mode))))
 
+(use-package browse-kill-ring
+  :ensure t
+  :config (progn
+            (bind-key "M-y" 'browse-kill-ring)))
+
 (use-package yasnippet
   :ensure t
   :diminish yas-minor-mode
