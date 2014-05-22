@@ -310,8 +310,7 @@ screen."
           (use-package smartparens-config)
           (smartparens-global-mode 1)
           (smartparens-strict-mode 1)
-          (turn-on-show-smartparens-mode)
-          (sp-use-smartparens-bindings))
+          (turn-on-show-smartparens-mode))
   :config (progn
 
             (defun wrap-with-pair (rewrap)
@@ -331,14 +330,14 @@ screen."
                   (sp-transpose-hybrid-sexp))))
 
             ;; make the bindings I will use most often explicit
-            (bind-key "C-M-w" 'wrap-with-pair sp-keymap)
-            (bind-key "C-M-t" 'transpose-depending-on-mode sp-keymap)
-            (bind-key "C-<right>" 'sp-forward-slurp-sexp sp-keymap)
-            (bind-key "C-<left>" 'sp-backward-slurp-sexp sp-keymap)
-            (bind-key "C-M-<right>" 'sp-forward-barf-sexp sp-keymap)
-            (bind-key "C-M-<left>" 'sp-backward-barf-sexp sp-keymap)
-            (bind-key "C-S-k" 'sp-kill-hybrid-sexp sp-keymap)
-            (bind-key "C-M-\\" 'sp-splice-sexp sp-keymap)
+            (bind-key "C-M-w" 'wrap-with-pair evil-normal-state-map)
+            (bind-key "C-M-t" 'transpose-depending-on-mode evil-normal-state-map)
+            (bind-key "C-<right>" 'sp-forward-slurp-sexp evil-normal-state-map)
+            (bind-key "C-<left>" 'sp-backward-slurp-sexp evil-normal-state-map)
+            (bind-key "C-M-<right>" 'sp-forward-barf-sexp evil-normal-state-map)
+            (bind-key "C-M-<left>" 'sp-backward-barf-sexp evil-normal-state-map)
+            (bind-key "C-S-k" 'sp-kill-hybrid-sexp evil-normal-state-map)
+            (bind-key "C-M-\\" 'sp-splice-sexp evil-normal-state-map)
             (bind-key "(" 'sp-down-sexp evil-normal-state-map)
             (bind-key ")" 'sp-up-sexp evil-normal-state-map)
 
