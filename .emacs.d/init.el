@@ -247,11 +247,14 @@ screen."
   :config (progn
             (setq project-frame-configurations (make-hash-table :test 'equal))
 
-            (defun spawn-new-eshell ()
-              (let ((shell-name (projectile-prepend-project-name (number-to-string (random 300)))))
+            (defun spawn-or-switch-to-old-eshell (eshell-num)
+              (let ((shell-name (projectile-prepend-project-name (number-to-string eshell-num))))
                 (with-helm-default-directory (projectile-project-root)
-                    (eshell (number-to-string (random 1000000)))
-                    (rename-buffer shell-name))))
+                    (if (get-buffer shell-name)
+                        (switch-to-buffer shell-name)
+                        (progn
+                          (eshell (number-to-string (random 1000000)))
+                          (rename-buffer shell-name))))))
 
             (defun toggle-project-shell-workspace ()
               (interactive)
@@ -261,7 +264,7 @@ screen."
                                                             project-frame-configurations)))
                 (if (not (window-configuration-p project-stored-window-config))
                     (progn
-                      (spawn-new-eshell)
+                      (spawn-or-switch-to-old-eshell 1)
                       (puthash project-window-config-key
                                current-window-config
                                project-frame-configurations))
@@ -271,7 +274,13 @@ screen."
                                current-window-config
                                project-frame-configurations)))))
 
-            (bind-key "C-x C-x" 'toggle-project-shell-workspace)))
+            (bind-key "C-x C-x" 'toggle-project-shell-workspace)
+
+            ;; bindings for switching to different eshells ala tabs in real terminal emulators
+            (bind-key "M-1" (lambda () (interactive) (spawn-or-switch-to-old-eshell 1)) eshell-mode-map)
+            (bind-key "M-2" (lambda () (interactive) (spawn-or-switch-to-old-eshell 2)) eshell-mode-map)
+            (bind-key "M-3" (lambda () (interactive) (spawn-or-switch-to-old-eshell 3)) eshell-mode-map)
+            (bind-key "M-4" (lambda () (interactive) (spawn-or-switch-to-old-eshell 4)) eshell-mode-map)))
 
 (use-package evil-leader
   :ensure t
