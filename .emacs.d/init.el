@@ -276,11 +276,21 @@ screen."
 
             (bind-key "C-x C-x" 'toggle-project-shell-workspace)
 
-            ;; bindings for switching to different eshells ala tabs in real terminal emulators
-            (bind-key "M-1" (lambda () (interactive) (spawn-or-switch-to-old-eshell 1)) eshell-mode-map)
-            (bind-key "M-2" (lambda () (interactive) (spawn-or-switch-to-old-eshell 2)) eshell-mode-map)
-            (bind-key "M-3" (lambda () (interactive) (spawn-or-switch-to-old-eshell 3)) eshell-mode-map)
-            (bind-key "M-4" (lambda () (interactive) (spawn-or-switch-to-old-eshell 4)) eshell-mode-map)))
+            ;; apparently we have to do this inside eshell-mode-hook since
+            ;; eshell-mode-map is only initialized once we enter eshell mode,
+            ;; and it's a local variable at that.
+            (add-hook 'eshell-mode-hook (lambda ()
+                                          ;; don't make eshell clobber our window movement keybindings
+                                          (bind-key "C-M-l" 'windmove-right eshell-mode-map)
+                                          (bind-key "C-M-h" 'windmove-left eshell-mode-map)
+                                          (bind-key "C-M-k" 'windmove-up eshell-mode-map)
+                                          (bind-key "C-M-j" 'windmove-down eshell-mode-map)
+
+                                          ;; bindings for switching to different eshells ala tabs in real terminal emulators
+                                          (bind-key "M-1" (lambda () (interactive) (spawn-or-switch-to-old-eshell 1)) eshell-mode-map)
+                                          (bind-key "M-2" (lambda () (interactive) (spawn-or-switch-to-old-eshell 2)) eshell-mode-map)
+                                          (bind-key "M-3" (lambda () (interactive) (spawn-or-switch-to-old-eshell 3)) eshell-mode-map)
+                                          (bind-key "M-4" (lambda () (interactive) (spawn-or-switch-to-old-eshell 4)) eshell-mode-map)))))
 
 (use-package evil-leader
   :ensure t
