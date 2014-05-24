@@ -239,6 +239,40 @@ screen."
           (bind-key "M-x" 'helm-M-x)
           (helm-mode t)))
 
+(use-package proced
+  :config (progn
+            (bind-key "C-x p" 'proced)))
+
+(use-package eshell
+  :config (progn
+            (setq project-frame-configurations (make-hash-table :test 'equal))
+
+            (defun spawn-new-eshell ()
+              (let ((shell-name (projectile-prepend-project-name (number-to-string (random 300)))))
+                (with-helm-default-directory (projectile-project-root)
+                    (eshell (number-to-string (random 1000000)))
+                    (rename-buffer shell-name))))
+
+            (defun toggle-project-shell-workspace ()
+              (interactive)
+              (let* ((current-window-config (current-window-configuration))
+                     (project-window-config-key (projectile-project-name))
+                     (project-stored-window-config (gethash project-window-config-key
+                                                            project-frame-configurations)))
+                (if (not (window-configuration-p project-stored-window-config))
+                    (progn
+                      (spawn-new-eshell)
+                      (puthash project-window-config-key
+                               current-window-config
+                               project-frame-configurations))
+                    (progn
+                      (set-window-configuration project-stored-window-config)
+                      (puthash project-window-config-key
+                               current-window-config
+                               project-frame-configurations)))))
+
+            (bind-key "C-x C-x" 'toggle-project-shell-workspace)))
+
 (use-package evil-leader
   :ensure t
   :init (progn
