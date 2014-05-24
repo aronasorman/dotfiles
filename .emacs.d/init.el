@@ -250,6 +250,7 @@ screen."
             (defun spawn-or-switch-to-old-eshell (eshell-num)
               (let ((shell-name (projectile-prepend-project-name (number-to-string eshell-num))))
                 (with-helm-default-directory (projectile-project-root)
+                    (delete-other-windows) ; make sure we have fullscreen eshell
                     (if (get-buffer shell-name)
                         (switch-to-buffer shell-name)
                         (progn
