@@ -86,6 +86,10 @@
    (align-regexp begin end "\\(\\s-*\\)=" 1 1 ))
 (bind-key "C-x a a" 'align-to-equals)
 
+(defadvice split-window (after move-point-to-new-window activate)
+  "Moves the point to the newly created window after splitting."
+  (other-window 1))
+
 ;;;;; package configs
 
 ;; auto-complete
@@ -311,8 +315,8 @@ screen."
 	      "t" 'deft
 	      "d" 'dired
 	      "m" 'mu4e
-	      "|" (lambda () (interactive) (split-window-right) (windmove-right))
-	      "-" (lambda () (interactive) (split-window-below) (windmove-down))
+	      "|" 'split-window-right
+	      "-" 'split-window-below
 	      "." 'find-tag
 	      "(" 'paredit-wrap-round
 	      "u." 'pop-tag-mark
