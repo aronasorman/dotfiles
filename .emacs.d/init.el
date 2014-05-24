@@ -364,9 +364,8 @@ screen."
   :ensure t
   :init (progn
           (use-package smartparens-config)
-          (smartparens-global-mode 1)
-          (smartparens-strict-mode 1)
-          (turn-on-show-smartparens-mode))
+          (smartparens-global-strict-mode 1)
+          (show-smartparens-global-mode 1))
   :config (progn
 
             (defun wrap-with-pair (rewrap)
