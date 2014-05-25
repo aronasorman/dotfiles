@@ -391,15 +391,20 @@ screen."
 
             ;; make the bindings I will use most often explicit
             (bind-key "C-M-w" 'wrap-with-pair evil-normal-state-map)
+            (bind-key "C-M-w" 'wrap-with-pair evil-insert-state-map)
             (bind-key "C-M-t" 'transpose-depending-on-mode evil-normal-state-map)
             (bind-key "C-<right>" 'sp-forward-slurp-sexp evil-normal-state-map)
+            (bind-key "C-<right>" 'sp-forward-slurp-sexp evil-insert-state-map)
             (bind-key "C-<left>" 'sp-backward-slurp-sexp evil-normal-state-map)
+            (bind-key "C-<left>" 'sp-backward-slurp-sexp evil-insert-state-map)
             (bind-key "C-M-<right>" 'sp-forward-barf-sexp evil-normal-state-map)
             (bind-key "C-M-<left>" 'sp-backward-barf-sexp evil-normal-state-map)
             (bind-key "C-S-k" 'sp-kill-hybrid-sexp evil-normal-state-map)
             (bind-key "C-M-\\" 'sp-splice-sexp evil-normal-state-map)
             (bind-key "M-(" 'sp-backward-sexp evil-normal-state-map)
             (bind-key "M-)" 'sp-forward-sexp evil-normal-state-map)
+            (bind-key "C-)" 'sp-splice-sexp-killing-forward evil-normal-state-map)
+            (bind-key "C-(" 'sp-splice-sexp-killing-backward evil-normal-state-map)
 
             ;; turn off some bindings that conflict with how we switch windows
             (bind-key "C-M-k" nil sp-keymap)
