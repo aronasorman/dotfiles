@@ -1,3 +1,6 @@
 [submodule ".emacs.d/elixir-mode"]
 	path = .emacs.d/elixir-mode
 	url = https://github.com/elixir-lang/emacs-elixir.git
+[submodule ".emacs.d/s"]
+	path = .emacs.d/s
+	url = git@github.com:magnars/s.el.git
