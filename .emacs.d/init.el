@@ -409,7 +409,7 @@ screen."
 	    (sp-local-pair 'web-mode "{%" "%}")))
 
 (use-package elixir-mode
-  :ensure t)
+  :load-path "~/.emacs.d/elixir-mode")
 
 (use-package browse-kill-ring
   :ensure t
@@ -453,9 +453,6 @@ screen."
 (use-package js2-mode
   :ensure t
   :mode ("\\.js$" . js2-mode))
-
-;; (use-package elixir-mode
-;;   :ensure t)
 
 (use-package linum-relative
   :load-path "~/.emacs.d/linum-relative")
