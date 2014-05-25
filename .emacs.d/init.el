@@ -249,7 +249,10 @@ screen."
 
 (use-package eshell
   :config (progn
-            (setq project-frame-configurations (make-hash-table :test 'equal))
+            ;; our mechanism to switch to the eshells for a certain project.
+            ;; the frame configuration for the current project is stored in this
+            ;; variable.
+            (defvar project-frame-configurations (make-hash-table :test 'equal))
 
             (defun spawn-or-switch-to-old-eshell (eshell-num)
               (let ((shell-name (projectile-prepend-project-name (number-to-string eshell-num))))
@@ -259,9 +262,17 @@ screen."
                         (switch-to-buffer shell-name)
                         (progn
                           (eshell (number-to-string (random 1000000)))
+              "Either switch to a a project's eshell depending on
+               ESHELL-NUM, or spawn a new one if it hasn't been
+               created yet."
                           (rename-buffer shell-name))))))
 
             (defun toggle-project-shell-workspace ()
+              "Either switch to a a project's eshell depending on
+               ESHELL-NUM, or spawn a new one if it hasn't been
+               created yet."
+              "Switch either to a project's eshell or back to its
+               windows if we were already in the eshells."
               (interactive)
               (let* ((current-window-config (current-window-configuration))
                      (project-window-config-key (projectile-project-name))
