@@ -632,8 +632,13 @@ screen."
 
 (use-package clojure-mode
   :ensure t
-  :config (use-package cider
-            :ensure t))
+  :config (progn
+            (use-package clojure-test-mode
+              :ensure t)
+            (use-package cider
+              :ensure t
+              :init (progn
+                      (cider-repl-toggle-pretty-printing)))))
 
 ;; mu and mu4e
 (use-package mu4e
