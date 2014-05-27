@@ -4,3 +4,6 @@
 [submodule ".emacs.d/s"]
 	path = .emacs.d/s
 	url = git@github.com:magnars/s.el.git
+[submodule ".emacs.d/edts"]
+	path = .emacs.d/edts
+	url = git@github.com:tjarvstrand/edts.git

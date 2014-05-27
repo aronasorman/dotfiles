@@ -214,7 +214,10 @@ screen."
                                                (message "switched virtualenv to kalite")))
     (,(expand-file-name "~/src/sipper/") . ,(lambda ()
                                               (pyvenv-workon "sipper")
-                                              (message "switched virtualenv to sipper"))))
+                                              (message "switched virtualenv to sipper")))
+    (,(expand-file-name "~/src/snippets/") . ,(lambda ()
+                                                (pyvenv-workon "snippets")
+                                                (message "switched virtualenv to snippets"))))
   "Functions to run when we switch after we switch to a different project")
 
 (defun projectile-run-action-for-current-project ()
@@ -247,66 +250,79 @@ screen."
   :config (progn
             (bind-key "C-x p" 'proced)))
 
-(use-package eshell
+(use-package multi-term
+  :ensure t
   :config (progn
-            ;; our mechanism to switch to the eshells for a certain project.
-            ;; the frame configuration for the current project is stored in this
-            ;; variable.
-            (defvar project-frame-configurations (make-hash-table :test 'equal))
+            (use-package visor
+             :load-path "~/.emacs.d/"
+             :config (progn
+                       (bind-key "C-x C-x" 'toggle-project-shell-workspace)))
 
-            (defun spawn-or-switch-to-old-eshell (eshell-num)
-              (let ((shell-name (projectile-prepend-project-name (number-to-string eshell-num))))
+            (defun spawn-new-term (term-num)
+              (let ((shell-name (projectile-prepend-project-name (number-to-string term-num))))
                 (with-helm-default-directory (projectile-project-root)
-                    (delete-other-windows) ; make sure we have fullscreen eshell
-                    (if (get-buffer shell-name)
-                        (switch-to-buffer shell-name)
-                        (progn
-                          (eshell (number-to-string (random 1000000)))
-              "Either switch to a a project's eshell depending on
-               ESHELL-NUM, or spawn a new one if it hasn't been
-               created yet."
-                          (rename-buffer shell-name))))))
-
-            (defun toggle-project-shell-workspace ()
-              "Either switch to a a project's eshell depending on
-               ESHELL-NUM, or spawn a new one if it hasn't been
-               created yet."
-              "Switch either to a project's eshell or back to its
-               windows if we were already in the eshells."
-              (interactive)
-              (let* ((current-window-config (current-window-configuration))
-                     (project-window-config-key (projectile-project-name))
-                     (project-stored-window-config (gethash project-window-config-key
-                                                            project-frame-configurations)))
-                (if (not (window-configuration-p project-stored-window-config))
+                    (delete-other-windows)
+                  (if (get-buffer shell-name)
+                      (switch-to-buffer shell-name)
                     (progn
-                      (spawn-or-switch-to-old-eshell 1)
-                      (puthash project-window-config-key
-                               current-window-config
-                               project-frame-configurations))
-                    (progn
-                      (set-window-configuration project-stored-window-config)
-                      (puthash project-window-config-key
-                               current-window-config
-                               project-frame-configurations)))))
+                      (multi-term)
+                      (rename-buffer shell-name))))))
+            (setq term-spawn-or-switch-function 'spawn-new-term)
 
-            (bind-key "C-x C-x" 'toggle-project-shell-workspace)
+            (add-to-list 'evil-emacs-state-modes 'term-mode)
+            (evil-define-key 'insert term-mode-map "C-r" 'term-send-reverse-search-history)
+            ;; (add-hook 'evil-local-mode-hook (lambda ()
+            ;;                                   (if (eq major-mode 'term-mode)
+            ;;                                       (turn-off-evil-mode))))
 
-            ;; apparently we have to do this inside eshell-mode-hook since
-            ;; eshell-mode-map is only initialized once we enter eshell mode,
-            ;; and it's a local variable at that.
-            (add-hook 'eshell-mode-hook (lambda ()
-                                          ;; don't make eshell clobber our window movement keybindings
-                                          (bind-key "C-M-l" 'windmove-right eshell-mode-map)
-                                          (bind-key "C-M-h" 'windmove-left eshell-mode-map)
-                                          (bind-key "C-M-k" 'windmove-up eshell-mode-map)
-                                          (bind-key "C-M-j" 'windmove-down eshell-mode-map)
+            (add-to-list 'term-bind-key-alist '("M-1" . (lambda () (interactive) (spawn-new-term 1))))
+            (add-to-list 'term-bind-key-alist '("M-2" . (lambda () (interactive) (spawn-new-term 2))))
+            (add-to-list 'term-bind-key-alist '("M-3" . (lambda () (interactive) (spawn-new-term 3))))
+            (add-to-list 'term-bind-key-alist '("M-4" . (lambda () (interactive) (spawn-new-term 4))))
 
-                                          ;; bindings for switching to different eshells ala tabs in real terminal emulators
-                                          (bind-key "M-1" (lambda () (interactive) (spawn-or-switch-to-old-eshell 1)) eshell-mode-map)
-                                          (bind-key "M-2" (lambda () (interactive) (spawn-or-switch-to-old-eshell 2)) eshell-mode-map)
-                                          (bind-key "M-3" (lambda () (interactive) (spawn-or-switch-to-old-eshell 3)) eshell-mode-map)
-                                          (bind-key "M-4" (lambda () (interactive) (spawn-or-switch-to-old-eshell 4)) eshell-mode-map)))))
+            ;; make C-r search backward
+            ;; delete the original keybinding first so there will be no conflicts
+            (setq term-bind-key-alist (delete-if (lambda (elem)
+                                                   (equal "C-r" (first elem)))
+                                                 term-bind-key-alist))
+            (add-to-list 'term-bind-key-alist '("C-r" . term-send-reverse-search-history))))
+
+;; (use-package eshell
+;;   :init (progn
+;;           (require 'em-smart)
+;;           (setq eshell-where-to-jump 'begin)
+;;           (setq eshell-review-quick-commands nil)
+;;           (setq eshell-smart-space-goes-to-end t))
+;;   :config (progn
+
+;;            (use-package visor
+;;              :load-path "~/.emacs.d/")
+
+
+
+;;             (bind-key "C-x C-x" 'toggle-project-shell-workspace)
+
+;;             ;; apparently we have to do this inside eshell-mode-hook since
+;;             ;; eshell-mode-map is only initialized once we enter eshell mode,
+;;             ;; and it's a local variable at that.
+;;             (add-hook 'eshell-mode-hook (lambda ()
+;;                                           ;; don't make eshell clobber our window movement keybindings
+;;                                           (bind-key "C-M-l" 'windmove-right eshell-mode-map)
+;;                                           (bind-key "C-M-h" 'windmove-left eshell-mode-map)
+;;                                           (bind-key "C-M-k" 'windmove-up eshell-mode-map)
+;;                                           (bind-key "C-M-j" 'windmove-down eshell-mode-map)
+
+;;                                           ;; delete word by pressing C-w
+;;                                           (bind-key "C-w" 'backward-kill-word eshell-mode-map)
+
+;;                                           ;; bindings for switching to different eshells ala tabs in real terminal emulators
+;;                                           (bind-key "M-1" (lambda () (interactive) (spawn-or-switch-to-old-eshell 1)) eshell-mode-map)
+;;                                           (bind-key "M-2" (lambda () (interactive) (spawn-or-switch-to-old-eshell 2)) eshell-mode-map)
+;;                                           (bind-key "M-3" (lambda () (interactive) (spawn-or-switch-to-old-eshell 3)) eshell-mode-map)
+;;                                           (bind-key "M-4" (lambda () (interactive) (spawn-or-switch-to-old-eshell 4)) eshell-mode-map)
+
+;;                                           ;; add it in here so it actually gets done by the time we load eshell
+;;                                           (eshell-smart-initialize)))))
 
 (use-package evil-leader
   :ensure t
