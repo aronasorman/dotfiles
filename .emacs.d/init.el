@@ -428,6 +428,7 @@ screen."
             (bind-key "C-M-<left>" 'sp-backward-barf-sexp evil-normal-state-map)
             (bind-key "C-S-k" 'sp-kill-hybrid-sexp evil-normal-state-map)
             (bind-key "C-M-\\" 'sp-splice-sexp evil-normal-state-map)
+            (bind-key "C-M-=" 'sp-indent-defun evil-normal-state-map)
             (bind-key "M-(" 'sp-backward-sexp evil-normal-state-map)
             (bind-key "M-)" 'sp-forward-sexp evil-normal-state-map)
             (bind-key "C-)" 'sp-splice-sexp-killing-forward evil-normal-state-map)
