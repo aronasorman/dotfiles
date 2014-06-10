@@ -182,6 +182,11 @@ screen."
   :init (progn
           (bind-key "," 'self-insert-command evil-insert-state-map)))
 
+(use-package tuareg
+  :ensure t
+  :init (progn
+          (add-to-list 'evil-emacs-state-modes 'tuareg-interactive-mode)))
+
 (use-package evil-numbers
   :ensure t
   :init (progn
