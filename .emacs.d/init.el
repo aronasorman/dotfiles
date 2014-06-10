@@ -499,7 +499,11 @@ screen."
   :ensure t
   :init (progn
           (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-          (setq haskell-program-name "ghci")))
+          (setq haskell-program-name "ghci")
+          (use-package ghc
+            :ensure t
+            :init (progn
+                    (add-hook 'haskell-mode-hook 'ghc-init)))))
 
 (use-package js2-mode
   :ensure t
