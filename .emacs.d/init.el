@@ -90,6 +90,19 @@
   "Moves the point to the newly created window after splitting."
   (other-window 1))
 
+(defvar frame-maximized-p nil)
+(make-variable-frame-local 'frame-maximized-p)
+(defun toggle-window-maximization ()
+  (interactive)
+  (if frame-maximized-p
+      (progn
+        (balance-windows)
+        (setq frame-maximized-p nil))
+    (progn
+      (maximize-window)
+      (setq frame-maximized-p t))))
+(bind-key "C-M-<return>" 'toggle-window-maximization)
+
 ;;;;; package configs
 
 ;; auto-complete
