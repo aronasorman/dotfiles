@@ -623,8 +623,11 @@ screen."
 (use-package flycheck
   :ensure t
   :init (progn
+          (use-package flycheck-haskell
+            :ensure t)
           (setq flycheck-idle-change-delay 1.5)
-          (add-hook 'prog-mode-hook 'flycheck-mode)))
+          (add-hook 'prog-mode-hook 'flycheck-mode)
+          (add-hook 'flycheck-mode-hook 'flycheck-haskell-setup)))
 
 ;; web-mode
 (use-package web-mode
