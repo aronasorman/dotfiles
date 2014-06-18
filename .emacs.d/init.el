@@ -133,14 +133,6 @@
           (add-hook 'eshell-mode-hook 'turn-off-evil-mode) ; evil-emacs-state-modes ain't working for eshell!
           (evil-mode t)))
 
-(use-package helm-cmd-t
-  :load-path "~/.emacs.d/helm-cmd-t"
-  :init (progn
-         (bind-key "C-p" 'helm-cmd-t evil-normal-state-map)
-         (bind-key "M-P" (lambda ()
-                           (interactive)
-                           (helm-cmd-t-git-grep (current-buffer) "")))))
-
 (use-package elpy
   :ensure t
   :config (progn
@@ -257,12 +249,21 @@ screen."
           (projectile-global-mode t)))
 
 (use-package helm
-  :ensure t
+  :load-path "~/.emacs.d/helm"
   :diminish helm-mode
   :init (progn
           (setq helm-ff-transformer-show-only-basename nil)
           (bind-key "M-x" 'helm-M-x)
+          (require 'helm-mode)
           (helm-mode t)))
+
+(use-package helm-cmd-t
+  :load-path "~/.emacs.d/helm-cmd-t"
+  :init (progn
+         (bind-key "C-p" 'helm-cmd-t evil-normal-state-map)
+         (bind-key "M-P" (lambda ()
+                           (interactive)
+                           (helm-cmd-t-git-grep (current-buffer) "")))))
 
 (use-package proced
   :config (progn
@@ -411,7 +412,7 @@ screen."
   :ensure t)
 
 (use-package smartparens
-  :ensure t
+  :load-path "~/.emacs.d/smartparens"
   :init (progn
           (use-package smartparens-config)
           (smartparens-global-strict-mode 1)

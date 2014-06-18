@@ -7,3 +7,9 @@
 [submodule ".emacs.d/edts"]
 	path = .emacs.d/edts
 	url = git@github.com:tjarvstrand/edts.git
+[submodule ".emacs.d/helm"]
+	path = .emacs.d/helm
+	url = git@github.com:emacs-helm/helm.git
+[submodule ".emacs.d/smartparens"]
+	path = .emacs.d/smartparens
+	url = git@github.com:Fuco1/smartparens.git
