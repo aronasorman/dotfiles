@@ -238,7 +238,7 @@ screen."
       (message "No action found for %s" current-project))))
 
 (use-package projectile
-  :ensure t
+  :load-path "~/.emacs.d/projectile"
   :diminish projectile-mode
   :config (progn
             (setq projectile-remember-window-configs t)

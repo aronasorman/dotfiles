@@ -13,3 +13,6 @@
 [submodule ".emacs.d/smartparens"]
 	path = .emacs.d/smartparens
 	url = git@github.com:Fuco1/smartparens.git
+[submodule ".emacs.d/projectile"]
+	path = .emacs.d/projectile
+	url = git@github.com:bbatsov/projectile.git
