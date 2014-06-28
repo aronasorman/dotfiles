@@ -101,7 +101,7 @@
     (progn
       (maximize-window)
       (setq frame-maximized-p t))))
-(bind-key "C-M-<return>" 'toggle-window-maximization)
+(bind-key "M-RET" 'toggle-window-maximization)
 
 ;;;;; package configs
 
