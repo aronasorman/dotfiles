@@ -1,3 +1,4 @@
+#!/usr/bin/env sh
 # all initialization variables go here, then custom setup and whatnot
 
 # ENVIRONMENT VARIABLES
