@@ -31,12 +31,6 @@ PATH=/usr/local/bin:/usr/local/sbin:$PATH
 # cabal executables
 PATH=$HOME/.cabal/bin:$PATH
 
-# texlive
-if [ "Darwin" = `uname -o` ]
-then
-    PATH=/usr/local/texlive/2012/bin/universal-darwin:$PATH
-fi
-
 # GOPATH bin
 PATH=$GOPATH/bin:$PATH
 
@@ -66,7 +60,12 @@ alias pmm='python manage.py migrate --all'
 alias py='ipython'
 
 # OS specific aliases
-if cat /etc/*-release | grep -q "Ubuntu"
+if uname | grep -q "Darwin"
+then
+    alias inst='brew install'
+    alias upd='brew update && brew upgrade'
+    alias sea='brew search'
+elif cat /etc/*-release | grep -q "Ubuntu"
 then
     alias inst='sudo apt-get install'
     alias pa='apt-get'
