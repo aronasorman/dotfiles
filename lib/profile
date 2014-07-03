@@ -40,7 +40,13 @@ alias em=$EDITOR
 alias mux='tmuxinator'
 alias ms='tmuxinator start'
 alias mo='tmuxinator open'
-alias g=git
+if which hub > /dev/null
+then
+    alias git=hub
+    alias g=hub
+else
+    alias g=git
+fi
 alias ga='git annex'
 alias t='tmux'
 alias ta='tmux attach'
