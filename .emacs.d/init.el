@@ -464,6 +464,9 @@ screen."
 (use-package elixir-mode
   :load-path "~/.emacs.d/elixir-mode")
 
+(use-package lua-mode
+  :ensure t)
+
 (use-package browse-kill-ring
   :ensure t
   :config (progn
