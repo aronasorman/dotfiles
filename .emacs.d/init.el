@@ -103,6 +103,11 @@
       (setq frame-maximized-p t))))
 (bind-key "M-RET" 'toggle-window-maximization)
 
+;;;;; path configuration
+
+;; add /usr/local/bin to path
+(setenv "PATH" (concat "/usr/local/bin" ":" (getenv "PATH")))
+
 ;;;;; package configs
 
 ;; auto-complete
@@ -115,6 +120,11 @@
             (use-package auto-complete-config
               )
             (ac-config-default)))
+
+;; shell paths
+(use-package exec-path-from-shell
+  :ensure t)
+
 
 (use-package evil
   :ensure t
@@ -134,13 +144,13 @@
           (add-hook 'eshell-mode-hook 'turn-off-evil-mode) ; evil-emacs-state-modes ain't working for eshell!
           (evil-mode t)))
 
-(use-package elpy
-  :ensure t
-  :config (progn
-            (elpy-enable)
-            (elpy-use-ipython)
-            ; disable flymake mode for python
-            (setq elpy-default-minor-modes (remove 'flymake-mode elpy-default-minor-modes))))
+;; (use-package elpy
+;;   :ensure t
+;;   :config (progn
+;;             (elpy-enable)
+;;             (elpy-use-ipython)
+;;             ; disable flymake mode for python
+;;             (setq elpy-default-minor-modes (remove 'flymake-mode elpy-default-minor-modes))))
 
 (defun elpy-show-defun (copy-to-clipboard)
   "Show the current class and method, in case they are not on
@@ -178,7 +188,8 @@ screen."
 (use-package tuareg
   :ensure t
   :init (progn
-          (add-to-list 'evil-emacs-state-modes 'tuareg-interactive-mode)))
+          (add-to-list 'evil-emacs-state-modes 'tuareg-interactive-mode)
+          (bind-key "C-M-h" nil tuareg-mode-map)))
 
 (use-package evil-numbers
   :ensure t
@@ -749,7 +760,7 @@ screen."
  '(vc-annotate-background nil)
  '(vc-annotate-color-map (quote ((20 . "#c82829") (40 . "#f5871f") (60 . "#eab700") (80 . "#718c00") (100 . "#3e999f") (120 . "#4271ae") (140 . "#8959a8") (160 . "#c82829") (180 . "#f5871f") (200 . "#eab700") (220 . "#718c00") (240 . "#3e999f") (260 . "#4271ae") (280 . "#8959a8") (300 . "#c82829") (320 . "#f5871f") (340 . "#eab700") (360 . "#718c00"))))
  '(vc-annotate-very-old-color nil)
- '(web-mode-code-indent-offset 4))
+ '(web-mode-code-indent-offset 4 t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
