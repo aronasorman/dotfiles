@@ -69,6 +69,7 @@ alias py='ipython'
 # OS specific aliases
 if uname | grep -q "Darwin"
 then
+    source `which virtualenvwrapper.sh`
     alias inst='brew install'
     alias upd='brew update && brew upgrade'
     alias sea='brew search'
