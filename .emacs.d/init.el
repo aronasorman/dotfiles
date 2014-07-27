@@ -125,6 +125,15 @@
 (use-package exec-path-from-shell
   :ensure t)
 
+;; dependencies of other packages.
+(use-package s
+  :ensure t)
+
+(use-package dash
+  :ensure t)
+
+(use-package pkg-info
+  :ensure t)
 
 (use-package evil
   :ensure t
