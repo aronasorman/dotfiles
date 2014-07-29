@@ -153,13 +153,13 @@
           (add-hook 'eshell-mode-hook 'turn-off-evil-mode) ; evil-emacs-state-modes ain't working for eshell!
           (evil-mode t)))
 
-;; (use-package elpy
-;;   :ensure t
-;;   :config (progn
-;;             (elpy-enable)
-;;             (elpy-use-ipython)
-;;             ; disable flymake mode for python
-;;             (setq elpy-default-minor-modes (remove 'flymake-mode elpy-default-minor-modes))))
+(use-package elpy
+  :ensure t
+  :config (progn
+            (elpy-enable)
+            (elpy-use-ipython)
+            ; disable flymake mode for python
+            (setq elpy-default-minor-modes (remove 'flymake-mode elpy-default-minor-modes))))
 
 (defun elpy-show-defun (copy-to-clipboard)
   "Show the current class and method, in case they are not on
@@ -756,7 +756,7 @@ screen."
  '(custom-safe-themes (quote ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
  '(fci-rule-color "#efefef")
  '(midnight-mode t nil (midnight))
- '(org-agenda-files (quote ("~/notes/todo/personal.org" "~/notes/todo/fle.org")))
+ '(org-agenda-files (quote ("~/notes/todo/fle.org")))
  '(org-export-backends (quote (ascii html icalendar latex md odt)))
  '(org-html-table-default-attributes (quote (:border "2" :cellspacing "5" :cellpadding "6" :rules "groups" :frame "hsides")))
  '(org-modules (quote (org-bbdb org-bibtex org-crypt org-docview org-gnus org-habit org-id org-info org-inlinetask org-invoice org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m org-invoice)))
