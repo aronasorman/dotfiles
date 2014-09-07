@@ -294,10 +294,11 @@ screen."
 (use-package helm-cmd-t
   :load-path "~/.emacs.d/helm-cmd-t"
   :init (progn
-         (bind-key "C-p" 'helm-cmd-t evil-normal-state-map)
-         (bind-key "M-P" (lambda ()
-                           (interactive)
-                           (helm-cmd-t-git-grep (current-buffer) "")))))
+          (bind-key "C-p" 'helm-cmd-t evil-normal-state-map)
+          (bind-key "M-P" (lambda ()
+                            (interactive)
+                            (with-helm-default-directory (projectile-project-root)
+                                (helm-cmd-t-git-grep (current-buffer) ""))))))
 
 (use-package proced
   :config (progn
