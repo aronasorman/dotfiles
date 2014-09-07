@@ -157,9 +157,11 @@
   :ensure t
   :config (progn
             (elpy-enable)
-            (elpy-use-ipython)
-            ; disable flymake mode for python
-            (setq elpy-default-minor-modes (remove 'flymake-mode elpy-default-minor-modes))))
+            (elpy-use-ipython))
+  :init (progn
+          ;; disable flymake mode for python
+          (setq elpy-modules (remove 'elpy-module-flymake elpy-modules)))
+  )
 
 (defun elpy-show-defun (copy-to-clipboard)
   "Show the current class and method, in case they are not on
@@ -186,6 +188,17 @@ screen."
 ;; (use-package sunburn
 ;;   :load-path "~/.emacs.d/"
 ;;   :config (color-theme-sunburn))
+
+(use-package haskell-mode
+  :ensure t
+  :init (progn
+          (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+          (setq haskell-program-name "ghci")
+          (setq haskell-tags-on-save t)
+          (use-package ghc
+            :ensure t
+            :init (progn
+                    (add-hook 'haskell-mode-hook 'ghc-init)))))
 
 (use-package shm
   :load-path "~/.emacs.d/structured-haskell-mode/elisp"
@@ -429,8 +442,18 @@ screen."
   (let ((user-id (magit-pr/ask-id-to-compare-against)))
     (browse-url (magit-pr/url user-id))))
 
+(add-hook 'magit-checkout-command-hook
+          (lambda (ignore)
+            (projectile-maybe-invalidate-cache t)
+            nil ; we have to return nil for the checkout to continue on
+            ))
+
 (use-package slime
-  :ensure t)
+  :load-path "~/.emacs.d/slime"
+  :init (progn
+          (setq inferior-lisp-program "sbcl"))
+  :config (progn
+            (use-package slime-autoloads)))
 
 (use-package smartparens
   :load-path "~/.emacs.d/smartparens"
@@ -520,15 +543,6 @@ screen."
           (add-to-list 'evil-overriding-maps '(deft-mode-map))
           (bind-key "C-w" 'evil-delete-backward-word deft-mode-map)))
 
-(use-package haskell-mode
-  :ensure t
-  :init (progn
-          (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-          (setq haskell-program-name "ghci")
-          (use-package ghc
-            :ensure t
-            :init (progn
-                    (add-hook 'haskell-mode-hook 'ghc-init)))))
 
 (use-package js2-mode
   :ensure t
