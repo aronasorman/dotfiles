@@ -27,7 +27,7 @@ PATH=$LIB/bin:$PATH
 PATH=$PATH:$SRC/elixir/bin
 
 ## for fixing Homebrew
-PATH=/usr/local/bin:/usr/local/sbin:$PATH
+PATH=/usr/local/bin:/usr/local/sbin:/sbin:$PATH
 
 # cabal executables
 PATH=$HOME/.cabal/bin:$PATH
