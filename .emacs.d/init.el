@@ -305,6 +305,11 @@ screen."
                             (with-helm-default-directory (projectile-project-root)
                                 (helm-cmd-t-git-grep (current-buffer) ""))))))
 
+(use-package github-browse-file
+  :ensure t
+  :init (progn
+          (bind-key "C-M-g" 'github-browse-file)))
+
 (use-package proced
   :config (progn
             (bind-key "C-x p" 'proced)))
