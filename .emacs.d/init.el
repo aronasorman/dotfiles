@@ -209,7 +209,8 @@ screen."
   :config (progn
             (add-hook 'haskell-mode-hook 'structured-haskell-mode))
   :init (progn
-          (bind-key "," 'self-insert-command evil-insert-state-map)))
+          (bind-key "," 'self-insert-command evil-insert-state-map)
+          (bind-key "C-M-k" 'windmove-up shm-map)))
 
 (use-package tuareg
   :ensure t
