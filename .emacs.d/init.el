@@ -111,15 +111,19 @@
 ;;;;; package configs
 
 ;; auto-complete
-(use-package auto-complete
+;; (use-package auto-complete
+;;   :ensure t
+;;   :diminish auto-complete-mode
+;;   :init (progn
+;;           (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict"))
+;;   :config (progn
+;;             (use-package auto-complete-config
+;;               )
+;;             (ac-config-default)))
+(use-package company
   :ensure t
-  :diminish auto-complete-mode
   :init (progn
-          (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict"))
-  :config (progn
-            (use-package auto-complete-config
-              )
-            (ac-config-default)))
+          (add-hook 'after-init-hook 'global-company-mode)))
 
 ;; shell paths
 (use-package exec-path-from-shell
