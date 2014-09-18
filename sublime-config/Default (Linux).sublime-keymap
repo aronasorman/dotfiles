@@ -1,0 +1,5 @@
+[
+    {"keys": ["ctrl+j"], "command": "exit_insert_mode"},
+
+    {"keys": [";"], "command": "show_overlay", "args": {"overlay": "command_palette", "text": ":"}},
+]

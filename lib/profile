@@ -64,6 +64,9 @@ alias pmdb='python manage.py dbshell'
 alias pmr='python manage.py runserver'
 alias pmrr='python manage.py runserver_plus'
 alias pmm='python manage.py migrate --all'
+alias pmh='Xvfb :99 -ac'
+alias pmt='python manage.py test'
+alias pmth='DISPLAY=:99 python manage.py test'
 alias py='ipython'
 
 # OS specific aliases
