@@ -7,14 +7,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "/home/aron/src/ka-lite/README.md",
-			"settings":
-			{
-				"buffer_size": 2366,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -27,12 +19,36 @@
 				"Project: Close"
 			],
 			[
-				"project",
-				"Project: Close"
+				"git comm",
+				"Git: Commit history"
 			],
 			[
 				":w",
 				":w - Save"
+			],
+			[
+				"settingsuser",
+				"Preferences: Settings - User"
+			],
+			[
+				"addcu",
+				"Git: Add Current File"
+			],
+			[
+				"blame",
+				"Git: Blame"
+			],
+			[
+				"git statu",
+				"Git: Status"
+			],
+			[
+				"project",
+				"Project: Save As"
+			],
+			[
+				"add",
+				"Project: Add Folder"
 			],
 			[
 				"key",
@@ -71,7 +87,7 @@
 				"Project: Save As"
 			]
 		],
-		"width": 575.0
+		"width": 449.0
 	},
 	"console":
 	{
@@ -95,22 +111,27 @@
 	},
 	"expanded_folders":
 	[
-		"/home/aron/src/ka-lite",
-		"/home/aron/src/ka-lite/kalite",
-		"/home/aron/src/ka-lite/kalite/ab_testing",
-		"/home/aron/src/ka-lite/kalite/ab_testing/data"
+		"/home/aron/src/setup-playbooks"
 	],
 	"file_history":
 	[
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/RweAgQwLdMs.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/rD25slnTqAE.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/rAof9Ld5sOg.srt",
-		"/home/aron/src/ka-lite/README.md",
-		"/home/aron/src/ka-lite/Vagrantfile",
-		"/home/aron/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
+		"/home/aron/src/setup-playbooks/vars/ubuntu.yml",
+		"/home/aron/src/setup-playbooks/ubuntu_dev.yml",
+		"/home/aron/src/setup-playbooks/includes/ocaml_dev.yml",
+		"/home/aron/src/setup-playbooks/includes/dev.yml",
 		"/home/aron/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
-		"/home/aron/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
+		"/home/aron/src/setup-playbooks/LICENSE",
+		"/home/aron/src/setup-playbooks/confs/archlinux/systemd/backup.timer",
+		"/home/aron/src/setup-playbooks/confs/archlinux/systemd/backup.service",
+		"/home/aron/src/setup-playbooks/confs/archlinux/sudoers",
+		"/home/aron/src/setup-playbooks/vars/ocaml.yml",
+		"/home/aron/src/setup-playbooks/confs/linux/ocamlinit",
+		"/home/aron/src/setup-playbooks/osx.yml",
+		"/home/aron/src/setup-playbooks/vars/archlinux.yml",
+		"/home/aron/src/setup-playbooks/confs/archlinux/show_volume.sh",
+		"/home/aron/src/setup-playbooks/includes/haskell_dev.yml",
 		"/home/aron/.config/sublime-text-3/Packages/Default/Default (Linux).sublime-keymap",
+		"/home/aron/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
 		"/home/aron/src/ka-lite/kalite/distributed/hbtemplates/exercise/exercise.handlebars",
 		"/home/aron/src/ka-lite/kalite/local_settings.py",
 		"/home/aron/src/ka-lite/docs/LOCALIZATION-HACKING.md",
@@ -143,7 +164,7 @@
 	],
 	"find":
 	{
-		"height": 35.0
+		"height": 25.0
 	},
 	"find_in_files":
 	{
@@ -175,37 +196,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "/home/aron/src/ka-lite/README.md",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2366,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -248,7 +240,7 @@
 	{
 		"height": 112.0
 	},
-	"project": "kalite.sublime-project",
+	"project": "setup-playbooks.sublime-project",
 	"replace":
 	{
 		"height": 46.0
@@ -260,8 +252,24 @@
 		"selected_items":
 		[
 			[
-				"radme",
-				"README.md"
+				"lice",
+				"LICENSE"
+			],
+			[
+				"ocamldev",
+				"includes/ocaml_dev.yml"
+			],
+			[
+				"incl",
+				"includes/dev.yml"
+			],
+			[
+				"varsubun",
+				"vars/ubuntu.yml"
+			],
+			[
+				"ubun",
+				"ubuntu_dev.yml"
 			],
 			[
 				"localset",
@@ -301,7 +309,7 @@
 	"show_minimap": false,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": false,
+	"side_bar_visible": true,
 	"side_bar_width": 180.0,
 	"status_bar_visible": true,
 	"template_settings":

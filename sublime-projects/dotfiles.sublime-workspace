@@ -7,21 +7,25 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "/home/aron/src/ka-lite/README.md",
-			"settings":
-			{
-				"buffer_size": 2366,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 285.0,
+		"height": 96.0,
 		"selected_items":
 		[
+			[
+				"save as",
+				"Project: Save As"
+			],
+			[
+				"status",
+				"Git: Status"
+			],
+			[
+				"add",
+				"Project: Add Folder"
+			],
 			[
 				"close",
 				"Project: Close"
@@ -71,7 +75,7 @@
 				"Project: Save As"
 			]
 		],
-		"width": 575.0
+		"width": 449.0
 	},
 	"console":
 	{
@@ -95,10 +99,7 @@
 	},
 	"expanded_folders":
 	[
-		"/home/aron/src/ka-lite",
-		"/home/aron/src/ka-lite/kalite",
-		"/home/aron/src/ka-lite/kalite/ab_testing",
-		"/home/aron/src/ka-lite/kalite/ab_testing/data"
+		"/home/aron/src/dotfiles"
 	],
 	"file_history":
 	[
@@ -175,37 +176,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "/home/aron/src/ka-lite/README.md",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2366,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -248,7 +220,7 @@
 	{
 		"height": 112.0
 	},
-	"project": "kalite.sublime-project",
+	"project": "dotfiles.sublime-project",
 	"replace":
 	{
 		"height": 46.0
@@ -301,7 +273,7 @@
 	"show_minimap": false,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": false,
+	"side_bar_visible": true,
 	"side_bar_width": 180.0,
 	"status_bar_visible": true,
 	"template_settings":
