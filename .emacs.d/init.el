@@ -152,10 +152,20 @@
           (bind-key "!" 'shell-command evil-normal-state-map)
           (bind-key "(" 'beginning-of-defun evil-normal-state-map)
           (bind-key ")" 'end-of-defun evil-normal-state-map)
+          (bind-key "i i" 'evil-insert evil-visual-state-map)
           (bind-key "C-j" 'evil-esc evil-insert-state-map))
   :init (progn
           (add-hook 'eshell-mode-hook 'turn-off-evil-mode) ; evil-emacs-state-modes ain't working for eshell!
           (evil-mode t)))
+
+(use-package multiple-cursors
+  :ensure t
+  :init (progn
+          (unbind-key " M-m")
+          (bind-key "M-m M-n" 'mc/mark-next-like-this)
+          (bind-key "M-m M-p" 'mc/mark-previous-like-this)
+          (bind-key "M-m M-a" 'mc/mark-all-like-this)
+          (bind-key "M-m M-." 'mc/mark-more-like-this-extended)))
 
 (use-package elpy
   :ensure t
@@ -164,7 +174,8 @@
             (elpy-use-ipython))
   :init (progn
           ;; disable flymake mode for python
-          (setq elpy-modules (remove 'elpy-module-flymake elpy-modules)))
+          (setq elpy-modules (remove 'elpy-module-flymake elpy-modules))
+          )
   )
 
 (defun elpy-show-defun (copy-to-clipboard)
@@ -259,7 +270,7 @@ screen."
 ;; note: rewrite to something specifically for switching virtualenvs
 (defvar projectile-after-switch-project-actions
   `((,(expand-file-name "~/src/ka-lite/") . ,(lambda ()
-                                               (pyvenv-workon "kalite")
+                                               (pyvenv-workon "ka-lite")
                                                (message "switched virtualenv to kalite")))
     (,(expand-file-name "~/src/sipper/") . ,(lambda ()
                                               (pyvenv-workon "sipper")
