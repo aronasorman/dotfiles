@@ -11,7 +11,7 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 96.0,
+		"height": 376.0,
 		"selected_items":
 		[
 			[
@@ -252,11 +252,19 @@
 	},
 	"select_project":
 	{
-		"height": 0.0,
+		"height": 500.0,
 		"selected_items":
 		[
+			[
+				"ce",
+				"~/src/dotfiles/sublime-projects/central.sublime-project"
+			],
+			[
+				"ka",
+				"~/src/dotfiles/sublime-projects/kalite.sublime-project"
+			]
 		],
-		"width": 0.0
+		"width": 380.0
 	},
 	"select_symbol":
 	{
