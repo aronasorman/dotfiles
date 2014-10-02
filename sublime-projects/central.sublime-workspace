@@ -19,39 +19,7 @@
 			"file": "/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/update_pot.py",
 			"settings":
 			{
-				"buffer_size": 5393,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/securesync/models.py",
-			"settings":
-			{
-				"buffer_size": 59,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/securesync/devices/models.py",
-			"settings":
-			{
-				"buffer_size": 25037,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/facility/models.py",
-			"settings":
-			{
-				"buffer_size": 13930,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/aron/src/ka-lite-central/centralserver/i18n/settings.py",
-			"settings":
-			{
-				"buffer_size": 1105,
+				"buffer_size": 4826,
 				"line_ending": "Unix"
 			}
 		}
@@ -65,6 +33,34 @@
 			[
 				":w",
 				":w - Save"
+			],
+			[
+				"package",
+				"Preferences: Browse Packages"
+			],
+			[
+				"package settin",
+				"Preferences: Package Control Settings – Default"
+			],
+			[
+				"settings",
+				"Preferences: Settings - User"
+			],
+			[
+				"flake",
+				"User: Python Flake8 Lint"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"removepack",
+				"Package Control: Remove Package"
 			],
 			[
 				"blame",
@@ -89,10 +85,6 @@
 			[
 				"sort",
 				"Sort Lines"
-			],
-			[
-				"package",
-				"Package Control: Install Package"
 			],
 			[
 				"merge",
@@ -127,10 +119,6 @@
 				"GitHub: Open Remote URL in Browser"
 			],
 			[
-				"install",
-				"Package Control: Install Package"
-			],
-			[
 				"change b",
 				"Git: Change Branch"
 			],
@@ -157,10 +145,6 @@
 			[
 				"minimap",
 				"View: Toggle Minimap"
-			],
-			[
-				"settings",
-				"Preferences: Settings - Default"
 			],
 			[
 				"pull",
@@ -207,13 +191,40 @@
 	],
 	"file_history":
 	[
+		"/home/aron/src/dotfiles/sublime-projects/central.sublime-project",
+		"/home/aron/.config/sublime-text-3/Packages/Package Control/Package Control.sublime-settings",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/django_snippets/session_timeout_middleware.py",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/pytz/zoneinfo/EST5EDT",
+		"/home/aron/src/ka-lite-central/package.json",
+		"/home/aron/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/tastypie/management/commands/backfill_api_keys.py",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/django/contrib/messages/storage/fallback.py",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/django/contrib/flatpages/templatetags/flatpages.py",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/werkzeug/debug/shared/FONT_LICENSE",
+		"/home/aron/src/ka-lite-central/centralserver/central/forms.py",
+		"/home/aron/src/ka-lite-central/centralserver/central/urls.py",
+		"/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/update_pot.py",
+		"/home/aron/src/ka-lite-central/centralserver/i18n/settings.py",
+		"/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/generate_dubbed_video_mappings.py",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/i18n/data/languagelookup.json",
+		"/home/aron/src/ka-lite-central/centralserver/i18n/data/supported_languages.json",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/facility/models.py",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/securesync/devices/models.py",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/securesync/models.py",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/pytz/zoneinfo/Asia/Dubai",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/south/utils/datetime_utils.py",
+		"/home/aron/src/ka-lite-central/locale/en/LC_MESSAGES/django.po",
+		"/home/aron/src/ka-lite-central/centralserver/i18n/data/languagelookup.json",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/pytz/zoneinfo/America/Los_Angeles",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/LICENSE",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/setup_unix.sh",
+		"/home/aron/src/ka-lite-central/centralserver/settings.py",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/exercises/factoring_polynomials_1_solution_only.html",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/testing/mixins/facility_mixins.py",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/exercises/fractions_cut_and_copy_1.html",
 		"/home/aron/src/ka-lite-central/static-libraries/fonts/FontAwesome.otf",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/werkzeug/security.py",
 		"/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/scrape_exercises.py",
-		"/home/aron/src/ka-lite-central/centralserver/settings.py",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/django_extensions/conf/app_template/models.py.tmpl",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/setup_mac.command",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/testing/mixins/securesync_mixins.py",
@@ -225,10 +236,7 @@
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/pytz/zoneinfo/Antarctica/DumontDUrville",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/pytz/zoneinfo/America/North_Dakota/New_Salem",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/youtube_dl/update.py",
-		"/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/update_pot.py",
-		"/home/aron/src/ka-lite-central/centralserver/central/urls.py",
 		"/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/updatecrowdin.py",
-		"/home/aron/src/ka-lite-central/locale/en/LC_MESSAGES/django.po",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/local-only/i18n.js",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/docs/I18N.md",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/exercises/identifying_points_1.html",
@@ -241,10 +249,8 @@
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/werkzeug/local.py",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/docs/LOCALIZATION-HACKING.md",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/exercises/law_of_cosines.html",
-		"/home/aron/src/ka-lite-central/ka-lite-submodule/LICENSE",
 		"/home/aron/src/ka-lite-central/centralserver/__init__.py",
 		"/home/aron/src/ka-lite-central/.gitignore",
-		"/home/aron/src/ka-lite-central/package.json",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/pytz/zoneinfo/America/Port_of_Spain",
 		"/home/aron/src/ka-lite/Gruntfile.js",
 		"/home/aron/src/ka-lite/locale/en/LC_MESSAGES/django.po",
@@ -288,7 +294,6 @@
 		"/home/aron/src/ka-lite/kalite/local_settings.py",
 		"/home/aron/src/ka-lite/static-libraries/js/jquery-ui/i18n/jquery.ui.datepicker-nl-BE.min.js",
 		"/home/aron/src/ka-lite/README.md",
-		"/home/aron/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
 		"/home/aron/src/ka-lite/kalite/facility/api_authorizations.py",
 		"/home/aron/src/ka-lite/python-packages/securesync/migrations/0003_auto__add_facilitygroup__add_field_facilityuser_group.py",
 		"/home/aron/src/ka-lite/kalite/control_panel/templates/control_panel/facility_management.html",
@@ -313,29 +318,11 @@
 		"/home/aron/src/ka-lite/LICENSE",
 		"/home/aron/src/ka-lite/python-packages/annoying/exceptions.py",
 		"/home/aron/src/ka-lite/kalite/distributed/hbtemplates/exercise/exercise-hint.handlebars",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/xEDnwEOOf7Y.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/EGNlXtjYABw.srt",
-		"/home/aron/src/ka-lite/.travis.yml",
-		"/home/aron/src/ka-lite/kalite/ab_testing/data/groups.py",
-		"/home/aron/src/ka-lite/kalite/facility/admin.py",
-		"/home/aron/src/ka-lite/python-packages/announcements/auth_backends.py",
-		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/angle_bisector_theorem.html",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/bTz_tx460EY.srt",
-		"/home/aron/src/ka-lite/kalite/ab_testing/tests.py",
-		"/home/aron/src/ka-lite/kalite/distributed/tests/browser_tests/student_testing.py",
-		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/test/exercises/subtracting_decimals.js",
-		"/home/aron/src/ka-lite/python-packages/rsa/transform.py",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/tR-hzV5Tkxo.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/TqRReFvbpXA.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/S6TvRDwgQag.srt",
-		"/home/aron/src/ka-lite/python-packages/debug_toolbar/panels/request_vars.py",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/pRIELoITIHI.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/PqRx4OV5jhM.srt",
-		"/home/aron/src/ka-lite/docs/overview/Project-structure.md"
+		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/xEDnwEOOf7Y.srt"
 	],
 	"find":
 	{
-		"height": 25.0
+		"height": 24.0
 	},
 	"find_in_files":
 	{
@@ -350,6 +337,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"update",
 			"call_command",
 			"class Device",
 			"strictversion",
@@ -380,7 +368,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -396,8 +384,8 @@
 						"selection":
 						[
 							[
-								66,
-								66
+								60,
+								60
 							]
 						],
 						"settings":
@@ -408,7 +396,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -417,15 +405,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5393,
+						"buffer_size": 4826,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4868,
-								4868
+								1021,
+								1021
 							]
 						],
 						"settings":
@@ -435,126 +423,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1756.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/securesync/models.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 59,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/securesync/devices/models.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 25037,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5034,
-								5034
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2472.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/facility/models.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 13930,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6554,
-								6554
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2142.0,
+						"translation.y": 334.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "/home/aron/src/ka-lite-central/centralserver/i18n/settings.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1105,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": -0.0,
-						"translation.y": 306.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
 					"type": "text"
 				}
 			]
@@ -562,7 +434,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 34.0
+		"height": 24.0
 	},
 	"input":
 	{
@@ -602,7 +474,7 @@
 	"project": "central.sublime-project",
 	"replace":
 	{
-		"height": 46.0
+		"height": 44.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -610,6 +482,22 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"updatepot",
+				"centralserver/i18n/management/commands/update_pot.py"
+			],
+			[
+				"dubbed",
+				"centralserver/i18n/management/commands/generate_dubbed_video_mappings.py"
+			],
+			[
+				"language",
+				"ka-lite-submodule/kalite/i18n/data/languagelookup.json"
+			],
+			[
+				"suppo",
+				"centralserver/i18n/data/supported_languages.json"
+			],
 			[
 				"facmodels",
 				"ka-lite-submodule/kalite/facility/models.py"
@@ -707,16 +595,20 @@
 		"selected_items":
 		[
 			[
-				"ml",
-				"~/src/dotfiles/sublime-projects/mlcsv.sublime-project"
+				"dot",
+				"~/src/dotfiles/sublime-projects/dotfiles.sublime-project"
+			],
+			[
+				"dotf",
+				"~/src/dotfiles/sublime-projects/dotfiles.sublime-project"
 			],
 			[
 				"kal",
 				"~/src/dotfiles/sublime-projects/kalite.sublime-project"
 			],
 			[
-				"dot",
-				"~/src/dotfiles/sublime-projects/dotfiles.sublime-project"
+				"ml",
+				"~/src/dotfiles/sublime-projects/mlcsv.sublime-project"
 			]
 		],
 		"width": 380.0
@@ -736,7 +628,7 @@
 	"show_minimap": false,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 348.0,
 	"status_bar_visible": true,
 	"template_settings":

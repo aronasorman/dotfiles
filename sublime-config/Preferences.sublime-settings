@@ -1,8 +1,8 @@
 {
 	"auto_complete_on_tab": true,
 	"ensure_newline_at_eof_on_save": false,
-	"font_size": 11,
 	"font_face": "Ubuntu Mono",
+	"font_size": 11,
 	"gutter": true,
 	"highlight_line": true,
 	"ignored_packages":
@@ -11,6 +11,6 @@
 	"shift_tab_unindent": true,
 	"show_line_endings": true,
 	"translate_tabs_to_spaces": true,
-	"trim_trailing_whitespace_on_save": true,
+	"trim_trailing_white_space_on_save": true,
 	"vintage_start_in_command_mode": true
 }

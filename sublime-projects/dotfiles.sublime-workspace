@@ -7,13 +7,25 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "/home/aron/src/dotfiles/lib/profile",
+			"settings":
+			{
+				"buffer_size": 2771,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 376.0,
+		"height": 392.0,
 		"selected_items":
 		[
+			[
+				":w",
+				":w - Save"
+			],
 			[
 				"save as",
 				"Project: Save As"
@@ -33,10 +45,6 @@
 			[
 				"project",
 				"Project: Close"
-			],
-			[
-				":w",
-				":w - Save"
 			],
 			[
 				"key",
@@ -103,6 +111,13 @@
 	],
 	"file_history":
 	[
+		"/home/aron/src/dotfiles/.emacs.d/cider/Cask",
+		"/home/aron/src/dotfiles/.emacs.d/elpa/company-0.8.3/company-oddmuse.el",
+		"/home/aron/src/dotfiles/.emacs.d/elpa/company-0.8.3/company-nxml.el",
+		"/home/aron/src/dotfiles/.emacs.d/helm/helm-config.el",
+		"/home/aron/src/dotfiles/sublime-projects/kalite.sublime-project",
+		"/home/aron/src/dotfiles/.tmuxinator/kalite.yml",
+		"/home/aron/src/dotfiles/.emacs.d/elpa/browse-kill-ring-1.3.1/browse-kill-ring-autoloads.el",
 		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/RweAgQwLdMs.srt",
 		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/rD25slnTqAE.srt",
 		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/rAof9Ld5sOg.srt",
@@ -144,7 +159,7 @@
 	],
 	"find":
 	{
-		"height": 35.0
+		"height": 24.0
 	},
 	"find_in_files":
 	{
@@ -176,14 +191,45 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "/home/aron/src/dotfiles/lib/profile",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2771,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2769,
+								2769
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/ShellScript/Shell-Unix-Generic.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1198.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 25.0
+		"height": 24.0
 	},
 	"input":
 	{
@@ -223,7 +269,7 @@
 	"project": "dotfiles.sublime-project",
 	"replace":
 	{
-		"height": 46.0
+		"height": 44.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -231,6 +277,14 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"profi",
+				"lib/profile"
+			],
+			[
+				"kalites",
+				"sublime-projects/kalite.sublime-project"
+			],
 			[
 				"radme",
 				"README.md"
@@ -258,6 +312,10 @@
 			[
 				"ce",
 				"~/src/dotfiles/sublime-projects/central.sublime-project"
+			],
+			[
+				"kal",
+				"~/src/dotfiles/sublime-projects/kalite.sublime-project"
 			],
 			[
 				"ka",

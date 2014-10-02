@@ -5,5 +5,12 @@
 			"follow_symlinks": true,
 			"path": "/home/aron/src/ka-lite-central"
 		}
-	]
+	],
+
+    "settings": {
+        "flake8lint": {
+            "pep8_max_line_length": 130
+        }
+    }
+
 }
