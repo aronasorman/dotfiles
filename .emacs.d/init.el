@@ -193,6 +193,7 @@ screen."
       (funcall copy-or-message "Not in a function"))))
 
 
+
 (use-package color-theme
   :ensure t)
 
@@ -302,6 +303,11 @@ screen."
             (add-hook 'projectile-switch-project-hook 'projectile-run-action-for-current-project))
   :init (progn
           (projectile-global-mode t)))
+
+(use-package ido-vertical-mode
+  :ensure t
+  :init (progn
+          (ido-vertical-mode)))
 
 (use-package helm
   :load-path "~/.emacs.d/helm"
