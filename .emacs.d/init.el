@@ -196,9 +196,14 @@ screen."
 (use-package color-theme
   :ensure t)
 
-(use-package color-theme-sanityinc-tomorrow
+;; (use-package color-theme-sanityinc-tomorrow
+;;   :ensure t
+;;   :config (load-theme 'sanityinc-tomorrow-night t))
+
+(use-package color-theme-monokai
   :ensure t
-  :config (load-theme 'sanityinc-tomorrow-night t))
+  :config (progn
+            (color-theme-monokai)))
 
 ;; (use-package sunburn
 ;;   :load-path "~/.emacs.d/"
