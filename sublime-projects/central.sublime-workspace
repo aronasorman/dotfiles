@@ -3,23 +3,35 @@
 	{
 		"selected_items":
 		[
+			[
+				"version",
+				"version_namespace"
+			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "/home/aron/src/ka-lite-central/centralserver/local_settings.py",
+			"file": "/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/update_pot.py",
 			"settings":
 			{
-				"buffer_size": 101,
+				"buffer_size": 6071,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/update_pot.py",
+			"file": "/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/js/distributed/search_autocomplete.js",
 			"settings":
 			{
-				"buffer_size": 4826,
+				"buffer_size": 5242,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/update_language_packs.py",
+			"settings":
+			{
+				"buffer_size": 37450,
 				"line_ending": "Unix"
 			}
 		}
@@ -27,12 +39,76 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 392.0,
+		"height": 96.0,
 		"selected_items":
 		[
 			[
+				"add cu",
+				"Git: Add Current File"
+			],
+			[
 				":w",
 				":w - Save"
+			],
+			[
+				"git add",
+				"Git: Add Current File"
+			],
+			[
+				":s",
+				"Git: Status"
+			],
+			[
+				"keyuser",
+				"Preferences: Key Bindings - User"
+			],
+			[
+				"keybin",
+				"Preferences: Key Bindings - Default"
+			],
+			[
+				"keybind",
+				"Preferences: Key Bindings - User"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"transp",
+				"Transpose Character"
+			],
+			[
+				"transpose",
+				"Transpose Character"
+			],
+			[
+				"trans",
+				"Transpose Character"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				":",
+				":w - Save"
+			],
+			[
+				"blame",
+				"Git: Blame"
+			],
+			[
+				"keybindef",
+				"Preferences: Key Bindings - Default"
+			],
+			[
+				"settinsdef",
+				"Preferences: Settings - Default"
+			],
+			[
+				"settingsdef",
+				"Preferences: Settings - Default"
 			],
 			[
 				"package",
@@ -51,24 +127,8 @@
 				"User: Python Flake8 Lint"
 			],
 			[
-				"remove",
-				"Package Control: Remove Package"
-			],
-			[
-				"install",
-				"Package Control: Install Package"
-			],
-			[
 				"removepack",
 				"Package Control: Remove Package"
-			],
-			[
-				"blame",
-				"Git: Blame"
-			],
-			[
-				":",
-				":w - Save"
 			],
 			[
 				"saveas",
@@ -139,10 +199,6 @@
 				"Preferences: Key Bindings - User"
 			],
 			[
-				"keybin",
-				"Preferences: Key Bindings - User"
-			],
-			[
 				"minimap",
 				"View: Toggle Minimap"
 			],
@@ -191,6 +247,43 @@
 	],
 	"file_history":
 	[
+		"/home/aron/src/ka-lite-central/centralserver/central/urls.py",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/static-libraries/css/ui-datepicker.css",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/i18n/data/languagelookup.json",
+		"/home/aron/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
+		"/home/aron/.config/sublime-text-3/Packages/Default/Default (Linux).sublime-keymap",
+		"/home/aron/src/ka-lite-central/.gitignore",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/exercises/graphing_inequalities.html",
+		"/home/aron/src/ka-lite-central/Gruntfile.js",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/css/distributed/search_autocomplete.css",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/templates/distributed/search_page.html",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/exercises/same_side_exterior_angles.html",
+		"/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/scrape_exercises.py",
+		"/home/aron/src/ka-lite-central/setup.cfg",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/version.py",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/main/migrations/0024_auto__del_field_languagepack_crowdin_version__add_field_languagepack_l.py",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/updates/management/commands/languagepackdownload.py",
+		"/home/aron/src/ka-lite-central/centralserver/local_settings.py",
+		"/home/aron/src/ka-lite-central/centralserver/i18n/__init__.py",
+		"/home/aron/src/ka-lite-central/static-libraries/js/jquery-ui/i18n/jquery-ui-i18n.min.js",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/i18n/templatetags/i18n_filters.py",
+		"/home/aron/src/ka-lite-central/centralserver/i18n/settings.py",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/exercises/identifying_points_1.html",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/INSTALL.md",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/exercises/law_of_cosines.html",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/fle_utils/django_utils/serializers/versioned_python.py",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/exercises/vigenere_cipher_encryption.html",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/Vagrantfile",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/i18n/__init__.py",
+		"/home/aron/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/polib.py",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/hbtemplates/video/video-player.handlebars",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/static-libraries/video-js/video-js.css",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/static-libraries/video-js/video.js",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/updates/videos.py",
+		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/django/contrib/admindocs/templates/admin_doc/view_index.html",
+		"/home/aron/src/ka-lite-central/centralserver/i18n/data/languagelookup.json",
+		"/home/aron/src/ka-lite-central/centralserver/i18n/data/supported_languages.json",
 		"/home/aron/src/dotfiles/sublime-projects/central.sublime-project",
 		"/home/aron/.config/sublime-text-3/Packages/Package Control/Package Control.sublime-settings",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/django_snippets/session_timeout_middleware.py",
@@ -202,19 +295,14 @@
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/django/contrib/flatpages/templatetags/flatpages.py",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/werkzeug/debug/shared/FONT_LICENSE",
 		"/home/aron/src/ka-lite-central/centralserver/central/forms.py",
-		"/home/aron/src/ka-lite-central/centralserver/central/urls.py",
 		"/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/update_pot.py",
-		"/home/aron/src/ka-lite-central/centralserver/i18n/settings.py",
 		"/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/generate_dubbed_video_mappings.py",
-		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/i18n/data/languagelookup.json",
-		"/home/aron/src/ka-lite-central/centralserver/i18n/data/supported_languages.json",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/facility/models.py",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/securesync/devices/models.py",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/securesync/models.py",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/pytz/zoneinfo/Asia/Dubai",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/south/utils/datetime_utils.py",
 		"/home/aron/src/ka-lite-central/locale/en/LC_MESSAGES/django.po",
-		"/home/aron/src/ka-lite-central/centralserver/i18n/data/languagelookup.json",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/pytz/zoneinfo/America/Los_Angeles",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/LICENSE",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/setup_unix.sh",
@@ -224,7 +312,6 @@
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/exercises/fractions_cut_and_copy_1.html",
 		"/home/aron/src/ka-lite-central/static-libraries/fonts/FontAwesome.otf",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/werkzeug/security.py",
-		"/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/scrape_exercises.py",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/django_extensions/conf/app_template/models.py.tmpl",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/setup_mac.command",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/testing/mixins/securesync_mixins.py",
@@ -239,18 +326,14 @@
 		"/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/updatecrowdin.py",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/local-only/i18n.js",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/docs/I18N.md",
-		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/exercises/identifying_points_1.html",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/main/migrations/0017_auto__add_field_userlogsummary_total_logins__chg_field_userlogsummary_.py",
-		"/home/aron/src/ka-lite-central/ka-lite-submodule/INSTALL.md",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/django/conf/global_settings.py",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/local-only/localeplanet/icu.sid-ET.js",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/django/contrib/localflavor/se/se_counties.py",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/local-only/update_local.sh",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/werkzeug/local.py",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/docs/LOCALIZATION-HACKING.md",
-		"/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/khan-exercises/exercises/law_of_cosines.html",
 		"/home/aron/src/ka-lite-central/centralserver/__init__.py",
-		"/home/aron/src/ka-lite-central/.gitignore",
 		"/home/aron/src/ka-lite-central/ka-lite-submodule/python-packages/pytz/zoneinfo/America/Port_of_Spain",
 		"/home/aron/src/ka-lite/Gruntfile.js",
 		"/home/aron/src/ka-lite/locale/en/LC_MESSAGES/django.po",
@@ -291,38 +374,11 @@
 		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/lA3sjWwu5-s.srt",
 		"/home/aron/src/ka-lite/python-packages/pytz/zoneinfo/Africa/Lagos",
 		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/logical_arguments_deductive_reasoning.html",
-		"/home/aron/src/ka-lite/kalite/local_settings.py",
-		"/home/aron/src/ka-lite/static-libraries/js/jquery-ui/i18n/jquery.ui.datepicker-nl-BE.min.js",
-		"/home/aron/src/ka-lite/README.md",
-		"/home/aron/src/ka-lite/kalite/facility/api_authorizations.py",
-		"/home/aron/src/ka-lite/python-packages/securesync/migrations/0003_auto__add_facilitygroup__add_field_facilityuser_group.py",
-		"/home/aron/src/ka-lite/kalite/control_panel/templates/control_panel/facility_management.html",
-		"/home/aron/src/ka-lite/kalite/facility/templates/facility/facility.html",
-		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/fractions_cut_and_copy_1.html",
-		"/home/aron/src/ka-lite/static-libraries/fonts/FontAwesome.otf",
-		"/home/aron/src/ka-lite/docs/FRONTEND.md",
-		"/home/aron/src/ka-lite/kalite/static/css/updates/update_videos.css",
-		"/home/aron/src/ka-lite/python-packages/youtube_dl/update.py",
-		"/home/aron/src/ka-lite/kalite/updates/migrations/0007_auto__add_field_videofile_language.py",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/yUpDRpkUhf4.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/RweAgQwLdMs.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/rD25slnTqAE.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/rAof9Ld5sOg.srt",
-		"/home/aron/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
-		"/home/aron/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
-		"/home/aron/.config/sublime-text-3/Packages/Default/Default (Linux).sublime-keymap",
-		"/home/aron/src/ka-lite/kalite/distributed/hbtemplates/exercise/exercise.handlebars",
-		"/home/aron/src/ka-lite/docs/LOCALIZATION-HACKING.md",
-		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/law_of_cosines.html",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/lOWXZFP8Vuc.srt",
-		"/home/aron/src/ka-lite/LICENSE",
-		"/home/aron/src/ka-lite/python-packages/annoying/exceptions.py",
-		"/home/aron/src/ka-lite/kalite/distributed/hbtemplates/exercise/exercise-hint.handlebars",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/xEDnwEOOf7Y.srt"
+		"/home/aron/src/ka-lite/kalite/local_settings.py"
 	],
 	"find":
 	{
-		"height": 24.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
@@ -337,6 +393,26 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"get_beta",
+			"params",
+			"__str__",
+			"pot_path",
+			"pot",
+			"filepath",
+			"POT_DIRPATH",
+			"POT",
+			"locale_dir",
+			"local",
+			"locale_dir",
+			"9f73dca5f1c462ed6e379d54ac33904d",
+			"po",
+			"locale_dir",
+			"SUPPORTED_LANGUAGES_FILEPATH",
+			"w",
+			"ctrl+b",
+			"                                     ",
+			",",
+			"<video",
 			"update",
 			"call_command",
 			"class Device",
@@ -368,32 +444,46 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "/home/aron/src/ka-lite-central/centralserver/local_settings.py",
+					"file": "/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/update_pot.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 101,
+						"buffer_size": 6071,
 						"regions":
 						{
+							"bookmark_a":
+							{
+								"flags": 144,
+								"regions":
+								[
+									[
+										6008,
+										6008
+									]
+								]
+							}
 						},
 						"selection":
 						[
 							[
-								60,
-								60
+								6022,
+								6022
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage"
+							"easy_motion_mode": false,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1774.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
@@ -401,19 +491,49 @@
 				},
 				{
 					"buffer": 1,
-					"file": "/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/update_pot.py",
+					"file": "/home/aron/src/ka-lite-central/ka-lite-submodule/kalite/distributed/static/js/distributed/search_autocomplete.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4826,
+						"buffer_size": 5242,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1021,
-								1021
+								2408,
+								2408
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 672.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/home/aron/src/ka-lite-central/centralserver/i18n/management/commands/update_language_packs.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 37450,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7633,
+								7633
 							]
 						],
 						"settings":
@@ -423,7 +543,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 334.0,
+						"translation.y": 2616.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -483,16 +603,56 @@
 		"selected_items":
 		[
 			[
+				"updatelangu",
+				"centralserver/i18n/management/commands/update_language_packs.py"
+			],
+			[
+				"giti",
+				".gitignore"
+			],
+			[
+				"searchautocomp",
+				"ka-lite-submodule/kalite/distributed/static/js/distributed/search_autocomplete.js"
+			],
+			[
+				"versoin",
+				"ka-lite-submodule/kalite/version.py"
+			],
+			[
+				"i18ninit",
+				"centralserver/i18n/__init__.py"
+			],
+			[
+				"loca",
+				"centralserver/local_settings.py"
+			],
+			[
+				"language",
+				"ka-lite-submodule/kalite/i18n/data/languagelookup.json"
+			],
+			[
+				"versinpy",
+				"ka-lite-submodule/kalite/version.py"
+			],
+			[
+				"updatelanguagepacks",
+				"centralserver/i18n/management/commands/update_language_packs.py"
+			],
+			[
+				"languagek",
+				"centralserver/i18n/data/languagelookup.json"
+			],
+			[
+				"support",
+				"centralserver/i18n/data/supported_languages.json"
+			],
+			[
 				"updatepot",
 				"centralserver/i18n/management/commands/update_pot.py"
 			],
 			[
 				"dubbed",
 				"centralserver/i18n/management/commands/generate_dubbed_video_mappings.py"
-			],
-			[
-				"language",
-				"ka-lite-submodule/kalite/i18n/data/languagelookup.json"
 			],
 			[
 				"suppo",
@@ -595,16 +755,16 @@
 		"selected_items":
 		[
 			[
+				"kal",
+				"~/src/dotfiles/sublime-projects/kalite.sublime-project"
+			],
+			[
 				"dot",
 				"~/src/dotfiles/sublime-projects/dotfiles.sublime-project"
 			],
 			[
 				"dotf",
 				"~/src/dotfiles/sublime-projects/dotfiles.sublime-project"
-			],
-			[
-				"kal",
-				"~/src/dotfiles/sublime-projects/kalite.sublime-project"
 			],
 			[
 				"ml",
@@ -615,11 +775,23 @@
 	},
 	"select_symbol":
 	{
-		"height": 0.0,
+		"height": 117.0,
 		"selected_items":
 		[
+			[
+				"getlocalepath",
+				"get_locale_path"
+			],
+			[
+				"getlocalpath",
+				"get_locale_path"
+			],
+			[
+				"Localepath",
+				"get_locale_path"
+			]
 		],
-		"width": 0.0
+		"width": 746.0
 	},
 	"selected_group": 0,
 	"settings":

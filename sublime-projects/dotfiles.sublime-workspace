@@ -19,12 +19,20 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 392.0,
+		"height": 285.0,
 		"selected_items":
 		[
 			[
 				":w",
 				":w - Save"
+			],
+			[
+				"settingsuser",
+				"Preferences: Settings - User"
+			],
+			[
+				"settings",
+				"Preferences: Settings - User"
 			],
 			[
 				"save as",
@@ -61,10 +69,6 @@
 			[
 				"minimap",
 				"View: Toggle Minimap"
-			],
-			[
-				"settings",
-				"Preferences: Settings - Default"
 			],
 			[
 				"pull",
@@ -111,6 +115,7 @@
 	],
 	"file_history":
 	[
+		"/home/aron/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
 		"/home/aron/src/dotfiles/.emacs.d/cider/Cask",
 		"/home/aron/src/dotfiles/.emacs.d/elpa/company-0.8.3/company-oddmuse.el",
 		"/home/aron/src/dotfiles/.emacs.d/elpa/company-0.8.3/company-nxml.el",
@@ -124,7 +129,6 @@
 		"/home/aron/src/ka-lite/README.md",
 		"/home/aron/src/ka-lite/Vagrantfile",
 		"/home/aron/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
-		"/home/aron/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
 		"/home/aron/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
 		"/home/aron/.config/sublime-text-3/Packages/Default/Default (Linux).sublime-keymap",
 		"/home/aron/src/ka-lite/kalite/distributed/hbtemplates/exercise/exercise.handlebars",
@@ -207,8 +211,8 @@
 						"selection":
 						[
 							[
-								2769,
-								2769
+								0,
+								0
 							]
 						],
 						"settings":
@@ -217,8 +221,8 @@
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
-						"translation.x": 0.0,
-						"translation.y": 1198.0,
+						"translation.x": -0.0,
+						"translation.y": 576.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -229,7 +233,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 24.0
+		"height": 34.0
 	},
 	"input":
 	{
@@ -310,12 +314,12 @@
 		"selected_items":
 		[
 			[
-				"ce",
-				"~/src/dotfiles/sublime-projects/central.sublime-project"
-			],
-			[
 				"kal",
 				"~/src/dotfiles/sublime-projects/kalite.sublime-project"
+			],
+			[
+				"ce",
+				"~/src/dotfiles/sublime-projects/central.sublime-project"
 			],
 			[
 				"ka",

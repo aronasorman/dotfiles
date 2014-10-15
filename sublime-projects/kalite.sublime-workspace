@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"KAL",
+				"KALiteBrowserTestCase"
+			],
+			[
 				"pdfView",
 				"PDFView"
 			],
@@ -16,83 +20,58 @@
 	"buffers":
 	[
 		{
-			"file": "/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/pdf/views.js",
+			"file": "/home/aron/src/ka-lite/kalite/distributed/templates/distributed/base.html",
 			"settings":
 			{
-				"buffer_size": 4391,
+				"buffer_size": 14645,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/aron/src/ka-lite/kalite/main/static/data/content.json",
+			"file": "/home/aron/src/ka-lite/kalite/i18n/middleware.py",
 			"settings":
 			{
-				"buffer_size": 163,
-				"line_ending": "Unix",
-				"name": "{}"
-			}
-		},
-		{
-			"file": "/home/aron/src/ka-lite/kalite/topic_tools/__init__.py",
-			"settings":
-			{
-				"buffer_size": 24581,
+				"buffer_size": 2282,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/aron/src/ka-lite/python-packages/fle_utils/general.py",
+			"file": "/home/aron/src/ka-lite/kalite/distributed/views.py",
 			"settings":
 			{
-				"buffer_size": 6461,
+				"buffer_size": 15172,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/topics/views.js",
+			"file": "/home/aron/src/ka-lite/kalite/settings.py",
 			"settings":
 			{
-				"buffer_size": 15226,
+				"buffer_size": 8948,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/content/models.js",
+			"file": "/home/aron/src/ka-lite/kalite/main/settings.py",
 			"settings":
 			{
-				"buffer_size": 3447,
+				"buffer_size": 1219,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/aron/src/ka-lite/static-libraries/pdfjs/web/viewer.js",
+			"file": "/home/aron/src/ka-lite/kalite/i18n/settings.py",
 			"settings":
 			{
-				"buffer_size": 199368,
+				"buffer_size": 2443,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/aron/src/ka-lite/kalite/distributed/hbtemplates/pdf/pdf-viewer.handlebars",
+			"file": "/home/aron/src/ka-lite/kalite/distributed/templates/distributed/topic.html",
 			"settings":
 			{
-				"buffer_size": 143,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/audio/views.js",
-			"settings":
-			{
-				"buffer_size": 3839,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/aron/src/ka-lite/kalite/distributed/api_views.py",
-			"settings":
-			{
-				"buffer_size": 6060,
+				"buffer_size": 7098,
 				"line_ending": "Unix"
 			}
 		}
@@ -106,6 +85,46 @@
 			[
 				":w",
 				":w - Save"
+			],
+			[
+				"projeclo",
+				"Project: Close"
+			],
+			[
+				":s",
+				"Git: Status"
+			],
+			[
+				"rmeote",
+				"GitHub: Copy Remote URL to Clipboard"
+			],
+			[
+				"gitremote",
+				"GitHub: Copy Remote URL to Clipboard"
+			],
+			[
+				"blame",
+				"Git: Blame"
+			],
+			[
+				":W",
+				":w - Save"
+			],
+			[
+				"gitadd",
+				"Git: Add Current File"
+			],
+			[
+				"github remote",
+				"GitHub: Copy Remote URL to Clipboard"
+			],
+			[
+				"github ",
+				"GitHub: Open Remote URL in Browser"
+			],
+			[
+				"gadd",
+				"Git: Add Current File"
 			],
 			[
 				"remoteurl",
@@ -166,10 +185,6 @@
 			[
 				"sort",
 				"Sort Lines"
-			],
-			[
-				"blame",
-				"Git: Blame"
 			],
 			[
 				"package",
@@ -244,7 +259,7 @@
 				"Project: Save As"
 			]
 		],
-		"width": 467.0
+		"width": 449.0
 	},
 	"console":
 	{
@@ -268,138 +283,144 @@
 	},
 	"expanded_folders":
 	[
-		"/home/aron/src/ka-lite"
+		"/home/aron/src/ka-lite",
+		"/home/aron/src/ka-lite/kalite",
+		"/home/aron/src/ka-lite/kalite/distributed",
+		"/home/aron/src/ka-lite/kalite/distributed/templates",
+		"/home/aron/src/ka-lite/kalite/distributed/templates/distributed",
+		"/home/aron/src/ka-lite/kalite/main",
+		"/home/aron/src/ka-lite/kalite/playlist"
 	],
 	"file_history":
 	[
-		"/home/aron/src/ka-lite/kalite/main/models.py",
+		"/home/aron/src/ka-lite/kalite/distributed/templatetags/kalite_staticfiles.py",
+		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/tIqO2GS8O64.srt",
+		"/home/aron/src/ka-lite/kalite/settings.py",
+		"/home/aron/src/ka-lite/python-packages/pytz/zoneinfo/Europe/Kaliningrad",
+		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/aLJzEl5st8s.srt",
+		"/home/aron/src/ka-lite/kalite/static/perseus/fonts/katex_ams-regular.woff",
+		"/home/aron/src/ka-lite/kalite/ka-lite.wsgi",
 		"/home/aron/src/ka-lite/kalite/local_settings.py",
-		"/home/aron/src/ka-lite/kalite/static/js/distributed/content/models.js",
-		"/home/aron/src/ka-lite/python-packages/django/contrib/contenttypes/models.py",
-		"/home/aron/src/ka-lite/content/jxA8MffVmPs.mp4",
-		"/home/aron/src/ka-lite/kalite/static/data/content.json",
-		"/home/aron/src/ka-lite/kalite/distributed/hbtemplates/topics/content-area.handlebars",
-		"/home/aron/src/ka-lite/kalite/ab_testing/data/conditions.py",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/cppxO67e6eo.srt",
-		"/home/aron/src/ka-lite/static-libraries/js/modernizr.js",
-		"/home/aron/src/ka-lite/kalite/coachreports/models.py",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/wNB9Vm6MoDQ.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/mO6y4KON1e8.srt",
-		"/home/aron/src/ka-lite/setup_mac.command",
-		"/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/audio/views.js",
-		"/home/aron/src/ka-lite/kalite/static/js/distributed/audio/views.js",
-		"/home/aron/src/ka-lite/kalite/distributed/hbtemplates/audio/audio-player.handlebars",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/aUmApJMfUTc.srt",
-		"/home/aron/src/ka-lite/kalite/facility/admin.py",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/aINeMQH77jg.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/aqsIWLqlDhE.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/aDCXPdzyS0s.srt",
-		"/home/aron/src/ka-lite/kalite/distributed/templates/distributed/topic.html",
-		"/home/aron/src/ka-lite/kalite/coachreports/views.py",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/vItRHYu-A88.srt",
-		"/home/aron/src/ka-lite/static-libraries/pdfjs/web/viewer.js",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/N9VIsauE0RA.srt",
-		"/home/aron/src/ka-lite/static-libraries/pdfjs/web/locale/ach/viewer.properties",
-		"/home/aron/src/ka-lite/kalite/student_testing/data/g3_t1.json",
-		"/home/aron/src/ka-lite/kalite/playlist/playlists.json",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/rPLjSY00JlE.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/mtL_plJXv3c.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/pLG5j6isgRs.srt",
-		"/home/aron/src/ka-lite/package.json",
-		"/home/aron/src/ka-lite/kalite/static/khan-exercises/utils/graphie-3d.js",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/g3LBmyq-J9s.srt",
-		"/home/aron/src/ka-lite/python-packages/pytz/zoneinfo/Etc/GMT-3",
-		"/home/aron/src/ka-lite/kalite/ab_testing/data/groups.py",
-		"/home/aron/src/ka-lite/python-packages/pytz/zoneinfo/Etc/GMT-1",
-		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/perimeter_1.html",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/pjrI91J6jOw.srt",
-		"/home/aron/src/ka-lite/kalite/static/perseus/build/perseus-1.js",
-		"/home/aron/src/ka-lite/kalite/static/khan-exercises/third_party/MathJax/2.1/fonts/HTML-CSS/TeX/otf/MathJax_SansSerif-Bold.otf",
-		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/points_lines_and_planes.html",
-		"/home/aron/src/ka-lite/kalite/static/pdfjs/web/viewer.js",
-		"/home/aron/src/ka-lite/kalite/static/data/topic_hierarchy.json",
-		"/home/aron/src/ka-lite/kalite/static/js/distributed/topics/views.js",
-		"/home/aron/src/ka-lite/kalite/static/data/topics.json",
-		"/home/aron/src/ka-lite/kalite/static/khan-exercises/third_party/MathJax/2.1/jax/output/HTML-CSS/fonts/TeX/Main/Italic/GeneralPunctuation.js",
-		"/home/aron/src/ka-lite/kalite/static/perseus/ke/local-only/localeplanet/icu.ug-CN.js",
-		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/translations_of_points_and_polygons.html",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/tOd2T72eJME.srt",
-		"/home/aron/src/ka-lite/docs/TESTBED.md",
-		"/home/aron/src/ka-lite/kalite/testing/base.py",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/LXrPdFn7Gn4.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/pDZIvyeqX1o.srt",
-		"/home/aron/src/ka-lite/python-packages/fle_utils/django_utils/command.py",
-		"/home/aron/src/ka-lite/kalite/distributed/hbtemplates/pdf/pdf-viewer.handlebars",
-		"/home/aron/src/ka-lite/kalite/distributed/dynamic_assets.py",
-		"/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/exercises/views.js",
-		"/home/aron/src/ka-lite/kalite/static/js/distributed/exercises.js",
-		"/home/aron/src/ka-lite/kalite/static/js/distributed/exercises/views.js",
-		"/home/aron/src/ka-lite/kalite/testing/browser.py",
-		"/home/aron/src/ka-lite/kalite/distributed/tests/browser_tests/query_tests.py",
-		"/home/aron/.config/sublime-text-3/Packages/Default/Default (Linux).sublime-keymap",
-		"/home/aron/src/ka-lite/static-libraries/pdfjs/web/viewer.css",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/VDnIdNM4tWI.srt",
-		"/home/aron/src/ka-lite/Vagrantfile",
-		"/home/aron/src/ka-lite/static-libraries/pdfjs/web/viewer.html",
-		"/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/topics/views.js",
-		"/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/pdf/views.js",
-		"/home/aron/Downloads/web/viewer.js",
-		"/home/aron/Downloads/web/viewer.html",
-		"/home/aron/src/ka-lite/kalite/testing/settings.py",
-		"/home/aron/src/ka-lite/python-packages/playground/utils/testing.py",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/Fvi9A_tEmXQ.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/bJF9R8_-0O0.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/bRZmfc1YFsQ.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/ROpbdO-gRUo.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/-gRNRBCG3Ow.srt",
-		"/home/aron/src/ka-lite/Gruntfile.js",
-		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/composite_numbers.html",
-		"/home/aron/src/ka-lite/python-packages/cherrypy/cherryd",
-		"/home/aron/src/ka-lite/INSTALL.md",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/iNW6SYDmkDI.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/O8vB1eInP_8.srt",
-		"/home/aron/src/ka-lite/kalite/static/perseus/src/mixins/jsonify-props.jsx",
-		"/home/aron/src/ka-lite/python-packages/django_extensions/mongodb/fields/json.py",
-		"/home/aron/src/ka-lite/python-packages/django_extensions/db/fields/json.py",
-		"/home/aron/src/ka-lite/python-packages/django/core/serializers/json.py",
-		"/home/aron/src/ka-lite/python-packages/cherrypy/lib/jsontools.py",
-		"/home/aron/src/ka-lite/kalite/static/js/json2.js",
-		"/home/aron/src/ka-lite/static-libraries/js/json2.js",
-		"/home/aron/src/ka-lite/python-packages/django_snippets/jsonify.py",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/jOGZKimS-b4.srt",
-		"/home/aron/src/ka-lite/content/tJrSILRXOUc.mp4",
-		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/units.html",
-		"/home/aron/src/ka-lite/kalite/static/khan-exercises/test/exercises/units.js",
-		"/home/aron/src/ka-lite/kalite/playlist/fixtures/single_student_testdata.json",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/udgNvPpDb2I.srt",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/UQiNvDOJi0c.srt",
-		"/home/aron/src/ka-lite/setup_unix.sh",
-		"/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/videoplayer.js",
-		"/home/aron/src/ka-lite/static-libraries/audio-js/audio.min.js",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/AuD2TX-90Cc.srt",
-		"/home/aron/src/ka-lite/static-libraries/js/pdfjs/viewer.js",
-		"/home/aron/Downloads/web/compatibility.js",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/CEdXvoAv_oM.srt",
-		"/home/aron/src/ka-lite/python-packages/oauth.py",
-		"/home/aron/src/ka-lite/static-libraries/js/pdf.js",
-		"/home/aron/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
-		"/home/aron/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
-		"/home/aron/src/ka-lite/kalite/distributed/urls.py",
-		"/home/aron/src/ka-lite/kalite/distributed/views.py",
+		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/lA3sjWwu5-s.srt",
+		"/home/aron/src/ka-lite/kalite/distributed/settings.py",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/src/diffs/__tests__/split-diff-test.js",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/src/__tests__/renderer-api-test.jsx",
 		"/home/aron/src/ka-lite/kalite/distributed/tests/browser_tests/distributed.py",
 		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/dIGLhLMsy2U.srt",
-		"/home/aron/Downloads/web/debugger.js",
-		"/home/aron/src/ka-lite/kalite/control_panel/tests/control_panel.py",
-		"/home/aron/src/ka-lite/kalite/settings.py",
-		"/home/aron/src/ka-lite/kalite/distributed/settings.py",
-		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/vinEPfrqfiU.srt",
-		"/home/aron/src/ka-lite/kalite/version.py",
-		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/vertical_angles.html",
-		"/home/aron/src/ka-lite/python-packages/selenium/webdriver/firefox/webdriver_prefs.json",
-		"/home/aron/Downloads/web/viewer.css",
-		"/home/aron/src/ka-lite/kalite/distributed/hbtemplates/topics/sidebar.handlebars",
+		"/home/aron/src/ka-lite/locale/djangojs.pot",
+		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/identifying_points_1.html",
+		"/home/aron/src/ka-lite/INSTALL.md",
+		"/home/aron/src/ka-lite/kalite/i18n/settings.py",
+		"/home/aron/src/ka-lite/kalite/dynamic_assets/utils.py",
+		"/home/aron/src/ka-lite/kalite/dynamic_assets/decorators.py",
+		"/home/aron/src/ka-lite/kalite/dynamic_assets/views.py",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/build/lint_i18n_strings_test.py",
+		"/home/aron/src/ka-lite/kalite/static/js/distributed/distributed-server.js",
+		"/home/aron/src/ka-lite/kalite/dynamic_assets/tests/decorators.py",
+		"/home/aron/src/ka-lite/kalite/dynamic_assets/tests/__init__.py",
+		"/home/aron/src/ka-lite/kalite/dynamic_assets/urls.py",
+		"/home/aron/src/ka-lite/kalite/dynamic_assets/models.py",
+		"/home/aron/src/ka-lite/kalite/dynamic_assets/fields.py",
+		"/home/aron/src/ka-lite/kalite/dynamic_assets/__init__.py",
+		"/home/aron/src/ka-lite/kalite/dynamic_assets/templates/dynamic_assets/dynamic.js",
+		"/home/aron/src/ka-lite/kalite/dynamic_assets/templates/dynamic_assets/dynamic.css",
+		"/home/aron/src/ka-lite/kalite/student_testing/dynamic_assets.py",
+		"/home/aron/src/ka-lite/kalite/store/dynamic_assets.py",
+		"/home/aron/src/ka-lite/kalite/distributed/dynamic_assets.py",
+		"/home/aron/src/ka-lite/kalite/ab_testing/dynamic_assets.py",
+		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/JvDpYlyKkNU.srt",
+		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/Hqzakjo_dYg.srt",
+		"/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/topics/views.js",
 		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/discount_tax_and_tip_word_problems.html",
-		"/home/aron/src/ka-lite/locale/djangojs.pot"
+		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/exercises/coin_flip_sequences.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/exercises/comparing_decimals_2.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/exercises/comparing_decimals_1.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/exercises/positive_and_negative_parts_of_functions.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/exercises/converting_between_point_slope_and_slope_intercept.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/exercises/comparing_improper_fractions_and_mixed_numbers.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/factoring_difference_of_squares_3.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/factoring_difference_of_squares_2.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/factoring_difference_of_squares_1.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/volume_with_unit_cubes_2.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/logical_arguments_deductive_reasoning.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/solving_quadratics_by_taking_the_square_root.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/recognizing_intervals_of_functions.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/reciprocal_trig_funcs.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/coin_flip_sequences.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/converting_percents_to_decimals.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/volume_with_unit_cubes.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/exercises/ordering_improper_fractions_and_mixed_numbers.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/exercises/converting_percents_to_decimals.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/solving_quadratics_by_factoring_2.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/exercises/graphs_of_sine_and_cosine.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/solving_quadratics_by_factoring.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/ordering_fractions.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/ordering_decimals.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/graphs_of_sine_and_cosine.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/areas_of_circles_and_sectors.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/geometric_sequences_2.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/geometric_sequences_1.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/converting_between_slope_intercept_and_standard_form.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/exercises/converting_between_slope_intercept_and_standard_form.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/recognizing_conic_sections.html",
+		"/home/aron/src/ka-lite/kalite/distributed/hbtemplates/topics/sidebar-entry.handlebars",
+		"/home/aron/src/ka-lite/kalite/distributed/hbtemplates/topics/sidebar.handlebars",
+		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/adding_and_subtracting_rational_numbers.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/exercises/linear_equation_word_problems_selfregulatingthinking_notextbox.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/exercises/linear_equation_word_problems_control_notextbox.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/exercises/linear_inequalities.html",
+		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/linear_equation_word_problems_selfregulatingthinking_notextbox.html",
+		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/linear_equation_word_problems_control_notextbox.html",
+		"/home/aron/src/ka-lite/kalite/static/perseus/ke/exercises/linear_inequalities.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/exercises/linear_inequalities.html",
+		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/linear_inequalities.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/exercises/linear_equation_word_problems_reflectingonmeaning_notextbox.html",
+		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/linear_equation_word_problems_reflectingonmeaning_notextbox.html",
+		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/bBQVaRnHqLs.srt",
+		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/lEA31vHiry4.srt",
+		"/home/aron/src/ka-lite/.gitignore",
+		"/home/aron/src/ka-lite/python-packages/fle_utils/.gitignore",
+		"/home/aron/src/ka-lite/python-packages/playground/.gitignore",
+		"/home/aron/src/ka-lite/python-packages/playground/test_tools/.gitignore",
+		"/home/aron/src/ka-lite/kalite/distributed/static/khan-exercises/.gitignore",
+		"/home/aron/src/ka-lite/kalite/distributed/static/perseus/ke/.gitignore",
+		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/graphing_inequalities.html",
+		"/home/aron/src/ka-lite/kalite/ab_testing/data/groups.py",
+		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/axGgnXyuiTg.srt",
+		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/iqeGTtyzQ1I.srt",
+		"/home/aron/src/ka-lite/kalite/static/perseus/src/widgets/interactive-graph.jsx",
+		"/home/aron/src/ka-lite/kalite/i18n/__init__.py",
+		"/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/audio/views.js",
+		"/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/search_autocomplete.js",
+		"/home/aron/src/ka-lite/kalite/distributed/tests/url_tests.py",
+		"/home/aron/src/ka-lite/static-libraries/js/jquery-ui/i18n/jquery-ui-i18n.min.js",
+		"/home/aron/src/ka-lite/docs/I18N.md",
+		"/home/aron/src/ka-lite/kalite/static/data/demo/contents.json",
+		"/home/aron/src/ka-lite/kalite/topic_tools/__init__.py",
+		"/home/aron/src/ka-lite/kalite/main/api_views.py",
+		"/home/aron/src/ka-lite/static-libraries/js/khan-lite.js",
+		"/home/aron/src/ka-lite/kalite/static/khan-exercises/exercises/distance_between_point_and_line.html",
+		"/home/aron/src/ka-lite/kalite/testing/base.py",
+		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/bAU1MLRwh7c.srt",
+		"/home/aron/src/ka-lite/kalite/coachreports/templates/coachreports/base.html",
+		"/home/aron/src/ka-lite/kalite/distributed/templates/admin/base.html",
+		"/home/aron/src/ka-lite/kalite/control_panel/templates/control_panel/base.html",
+		"/home/aron/src/ka-lite/kalite/distributed/static/css/distributed/search_autocomplete.css",
+		"/home/aron/src/ka-lite/kalite/static/js/distributed/search_autocomplete.js",
+		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/sEiQm7IzUg8.srt",
+		"/home/aron/src/ka-lite/setup.cfg",
+		"/home/aron/src/ka-lite/kalite/static/js/khan-lite.js",
+		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/cppxO67e6eo.srt",
+		"/home/aron/src/ka-lite/kalite/static/data/content.json",
+		"/home/aron/src/ka-lite/kalite/topic_tools/settings.py",
+		"/home/aron/src/ka-lite/docs/overview/The-topic-tree.md",
+		"/home/aron/src/ka-lite/kalite/distributed/templates/distributed/topic.html",
+		"/home/aron/src/ka-lite/kalite/static/srt/en/subtitles/tOd2T72eJME.srt",
+		"/home/aron/src/ka-lite/docs/TESTBED.md",
+		"/home/aron/src/ka-lite/python-packages/django/utils/translation/trans_real.py",
+		"/home/aron/src/ka-lite/python-packages/django/utils/translation/__init__.py",
+		"/home/aron/src/ka-lite/python-packages/django/utils/timezone.py",
+		"/home/aron/src/ka-lite/kalite/static/video-js-4/video.dev.js"
 	],
 	"find":
 	{
@@ -418,6 +439,47 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"language",
+			"LANGUAGE =",
+			"CHANNEL =",
+			"channel",
+			"less",
+			"LOAD_PERSEUS_ASSETS",
+			"topic.html",
+			"settings",
+			"topic.html",
+			"perseus.less",
+			"search",
+			"type",
+			"get_flat_topic_tree",
+			"generate_flat_topic_tree",
+			"CHERRYPY_THREAD_COUNT",
+			"threads",
+			"POINTS_PER_PAGE",
+			"pagerendered",
+			"addeventli",
+			"stream",
+			"TODO-BLOCKER",
+			"<<<",
+			"670cab50",
+			"search-button",
+			"\\tid=.*search",
+			"id=\"search\"",
+			"search",
+			"ContentBaseView",
+			"id",
+			"id_key",
+			"pdb",
+			"whitewash_node_data",
+			"import pdb",
+			"case \"Video\"",
+			"PDF",
+			"CHANNEL =",
+			"CHANNEL",
+			"id_key",
+			"case \"PDF\":",
+			"BrowserTestCase",
+			"KALiteDistributedBrowserTestCase",
 			"compute_total_points",
 			"kind",
 			"title",
@@ -521,16 +583,16 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/pdf/views.js",
+					"file": "/home/aron/src/ka-lite/kalite/distributed/templates/distributed/base.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4391,
+						"buffer_size": 14645,
 						"regions":
 						{
 							"bookmark_a":
@@ -539,8 +601,8 @@
 								"regions":
 								[
 									[
-										2568,
-										2568
+										2409,
+										2409
 									]
 								]
 							}
@@ -548,139 +610,140 @@
 						"selection":
 						[
 							[
-								1130,
-								1130
+								6375,
+								6375
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1453.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "/home/aron/src/ka-lite/kalite/main/static/data/content.json",
+					"file": "/home/aron/src/ka-lite/kalite/i18n/middleware.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 163,
+						"buffer_size": 2282,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								17,
-								17
+								2156,
+								2156
 							]
 						],
 						"settings":
 						{
-							"auto_name": "{}",
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"tab_size": 4,
+							"easy_motion_mode": false,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/home/aron/src/ka-lite/kalite/topic_tools/__init__.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 24581,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4328,
-								4328
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1499.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/home/aron/src/ka-lite/python-packages/fle_utils/general.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6461,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6058,
-								6058
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2939.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/topics/views.js",
+					"buffer": 2,
+					"file": "/home/aron/src/ka-lite/kalite/distributed/views.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 15226,
+						"buffer_size": 15172,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10782,
-								10782
+								8667,
+								8667
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"syntax": "Packages/Python/Python.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 5821.0,
+						"translation.y": 2627.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/home/aron/src/ka-lite/kalite/settings.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8948,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6732,
+								6732
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1879.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/home/aron/src/ka-lite/kalite/main/settings.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1219,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1215,
+								1215
+							]
+						],
+						"settings":
+						{
+							"easy_motion_mode": false,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
@@ -688,138 +751,19 @@
 				},
 				{
 					"buffer": 5,
-					"file": "/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/content/models.js",
+					"file": "/home/aron/src/ka-lite/kalite/i18n/settings.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3447,
+						"buffer_size": 2443,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2333,
-								2333
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1021.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "/home/aron/src/ka-lite/static-libraries/pdfjs/web/viewer.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 199368,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								27203,
-								27203
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 15837.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "/home/aron/src/ka-lite/kalite/distributed/hbtemplates/pdf/pdf-viewer.handlebars",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 143,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								54,
-								54
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "/home/aron/src/ka-lite/kalite/distributed/static/js/distributed/audio/views.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3839,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3340,
-								3340
-							]
-						],
-						"settings":
-						{
-							"history_list_is_closing": true,
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 919.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "/home/aron/src/ka-lite/kalite/distributed/api_views.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6060,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3005,
-								3005
+								0,
+								0
 							]
 						],
 						"settings":
@@ -829,10 +773,51 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 743.0,
+						"translation.y": 480.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/home/aron/src/ka-lite/kalite/distributed/templates/distributed/topic.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7098,
+						"regions":
+						{
+							"bookmark_a":
+							{
+								"flags": 144,
+								"regions":
+								[
+									[
+										1680,
+										1680
+									]
+								]
+							}
+						},
+						"selection":
+						[
+							[
+								1347,
+								1347
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 544.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
 					"type": "text"
 				}
 			]
@@ -840,7 +825,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 34.0
+		"height": 24.0
 	},
 	"input":
 	{
@@ -889,24 +874,224 @@
 		"selected_items":
 		[
 			[
-				"local",
+				"kalitesettings",
+				"kalite/settings.py"
+			],
+			[
+				"dist/setting",
+				"kalite/distributed/settings.py"
+			],
+			[
+				"i18nsettings",
+				"kalite/i18n/settings.py"
+			],
+			[
+				"distbase",
+				"kalite/distributed/templates/distributed/base.html"
+			],
+			[
+				"distsettings",
+				"kalite/distributed/settings.py"
+			],
+			[
+				"disttopichtml",
+				"kalite/distributed/templates/distributed/topic.html"
+			],
+			[
+				"gitignore",
+				".gitignore"
+			],
+			[
+				"igitgnore",
+				"python-packages/fle_utils/.gitignore"
+			],
+			[
+				"localsett",
 				"kalite/local_settings.py"
 			],
 			[
-				"contentmodelsjs",
-				"kalite/static/js/distributed/content/models.js"
+				"i18nmidd",
+				"kalite/i18n/middleware.py"
+			],
+			[
+				"base.html",
+				"kalite/distributed/templates/distributed/base.html"
+			],
+			[
+				"searchautojs",
+				"kalite/distributed/static/js/distributed/search_autocomplete.js"
+			],
+			[
+				"searchautocomp",
+				"kalite/distributed/static/css/distributed/search_autocomplete.css"
+			],
+			[
+				"searchauto",
+				"kalite/static/js/distributed/search_autocomplete.js"
+			],
+			[
+				"contents.js",
+				"kalite/static/data/demo/contents.json"
+			],
+			[
+				"topictoolsinit",
+				"kalite/topic_tools/__init__.py"
 			],
 			[
 				"audioviews",
 				"kalite/distributed/static/js/distributed/audio/views.js"
 			],
 			[
-				"audioview",
-				"kalite/static/js/distributed/audio/views.js"
+				"contents",
+				"kalite/static/data/demo/contents.json"
+			],
+			[
+				"local",
+				"kalite/local_settings.py"
 			],
 			[
 				"viewerjs",
 				"static-libraries/pdfjs/web/viewer.js"
+			],
+			[
+				"pdfhandle",
+				"kalite/distributed/hbtemplates/pdf/pdf-viewer.handlebars"
+			],
+			[
+				"audiohandle",
+				"kalite/distributed/hbtemplates/audio/audio-player.handlebars"
+			],
+			[
+				"distpdfviews",
+				"kalite/distributed/static/js/distributed/pdf/views.js"
+			],
+			[
+				"pdfviewsjs",
+				"kalite/static/js/distributed/pdf/views.js"
+			],
+			[
+				"version",
+				"kalite/version.py"
+			],
+			[
+				"basehtml",
+				"kalite/coachreports/templates/coachreports/base.html"
+			],
+			[
+				"searchautjs",
+				"kalite/static/js/distributed/search_autocomplete.js"
+			],
+			[
+				"searchautocompl",
+				"kalite/static/css/distributed/search_autocomplete.css"
+			],
+			[
+				"mainstaticconents",
+				"kalite/main/static/data/kontent/contents.json"
+			],
+			[
+				"testcontents",
+				"kalite/static/data/test/contents.json"
+			],
+			[
+				"sidebarcss",
+				"kalite/static/css/distributed/sidebar.css"
+			],
+			[
+				"playlistfont",
+				"kalite/playlist/static/fonts/icomoon.svg"
+			],
+			[
+				"assignplay",
+				"kalite/static/js/playlist/assign_playlists.js"
+			],
+			[
+				"distpdfview",
+				"kalite/distributed/static/js/distributed/pdf/views.js"
+			],
+			[
+				"updateplangues",
+				"kalite/static/js/updates/update_languages.js"
+			],
+			[
+				"croncon",
+				"python-packages/fle_utils/chronograph/management/croncommand.py"
+			],
+			[
+				"pdfview",
+				"kalite/static/js/distributed/pdf/views.js"
+			],
+			[
+				"channel",
+				"kalite/contentload/management/commands/channels/base.py"
+			],
+			[
+				"contentload",
+				"kalite/contentload/management/commands/contentload.py"
+			],
+			[
+				"content.",
+				"kalite/static/data/kontent/contents.json"
+			],
+			[
+				"contentjs",
+				"kalite/static/data/content.json"
+			],
+			[
+				"contentsjs",
+				"kalite/static/data/kontent/contents.json"
+			],
+			[
+				"channelsbase",
+				"kalite/contentload/management/commands/channels/base.py"
+			],
+			[
+				"manage",
+				"kalite/manage.py"
+			],
+			[
+				"importchann",
+				"kalite/contentload/management/commands/channels/import_channel.py"
+			],
+			[
+				"videodown",
+				"kalite/updates/management/commands/videodownload.py"
+			],
+			[
+				"contentsjson",
+				"kalite/static/data/kontent/contents.json"
+			],
+			[
+				"assessment",
+				"kalite/static/data/assessmentitems.json"
+			],
+			[
+				"contensett",
+				"kalite/contentload/settings.py"
+			],
+			[
+				"ipmortchann",
+				"kalite/contentload/management/commands/channels/import_channel.py"
+			],
+			[
+				"kalitefacilityformtests",
+				"kalite/facility/tests/form_tests.py"
+			],
+			[
+				"tarvis",
+				".travis.yml"
+			],
+			[
+				"ignore",
+				".gitignore"
+			],
+			[
+				"contentmodelsjs",
+				"kalite/static/js/distributed/content/models.js"
+			],
+			[
+				"audioview",
+				"kalite/static/js/distributed/audio/views.js"
 			],
 			[
 				"pljson",
@@ -923,10 +1108,6 @@
 			[
 				"topichtml",
 				"kalite/distributed/templates/distributed/topic.html"
-			],
-			[
-				"pdfhandle",
-				"kalite/distributed/hbtemplates/pdf/pdf-viewer.handlebars"
 			],
 			[
 				"viewspy",
@@ -959,10 +1140,6 @@
 			[
 				"topicviews",
 				"ka-lite/kalite/distributed/static/js/distributed/topics/views.js"
-			],
-			[
-				"audiohandle",
-				"ka-lite/kalite/distributed/hbtemplates/audio/audio-player.handlebars"
 			],
 			[
 				"compa",
@@ -1003,10 +1180,6 @@
 			[
 				"processpri",
 				"python-packages/fle_utils/set_process_priority.py"
-			],
-			[
-				"i18nsettings",
-				"kalite/i18n/settings.py"
 			],
 			[
 				"updatecro",
@@ -1077,6 +1250,22 @@
 		"selected_items":
 		[
 			[
+				"un",
+				"~/src/dotfiles/sublime-projects/untitled.sublime-project"
+			],
+			[
+				"",
+				"~/src/dotfiles/sublime-projects/untitled.sublime-project"
+			],
+			[
+				"profi",
+				"~/src/dotfiles/sublime-projects/dotfiles.sublime-project"
+			],
+			[
+				"ce",
+				"~/src/dotfiles/sublime-projects/central.sublime-project"
+			],
+			[
 				"cen",
 				"~/src/dotfiles/sublime-projects/central.sublime-project"
 			],
@@ -1097,8 +1286,56 @@
 		"selected_items":
 		[
 			[
+				"dynamic_settings",
+				"dynamic_settings"
+			],
+			[
+				"dynamic",
+				"dynamic_js"
+			],
+			[
+				"urltestc",
+				"UrlTestCases"
+			],
+			[
+				"getflattopic",
+				"get_flat_topic_tree"
+			],
+			[
+				"servefile",
+				"serve_file"
+			],
+			[
 				"contentlog",
 				"ContentLog"
+			],
+			[
+				"croncom",
+				"CronCommand"
+			],
+			[
+				"getcontent",
+				"get_content_data"
+			],
+			[
+				"rebuild",
+				"rebuild_topictree"
+			],
+			[
+				"getcontentdata",
+				"get_content_data"
+			],
+			[
+				"maintest",
+				"MainTestCase"
+			],
+			[
+				"dlugify",
+				"deslugify"
+			],
+			[
+				"findmost",
+				"find_most_related_video"
 			],
 			[
 				"computetotal",
