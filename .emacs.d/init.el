@@ -85,6 +85,7 @@
    (interactive "r")
    (align-regexp begin end "\\(\\s-*\\)=" 1 1 ))
 (bind-key "C-x a a" 'align-to-equals)
+(bind-key "C-x a e" 'align-regexp)
 
 (defadvice split-window (after move-point-to-new-window activate)
   "Moves the point to the newly created window after splitting."
