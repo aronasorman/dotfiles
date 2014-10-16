@@ -310,6 +310,12 @@ screen."
   :init (progn
           (ido-vertical-mode)))
 
+(use-package flx-ido
+  :ensure t
+  :config (progn
+            (setq gc-cons-threshold 20000000)
+            (setq flx-ido-threshold 1000)))
+
 (use-package helm
   :load-path "~/.emacs.d/helm"
   :diminish helm-mode
@@ -322,7 +328,7 @@ screen."
 (use-package helm-cmd-t
   :load-path "~/.emacs.d/helm-cmd-t"
   :init (progn
-          (bind-key "C-p" 'helm-cmd-t evil-normal-state-map)
+          (bind-key "C-p" 'projectile-find-file evil-normal-state-map)
           (bind-key "M-P" (lambda ()
                             (interactive)
                             (with-helm-default-directory (projectile-project-root)
