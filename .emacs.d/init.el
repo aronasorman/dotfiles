@@ -172,8 +172,7 @@
             (elpy-use-ipython))
   :init (progn
           ;; disable flymake mode for python
-          (setq elpy-modules (remove 'elpy-module-flymake elpy-modules))
-          )
+          (setq elpy-modules (remove 'elpy-module-flymake elpy-modules)))
   )
 
 (defun elpy-show-defun (copy-to-clipboard)
@@ -244,7 +243,9 @@ screen."
   :init (progn
           (setq ace-jump-mode-scope 'frame))
   :config (progn
-            (require 'cl)))
+            (require 'cl)
+            (setq ace-jump-mode-move-keys
+                  (loop for i from ?a to ?z collect i))))
 
 (use-package ace-window
   :load-path "~/.emacs.d"
