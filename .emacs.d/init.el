@@ -162,11 +162,8 @@
 (use-package multiple-cursors
   :ensure t
   :init (progn
-          (unbind-key " M-m")
-          (bind-key "M-m M-n" 'mc/mark-next-like-this)
-          (bind-key "M-m M-p" 'mc/mark-previous-like-this)
-          (bind-key "M-m M-a" 'mc/mark-all-like-this)
-          (bind-key "M-m M-." 'mc/mark-more-like-this-extended)))
+          (bind-key "C-d" 'mc/mark-more-like-this-extended evil-normal-state-map)
+          (bind-key "C-d" 'mc/mark-more-like-this-extended evil-visual-state-map)))
 
 (use-package elpy
   :ensure t
