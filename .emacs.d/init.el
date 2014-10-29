@@ -151,6 +151,7 @@
           (bind-key "\\" 'evil-repeat-find-char evil-normal-state-map)
           (bind-key "C-o" 'imenu evil-normal-state-map)
           (bind-key "!" 'shell-command evil-normal-state-map)
+          (bind-key "C-r" 'isearch-backward evil-normal-state-map)
           (bind-key "(" 'beginning-of-defun evil-normal-state-map)
           (bind-key ")" 'end-of-defun evil-normal-state-map)
           (bind-key "i i" 'evil-insert evil-visual-state-map)
