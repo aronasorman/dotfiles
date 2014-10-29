@@ -294,6 +294,11 @@ screen."
         (funcall current-project-action)
       (message "No action found for %s" current-project))))
 
+(use-package perspective
+  :ensure t
+  :init (progn
+          (persp-mode t)))
+
 (use-package projectile
   :load-path "~/.emacs.d/projectile"
   :diminish projectile-mode
@@ -303,6 +308,8 @@ screen."
             (setq projectile-switch-project-action 'projectile-dired)
             (add-hook 'projectile-switch-project-hook 'projectile-run-action-for-current-project))
   :init (progn
+          (bind-key "C-M-r" 'projectile-find-tag evil-normal-state-map)
+          (require 'persp-projectile)
           (projectile-global-mode t)))
 
 (use-package ido-vertical-mode
