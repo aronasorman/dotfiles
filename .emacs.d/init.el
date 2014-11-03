@@ -126,6 +126,9 @@
   :init (progn
           (add-hook 'after-init-hook 'global-company-mode)))
 
+(use-package handlebars-mode
+  :ensure t)
+
 ;; shell paths
 (use-package exec-path-from-shell
   :ensure t)
