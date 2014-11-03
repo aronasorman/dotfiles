@@ -25,6 +25,7 @@ export ANDROID_SDK_ROOT
 
 PATH=$LIB/bin:$PATH
 PATH=$PATH:$SRC/elixir/bin
+PATH=$PATH:/usr/sbin/           # make sure we got sbin in there
 
 ## for fixing Homebrew
 PATH=/usr/local/bin:/usr/local/sbin:/sbin:$PATH
