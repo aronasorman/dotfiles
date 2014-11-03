@@ -325,6 +325,11 @@ screen."
             (setq gc-cons-threshold 20000000)
             (setq flx-ido-threshold 1000)))
 
+(use-package aggressive-indent
+  :ensure t
+  :config (progn
+            (add-hook 'prog-mode-hook 'aggressive-indent-mode)))
+
 (use-package helm
   :load-path "~/.emacs.d/helm"
   :diminish helm-mode
