@@ -146,19 +146,19 @@
 (use-package evil
   :ensure t
   :config (progn
-          (add-to-list 'evil-emacs-state-modes 'grep-mode)
-          (add-to-list 'evil-emacs-state-modes 'eshell-mode)
-          (add-to-list 'evil-emacs-state-modes 'git-rebase-mode)
-          (bind-key "<SPC>" 'ace-jump-mode evil-normal-state-map)
-          (bind-key ";" 'evil-ex evil-normal-state-map)
-          (bind-key "\\" 'evil-repeat-find-char evil-normal-state-map)
-          (bind-key "C-o" 'imenu evil-normal-state-map)
-          (bind-key "!" 'shell-command evil-normal-state-map)
-          (bind-key "C-r" 'isearch-backward evil-normal-state-map)
-          (bind-key "(" 'beginning-of-defun evil-normal-state-map)
-          (bind-key ")" 'end-of-defun evil-normal-state-map)
-          (bind-key "i i" 'evil-insert evil-visual-state-map)
-          (bind-key "C-j" 'evil-esc evil-insert-state-map))
+            (add-to-list 'evil-emacs-state-modes 'grep-mode)
+            (add-to-list 'evil-emacs-state-modes 'eshell-mode)
+            (add-to-list 'evil-emacs-state-modes 'git-rebase-mode)
+            (bind-key "<SPC>" 'ace-jump-mode evil-normal-state-map)
+            (bind-key ";" 'evil-ex evil-normal-state-map)
+            (bind-key "\\" 'evil-repeat-find-char evil-normal-state-map)
+            (bind-key "C-o" 'imenu evil-normal-state-map)
+            (bind-key "!" 'shell-command evil-normal-state-map)
+            (bind-key "C-r" 'isearch-backward evil-normal-state-map)
+            (bind-key "(" 'beginning-of-defun evil-normal-state-map)
+            (bind-key ")" 'end-of-defun evil-normal-state-map)
+            (bind-key "i i" 'evil-insert evil-visual-state-map)
+            (bind-key "C-j" 'evil-esc evil-insert-state-map))
   :init (progn
           (add-hook 'eshell-mode-hook 'turn-off-evil-mode) ; evil-emacs-state-modes ain't working for eshell!
           (evil-mode t)))
