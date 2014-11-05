@@ -326,10 +326,15 @@ screen."
             (setq gc-cons-threshold 20000000)
             (setq flx-ido-threshold 1000)))
 
+(setq exclude-aggressive-indent-from-these-major-modes '(python-mode))
+
 (use-package aggressive-indent
   :ensure t
   :config (progn
-            (add-hook 'prog-mode-hook 'aggressive-indent-mode)))
+            (add-hook 'prog-mode-hook (lambda ()
+                                        (when (not (member major-mode
+                                                           exclude-aggressive-indent-from-these-major-modes))
+                                          (aggressive-indent-mode t))))))
 
 (use-package helm
   :load-path "~/.emacs.d/helm"
