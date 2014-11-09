@@ -576,7 +576,10 @@ screen."
 	    (sp-local-pair 'web-mode "{%" "%}")))
 
 (use-package elixir-mode
-  :load-path "~/.emacs.d/elixir-mode")
+  :load-path "~/.emacs.d/elixir-mode"
+  :init (progn
+          (use-package alchemist
+            :ensure t)))
 
 (use-package lua-mode
   :ensure t)
