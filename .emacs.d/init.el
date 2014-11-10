@@ -127,16 +127,16 @@
   :init (progn
           (add-hook 'after-init-hook 'global-company-mode)))
 
-;;; required by crosshairs-mode
-(use-package hl-line+)
+;; ;;; required by crosshairs-mode
+;; (use-package hl-line+)
 
-(use-package col-highlight
-  :ensure t)
+;; (use-package col-highlight
+;;   :ensure t)
 
-(use-package crosshairs
-  :ensure t
-  :config (progn
-            (add-hook 'prog-mode-hook 'crosshairs-mode)))
+;; (use-package crosshairs
+;;   :ensure t
+;;   :config (progn
+;;             (add-hook 'prog-mode-hook 'crosshairs-mode)))
 
 (use-package handlebars-mode
   :ensure t)
