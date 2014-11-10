@@ -188,7 +188,8 @@
             (elpy-use-ipython))
   :init (progn
           ;; disable flymake mode for python
-          (setq elpy-modules (remove 'elpy-module-flymake elpy-modules)))
+          (setq elpy-modules (remove 'elpy-module-flymake elpy-modules))
+          (bind-key "C-c d" 'elpy-doc elpy-mode-map))
   )
 
 (defun elpy-show-defun (copy-to-clipboard)
