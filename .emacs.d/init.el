@@ -127,6 +127,9 @@
   :init (progn
           (add-hook 'after-init-hook 'global-company-mode)))
 
+(use-package diminish
+  :ensure t)
+
 ;; ;;; required by crosshairs-mode
 ;; (use-package hl-line+)
 
@@ -344,6 +347,7 @@ screen."
 
 (use-package aggressive-indent
   :ensure t
+  :diminish aggressive-indent-mode
   :config (progn
             (add-hook 'prog-mode-hook (lambda ()
                                         (when (not (member major-mode
@@ -361,6 +365,7 @@ screen."
 
 (use-package helm-cmd-t
   :load-path "~/.emacs.d/helm-cmd-t"
+  :diminish projectile-mode
   :init (progn
           (bind-key "C-p" 'projectile-find-file evil-normal-state-map)
           (bind-key "M-P" (lambda ()
@@ -484,6 +489,7 @@ screen."
 
 (use-package magit
   :ensure t
+  :diminish magit-auto-revert-mode
   :init (progn
           (bind-key "q" 'magit-quit-session magit-status-mode-map)
           (defadvice magit-status (around magit-fullscreen activate)
