@@ -170,6 +170,8 @@
             (bind-key "(" 'beginning-of-defun evil-normal-state-map)
             (bind-key ")" 'end-of-defun evil-normal-state-map)
             (bind-key "i i" 'evil-insert evil-visual-state-map)
+            (bind-key "|" 'split-window-right evil-normal-state-map)
+            (bind-key "-" 'split-window-below evil-normal-state-map)
             (bind-key "C-j" 'evil-esc evil-insert-state-map))
   :init (progn
           (add-hook 'eshell-mode-hook 'turn-off-evil-mode) ; evil-emacs-state-modes ain't working for eshell!
