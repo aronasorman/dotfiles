@@ -286,10 +286,7 @@ screen."
   :init (progn
           (add-hook 'lisp-mode-hook 'paredit-mode)
           (add-hook 'emacs-lisp-mode-hook 'paredit-mode))
-  :config (progn
-            (use-package evil-paredit
-              :ensure t
-              :init (add-hook 'paredit-mode-hook 'evil-paredit-mode))))
+  :config (progn))
 
 (use-package grizzl
   :ensure t)
