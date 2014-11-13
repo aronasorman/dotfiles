@@ -790,6 +790,9 @@ screen."
             (use-package cider
               :ensure t
               :init (progn
+                      (add-to-list 'evil-emacs-state-modes 'cider-test-report-mode)
+                      (add-to-list 'evil-emacs-state-modes 'cider-docview-mode)
+                      (add-to-list 'evil-emacs-state-modes 'cider-stacktrace-mode)
                       (cider-repl-toggle-pretty-printing)))))
 
 ;; mu and mu4e
