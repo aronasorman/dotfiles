@@ -532,6 +532,12 @@ screen."
             nil ; we have to return nil for the checkout to continue on
             ))
 
+(use-package dired
+  :config (progn
+            (add-to-list 'evil-emacs-state-modes 'dired-mode)
+            (bind-key "," 'magit-status dired-mode-map)
+            (bind-key ";" 'projectile-find-file dired-mode-map)))
+
 (use-package slime
   :load-path "~/.emacs.d/slime"
   :init (progn
