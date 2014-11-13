@@ -158,6 +158,11 @@
 (use-package pkg-info
   :ensure t)
 
+(use-package powerline
+  :ensure t
+  :config (progn
+            (powerline-default-theme)))
+
 (use-package evil
   :ensure t
   :config (progn
