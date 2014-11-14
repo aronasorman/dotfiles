@@ -466,30 +466,30 @@ screen."
           (setq evil-leader/leader ",")
           (global-evil-leader-mode t))
   :config (evil-leader/set-key
-	      "gs" 'magit-status
-	      "gb" 'magit-blame-mode
-	      "go" 'google-it
-	      "ps" 'projectile-switch-project
-	      "cc" 'projectile-compile-project
-	      "C" 'compile
-	      "sl" 'sort-lines
-	      "b" 'helm-buffers-list
-	      "f" 'find-file
-	      "t" 'deft
-	      "d" 'dired
-	      "m" 'mu4e
-	      "|" 'split-window-right
-	      "-" 'split-window-below
-	      "." 'find-tag
-	      "(" 'paredit-wrap-round
-	      "u." 'pop-tag-mark
-	      "oa" 'org-agenda
-	      "oc" 'org-capture
-	      "ot" 'org-todo-list
-	      "oo" (lambda () (interactive) (org-tags-view t))
-	      "ol" 'org-store-link
-	      "w" 'virtualenv-workon
-	      "ci" 'evilnc-comment-or-uncomment-lines))
+            "gs" 'magit-status
+            "gb" 'magit-blame-mode
+            "go" 'google-it
+            "ps" 'projectile-switch-project
+            "cc" 'projectile-compile-project
+            "C" 'compile
+            "sl" 'sort-lines
+            "b" 'helm-buffers-list
+            "f" 'find-file
+            "t" 'deft
+            "d" 'dired
+            "m" 'mu4e
+            "|" 'split-window-right
+            "-" 'split-window-below
+            "." 'find-tag
+            "(" 'paredit-wrap-round
+            "u." 'pop-tag-mark
+            "oa" 'org-agenda
+            "oc" 'org-capture
+            "ot" 'org-todo-list
+            "oo" (lambda () (interactive) (org-tags-view t))
+            "ol" 'org-store-link
+            "w" 'virtualenv-workon
+            "ci" 'evilnc-comment-or-uncomment-lines))
 
 (use-package magit
   :ensure t
