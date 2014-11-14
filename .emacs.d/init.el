@@ -487,6 +487,8 @@ screen."
 (use-package magit
   :ensure t
   :diminish magit-auto-revert-mode
+  :config (progn
+            (add-to-list 'evil-emacs-state-modes 'magit-process-mode))
   :init (progn
           (bind-key "q" 'magit-quit-session magit-status-mode-map)
           (defadvice magit-status (around magit-fullscreen activate)
