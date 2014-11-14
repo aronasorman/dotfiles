@@ -276,13 +276,6 @@ screen."
             (setq ace-jump-mode-move-keys
                   (loop for i from ?a to ?z collect i))))
 
-(use-package ace-window
-  :load-path "~/.emacs.d"
-  :init (progn
-          (bind-key "C-c \\" (lambda () (interactive) (ace-delete-window)) evil-normal-state-map))
-  :config (progn
-            (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))))
-
 (use-package rainbow-delimiters
   :ensure t
   :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
