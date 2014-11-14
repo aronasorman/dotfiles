@@ -567,7 +567,7 @@ screen."
             ;; make the bindings I will use most often explicit
             (bind-key "C-M-w" 'wrap-with-pair evil-normal-state-map)
             (bind-key "C-M-w" 'wrap-with-pair evil-insert-state-map)
-            (bind-key "C-M-t" 'transpose-depending-on-mode evil-normal-state-map)
+            (bind-key "C-M-y" 'transpose-depending-on-mode evil-normal-state-map)
             (bind-key "C-<right>" 'sp-forward-slurp-sexp evil-normal-state-map)
             (bind-key "C-<right>" 'sp-forward-slurp-sexp evil-insert-state-map)
             (bind-key "C-<left>" 'sp-backward-slurp-sexp evil-normal-state-map)
