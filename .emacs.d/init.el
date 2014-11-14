@@ -57,7 +57,7 @@
 ;; (add-hook 'after-init-hook 'global-hl-line-mode)
 
 ;; font
-(set-face-attribute 'default nil :font "Inconsolata-12")
+(set-face-attribute 'default nil :font "Inconsolata-11")
 
 ;;;;; vanilla keybindings
 (global-set-key (kbd "<RET>") 'newline-and-indent)
