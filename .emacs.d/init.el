@@ -264,8 +264,8 @@ screen."
 (use-package evil-numbers
   :ensure t
   :init (progn
-          (bind-key "C-a +" 'evil-numbers/inc-at-pt evil-normal-state-map)
-          (bind-key "C-a -" 'evil-numbers/dec-at-pt evil-normal-state-map)))
+          (bind-key "C-a" 'evil-numbers/inc-at-pt evil-normal-state-map)
+          (bind-key "C-x" 'evil-numbers/dec-at-pt evil-normal-state-map)))
 
 (use-package ace-jump-mode
   :ensure t
