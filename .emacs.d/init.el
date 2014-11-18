@@ -501,9 +501,10 @@ screen."
             (interactive)
             (kill-buffer)
             (jump-to-register :magit-fullscreen)))
-  :config (progn
-            (bind-key "C-p" 'magit-pr/open-pull-request magit-status-mode-map)
-            (bind-key "<f1>" 'magit-status)))
+  :init (progn
+          (bind-key "C-p" 'magit-pr/open-pull-request magit-status-mode-map)))
+
+(bind-key "C-'" 'magit-status evil-normal-state-map) ;; somehow i need to put this outside so it will bite
 
 (defvar github-ids-contributed-to '("aronasorman" "learningequality"))
 (defun magit-pr/url (compare-repo)
@@ -532,8 +533,8 @@ screen."
 (use-package dired
   :config (progn
             (add-to-list 'evil-emacs-state-modes 'dired-mode)
-            (bind-key "," 'magit-status dired-mode-map)
-            (bind-key ";" 'projectile-find-file dired-mode-map)))
+            (bind-key "C-'" 'magit-status dired-mode-map)
+            (bind-key "C-p" 'projectile-find-file dired-mode-map)))
 
 (use-package slime
   :load-path "~/.emacs.d/slime"
