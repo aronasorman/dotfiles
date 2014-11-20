@@ -776,6 +776,7 @@ screen."
   :mode ("\\.html$" . web-mode)
   :init (progn
           (setq web-mode-code-indent-offset 4)
+          (setq web-mode-markup-indent-offset 4)
           (add-hook 'web-mode-hook 'turn-off-smartparens-mode)
           (setq web-mode-engines-alist
                 '(("django" . "\\.html$")))))
