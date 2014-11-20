@@ -323,7 +323,8 @@ screen."
             (setq projectile-remember-window-configs t)
             (setq projectile-completion-system 'grizzl)
             (setq projectile-switch-project-action 'projectile-dired)
-            (add-hook 'projectile-switch-project-hook 'projectile-run-action-for-current-project))
+            (add-hook 'projectile-switch-project-hook 'projectile-run-action-for-current-project)
+            (projectile-global-mode t))
   :init (progn
           (bind-key "C-M-r" 'projectile-find-tag evil-normal-state-map)
           (require 'persp-projectile)
