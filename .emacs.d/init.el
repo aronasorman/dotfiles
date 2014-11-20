@@ -502,7 +502,8 @@ screen."
             (kill-buffer)
             (jump-to-register :magit-fullscreen)))
   :config (progn
-            (bind-key "C-p" 'magit-pr/open-pull-request magit-status-mode-map)))
+            (bind-key "C-p" 'magit-pr/open-pull-request magit-status-mode-map)
+            (bind-key "<f1>" 'magit-status)))
 
 (defvar github-ids-contributed-to '("aronasorman" "learningequality"))
 (defun magit-pr/url (compare-repo)
