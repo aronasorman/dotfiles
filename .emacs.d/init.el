@@ -765,6 +765,11 @@ screen."
           (add-hook 'prog-mode-hook 'flycheck-mode)
           (add-hook 'flycheck-mode-hook 'flycheck-haskell-setup)))
 
+(use-package go-mode
+  :ensure t
+  :config (progn
+            (require 'go-mode-autoloads)))
+
 ;; web-mode
 (use-package web-mode
   :ensure t
