@@ -1,3 +1,8 @@
+;;; init.el -- my emacs initialization file
+;;; Commentary:
+;;; This is it bro.
+
+;;; Code:
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("elpy" . "http://jorgenschaefer.github.io/packages/")
@@ -899,3 +904,6 @@ screen."
  ;; If there is more than one, they won't work right.
  )
 (put 'narrow-to-region 'disabled nil)
+
+(provide 'init)
+;;; init.el ends here
