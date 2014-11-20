@@ -41,7 +41,7 @@
 ;; remove backup from current directories
 (defvar temporary-file-directory "/tmp")
 (setq backup-directory-alist
-            `((".*" . ,temporary-file-directory)))
+      `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
             `((".*" ,temporary-file-directory t)))
 (setq reb-re-syntax 'string)
@@ -129,6 +129,13 @@
 
 (use-package diminish
   :ensure t)
+
+(use-package restclient
+  :load-path "~/.emacs.d/"
+  :mode ("\\.rest$" . restclient-mode)
+  :init (progn
+          (use-package json-reformat
+            :ensure t)) )
 
 ;; ;;; required by crosshairs-mode
 ;; (use-package hl-line+)
@@ -384,9 +391,9 @@ screen."
   :ensure t
   :config (progn
             (use-package visor
-             :load-path "~/.emacs.d/"
-             :config (progn
-                       (bind-key "C-x C-x" 'toggle-project-shell-workspace)))
+              :load-path "~/.emacs.d/"
+              :config (progn
+                        (bind-key "C-x C-x" 'toggle-project-shell-workspace)))
 
             (defun spawn-new-term (term-num)
               (let ((shell-name (projectile-prepend-project-name (number-to-string term-num))))
