@@ -341,6 +341,7 @@ screen."
           (bind-key "C-M-r" 'projectile-find-tag evil-normal-state-map)
           (require 'persp-projectile)
           (projectile-global-mode t)))
+(bind-key "C-/" 'projectile-switch-project evil-normal-state-map)
 
 (use-package ido-vertical-mode
   :ensure t
@@ -546,7 +547,8 @@ screen."
   :config (progn
             (add-to-list 'evil-emacs-state-modes 'dired-mode)
             (bind-key "C-'" 'magit-status dired-mode-map)
-            (bind-key "C-p" 'projectile-find-file dired-mode-map)))
+            (bind-key "C-p" 'projectile-find-file dired-mode-map)
+            (bind-key "C-/" 'projectile-switch-project evil-normal-state-map)))
 
 (use-package slime
   :load-path "~/.emacs.d/slime"
