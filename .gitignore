@@ -1,3 +1,5 @@
 .emacs.d/auto-save-list/*
 .emacs.d/elpa/*
 local_init.el
+/.emacs.d/abbrev_defs
+/.emacs.d/projectile-bookmarks.eld
