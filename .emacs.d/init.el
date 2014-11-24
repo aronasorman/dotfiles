@@ -117,16 +117,6 @@
 
 ;;;;; package configs
 
-;; auto-complete
-;; (use-package auto-complete
-;;   :ensure t
-;;   :diminish auto-complete-mode
-;;   :init (progn
-;;           (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict"))
-;;   :config (progn
-;;             (use-package auto-complete-config
-;;               )
-;;             (ac-config-default)))
 (use-package company
   :ensure t
   :init (progn
@@ -141,17 +131,6 @@
   :init (progn
           (use-package json-reformat
             :ensure t)) )
-
-;; ;;; required by crosshairs-mode
-;; (use-package hl-line+)
-
-;; (use-package col-highlight
-;;   :ensure t)
-
-;; (use-package crosshairs
-;;   :ensure t
-;;   :config (progn
-;;             (add-hook 'prog-mode-hook 'crosshairs-mode)))
 
 (use-package handlebars-mode
   :ensure t)
@@ -169,11 +148,6 @@
 
 (use-package pkg-info
   :ensure t)
-
-;; (use-package powerline
-;;   :ensure t
-;;   :config (progn
-;;             (powerline-default-theme)))
 
 (use-package evil
   :ensure t
@@ -235,18 +209,10 @@ screen."
 (use-package color-theme
   :ensure t)
 
-;; (use-package color-theme-sanityinc-tomorrow
-;;   :ensure t
-;;   :config (load-theme 'sanityinc-tomorrow-night t))
-
 (use-package color-theme-monokai
   :ensure t
   :config (progn
             (color-theme-monokai)))
-
-;; (use-package sunburn
-;;   :load-path "~/.emacs.d/"
-;;   :config (color-theme-sunburn))
 
 (use-package haskell-mode
   :ensure t
@@ -303,26 +269,6 @@ screen."
 (use-package grizzl
   :ensure t)
 
-;; note: rewrite to something specifically for switching virtualenvs
-(defvar projectile-after-switch-project-actions
-  `((,(expand-file-name "~/src/ka-lite/") . ,(lambda ()
-                                               (pyvenv-workon "ka-lite")
-                                               (message "switched virtualenv to kalite")))
-    (,(expand-file-name "~/src/sipper/") . ,(lambda ()
-                                              (pyvenv-workon "sipper")
-                                              (message "switched virtualenv to sipper")))
-    (,(expand-file-name "~/src/snippets/") . ,(lambda ()
-                                                (pyvenv-workon "snippets")
-                                                (message "switched virtualenv to snippets"))))
-  "Functions to run when we switch after we switch to a different project")
-
-(defun projectile-run-action-for-current-project ()
-  (let* ((current-project (projectile-project-root))
-         (current-project-action (cdr (assoc-string current-project projectile-after-switch-project-actions))))
-    (if current-project-action
-        (funcall current-project-action)
-      (message "No action found for %s" current-project))))
-
 (use-package perspective
   :ensure t
   :init (progn
@@ -335,7 +281,6 @@ screen."
             (setq projectile-remember-window-configs t)
             (setq projectile-completion-system 'grizzl)
             (setq projectile-switch-project-action 'projectile-dired)
-            (add-hook 'projectile-switch-project-hook 'projectile-run-action-for-current-project)
             (projectile-global-mode t))
   :init (progn
           (bind-key "C-M-r" 'projectile-find-tag evil-normal-state-map)
@@ -393,42 +338,42 @@ screen."
   :config (progn
             (bind-key "C-x p" 'proced)))
 
-(use-package multi-term
-  :ensure t
-  :config (progn
-            (use-package visor
-              :load-path "~/.emacs.d/"
-              :config (progn
-                        (bind-key "C-x C-x" 'toggle-project-shell-workspace)))
+;; (use-package multi-term
+;;   :ensure t
+;;   :config (progn
+;;             (use-package visor
+;;               :load-path "~/.emacs.d/"
+;;               :config (progn
+;;                         (bind-key "C-x C-x" 'toggle-project-shell-workspace)))
 
-            (defun spawn-new-term (term-num)
-              (let ((shell-name (projectile-prepend-project-name (number-to-string term-num))))
-                (with-helm-default-directory (projectile-project-root)
-                    (delete-other-windows)
-                  (if (get-buffer shell-name)
-                      (switch-to-buffer shell-name)
-                    (progn
-                      (multi-term)
-                      (rename-buffer shell-name))))))
-            (setq term-spawn-or-switch-function 'spawn-new-term)
+;;             (defun spawn-new-term (term-num)
+;;               (let ((shell-name (projectile-prepend-project-name (number-to-string term-num))))
+;;                 (with-helm-default-directory (projectile-project-root)
+;;                     (delete-other-windows)
+;;                   (if (get-buffer shell-name)
+;;                       (switch-to-buffer shell-name)
+;;                     (progn
+;;                       (multi-term)
+;;                       (rename-buffer shell-name))))))
+;;             (setq term-spawn-or-switch-function 'spawn-new-term)
 
-            (add-to-list 'evil-emacs-state-modes 'term-mode)
-            (evil-define-key 'insert term-mode-map "C-r" 'term-send-reverse-search-history)
-            ;; (add-hook 'evil-local-mode-hook (lambda ()
-            ;;                                   (if (eq major-mode 'term-mode)
-            ;;                                       (turn-off-evil-mode))))
+;;             (add-to-list 'evil-emacs-state-modes 'term-mode)
+;;             (evil-define-key 'insert term-mode-map "C-r" 'term-send-reverse-search-history)
+;;             ;; (add-hook 'evil-local-mode-hook (lambda ()
+;;             ;;                                   (if (eq major-mode 'term-mode)
+;;             ;;                                       (turn-off-evil-mode))))
 
-            (add-to-list 'term-bind-key-alist '("M-1" . (lambda () (interactive) (spawn-new-term 1))))
-            (add-to-list 'term-bind-key-alist '("M-2" . (lambda () (interactive) (spawn-new-term 2))))
-            (add-to-list 'term-bind-key-alist '("M-3" . (lambda () (interactive) (spawn-new-term 3))))
-            (add-to-list 'term-bind-key-alist '("M-4" . (lambda () (interactive) (spawn-new-term 4))))
+;;             (add-to-list 'term-bind-key-alist '("M-1" . (lambda () (interactive) (spawn-new-term 1))))
+;;             (add-to-list 'term-bind-key-alist '("M-2" . (lambda () (interactive) (spawn-new-term 2))))
+;;             (add-to-list 'term-bind-key-alist '("M-3" . (lambda () (interactive) (spawn-new-term 3))))
+;;             (add-to-list 'term-bind-key-alist '("M-4" . (lambda () (interactive) (spawn-new-term 4))))
 
-            ;; make C-r search backward
-            ;; delete the original keybinding first so there will be no conflicts
-            (setq term-bind-key-alist (delete-if (lambda (elem)
-                                                   (equal "C-r" (first elem)))
-                                                 term-bind-key-alist))
-            (add-to-list 'term-bind-key-alist '("C-r" . term-send-reverse-search-history))))
+;;             ;; make C-r search backward
+;;             ;; delete the original keybinding first so there will be no conflicts
+;;             (setq term-bind-key-alist (delete-if (lambda (elem)
+;;                                                    (equal "C-r" (first elem)))
+;;                                                  term-bind-key-alist))
+;;             (add-to-list 'term-bind-key-alist '("C-r" . term-send-reverse-search-history))))
 
 ;; (use-package eshell
 ;;   :init (progn
@@ -519,29 +464,6 @@ screen."
 
 (bind-key "C-'" 'magit-status evil-normal-state-map) ;; somehow i need to put this outside so it will bite
 
-(defvar github-ids-contributed-to '("aronasorman" "learningequality"))
-(defun magit-pr/url (compare-repo)
-  (let ((current-branch (first (vc-git-branches)))
-        (repo-name  (helm-basename (magit-get-top-dir))))
-    (format "https://github.com/aronasorman/%s/compare/%s:master...%s" repo-name compare-repo current-branch)))
-
-(defun magit-pr/ask-id-to-compare-against ()
-  (interactive)
-  (completing-read "ID to contribute to: "
-                   github-ids-contributed-to
-                   nil
-                   'confirm))
-
-(defun magit-pr/open-pull-request ()
-  (interactive)
-  (let ((user-id (magit-pr/ask-id-to-compare-against)))
-    (browse-url (magit-pr/url user-id))))
-
-(add-hook 'magit-checkout-command-hook
-          (lambda (ignore)
-            (projectile-maybe-invalidate-cache t)
-            nil ; we have to return nil for the checkout to continue on
-            ))
 
 (use-package dired
   :config (progn
