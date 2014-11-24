@@ -629,7 +629,7 @@ screen."
 (use-package undo-tree
   :ensure t
   :diminish undo-tree-mode
-  :config (add-to-list 'evil-emacs-state-modes 'undo-tree-mode))
+  :config (add-to-list 'evil-emacs-state-modes 'undo-tree-visualizer-mode))
 
 (use-package eldoc
   :ensure t
