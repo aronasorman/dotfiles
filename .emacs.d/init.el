@@ -707,7 +707,10 @@ screen."
 (use-package go-mode
   :ensure t
   :config (progn
-            (require 'go-mode-autoloads)))
+            (require 'go-mode-autoloads)
+            (bind-key "C-c d" 'godoc go-mode-map)
+            (bind-key "M-." 'godef-jump go-mode-map)
+            (bind-key "M-," 'pop-tag-mark go-mode-map)))
 
 ;; web-mode
 (use-package web-mode
