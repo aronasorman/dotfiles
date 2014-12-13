@@ -470,7 +470,7 @@ screen."
             (add-to-list 'evil-emacs-state-modes 'dired-mode)
             (bind-key "C-'" 'magit-status dired-mode-map)
             (bind-key "C-p" 'projectile-find-file dired-mode-map)
-            (bind-key "C-/" 'projectile-switch-project evil-normal-state-map)))
+            (bind-key "C-/" 'projectile-switch-project dired-mode-map)))
 
 (use-package slime
   :load-path "~/.emacs.d/slime"
