@@ -713,6 +713,19 @@ screen."
             (bind-key "M-." 'godef-jump go-mode-map)
             (bind-key "M-," 'pop-tag-mark go-mode-map)))
 
+(use-package company-go
+  :ensure t
+  :config (add-hook 'go-mode-hook (lambda ()
+                                    (set (make-local-variable 'company-backends) '(company-go))
+                                    (company-mode-on))))
+
+;; go's oracle integration
+(use-package go-oracle
+  :pre-load (load-file "~/.emacs.d/oracle.el")
+  :config (progn
+            (setq go-oracle-command "~/bin/oracle")
+            (add-hook 'go-mode-hook (lambda () (go-oracle-mode t)))))
+
 ;; web-mode
 (use-package web-mode
   :ensure t
