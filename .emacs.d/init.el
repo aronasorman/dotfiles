@@ -711,7 +711,8 @@ screen."
             (bind-key "C-c d" 'godoc go-mode-map)
             (add-hook 'before-save-hook 'gofmt-before-save)
             (bind-key "M-." 'godef-jump go-mode-map)
-            (bind-key "M-," 'pop-tag-mark go-mode-map)))
+            (bind-key "M-," 'pop-tag-mark go-mode-map)
+            (load-file "~/.emacs.d/go-rename.el")))
 
 (use-package company-go
   :ensure t
