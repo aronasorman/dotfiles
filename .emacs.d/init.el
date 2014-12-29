@@ -603,17 +603,20 @@ screen."
                                          "\n* TODO %? \n")
 
                                         ;; activate again if we ever need timesheet reports
-                                        ;; ("r" "Timesheet reports for time spent per task")
-                                        ;; ("rd" "Generate daily report" entry
-                                        ;;  (file+headline "~/notes/reports.org" "daily")
-                                        ;;  "* %<%Y-%m-%d> %?\n %(insert-clock-table-summary 'today)"
-                                        ;;  :prepend t)
-                                        ;; ("rw" "Generate weekly report" entry
-                                        ;;  (file+headline "~/notes/reports.org" "weekly")
-                                        ;;  "* %<%Y-W%V> %?\n %(insert-clock-table-summary 'thisweek)"
-                                        ;;  :prepend t)
+                                        ("r" "Timesheet reports for time spent per task")
+                                        ("rd" "Generate daily report" entry
+                                         (file+headline "~/notes/reports.org" "daily")
+                                         "* %<%Y-%m-%d> %?\n %(insert-clock-table-summary 'today)"
+                                         :prepend t)
+                                        ("rw" "Generate weekly report" entry
+                                         (file+headline "~/notes/reports.org" "weekly")
+                                         "* %<%Y-W%V> %?\n %(insert-clock-table-summary 'thisweek)"
+                                         :prepend t)
                                         ))
           ))
+
+(use-package markdown-mode
+  :ensure t)
 
 ;; set shortcuts for evil mode
 (global-set-key (kbd "C-c C-l") 'org-store-link)
