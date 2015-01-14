@@ -753,6 +753,9 @@ screen."
   :ensure t
   :config (progn
             (use-package clojure-test-mode
+(use-package markdown-mode
+  :ensure t)
+
               :ensure t)
             (use-package cider
               :ensure t
