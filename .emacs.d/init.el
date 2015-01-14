@@ -32,6 +32,18 @@
 
 (defvar src-dir "~/src")
 
+;; calendar format
+(copy-face font-lock-constant-face 'calendar-iso-week-face)
+(set-face-attribute 'calendar-iso-week-face nil
+                    :height 0.7)
+(setq calendar-intermonth-text
+      '(propertize
+        (format "%2d"
+                (car
+                 (calendar-iso-from-absolute
+                  (calendar-absolute-from-gregorian (list month day year)))))
+        'font-lock-face 'calendar-iso-week-face))
+
 ;; load custom settings
 (load "local_init" t)
 
@@ -741,6 +753,9 @@ screen."
           (setq web-mode-engines-alist
                 '(("django" . "\\.html$")))))
 
+(use-package markdown-mode
+  :ensure t)
+
 ;; yaml mode
 (use-package yaml-mode
   :ensure t)
@@ -753,9 +768,6 @@ screen."
   :ensure t
   :config (progn
             (use-package clojure-test-mode
-(use-package markdown-mode
-  :ensure t)
-
               :ensure t)
             (use-package cider
               :ensure t
