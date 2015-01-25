@@ -476,6 +476,9 @@ screen."
 
 (bind-key "C-'" 'magit-status evil-normal-state-map) ;; somehow i need to put this outside so it will bite
 
+(use-package magit-gh-pulls
+  :ensure t)
+
 
 (use-package dired
   :config (progn
