@@ -236,8 +236,11 @@ screen."
             :ensure t
             :init (progn
                     (add-hook 'haskell-mode-hook 'ghc-init)))))
+
 (use-package tidal
-  :load-path "~/.emacs.d")
+  :load-path "~/.emacs.d"
+  :config (progn
+            (setq tidal-interpreter "/usr/local/bin/ghci")))
 
 (use-package shm
   :load-path "~/.emacs.d/structured-haskell-mode/elisp"
