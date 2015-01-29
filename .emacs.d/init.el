@@ -303,7 +303,19 @@ screen."
           (bind-key "C-M-r" 'projectile-find-tag evil-normal-state-map)
           (require 'persp-projectile)
           (projectile-global-mode t)))
-(bind-key "C-/" 'projectile-switch-project evil-normal-state-map)
+(bind-key "C-/" 'projectile-switch-project-from-marks evil-normal-state-map)
+
+(defun projectile-switch-project-from-marks ()
+  (interactive)
+  (projectile-clear-known-projects)
+  (let* ((markdir (expand-file-name "~/marks/"))
+         (marks (directory-files markdir)))
+    (mapcar (lambda (filename)
+              (let ((long-filename (file-truename (concat markdir filename))))
+                (projectile-add-known-project long-filename)))
+            marks)
+    (projectile-switch-project)))
+
 
 (use-package ido-vertical-mode
   :ensure t
@@ -492,7 +504,7 @@ screen."
             (add-to-list 'evil-emacs-state-modes 'dired-mode)
             (bind-key "C-'" 'magit-status dired-mode-map)
             (bind-key "C-p" 'projectile-find-file dired-mode-map)
-            (bind-key "C-/" 'projectile-switch-project dired-mode-map)))
+            (bind-key "C-/" 'projectile-switch-project-from-marks dired-mode-map)))
 
 (use-package slime
   :load-path "~/.emacs.d/slime"
