@@ -585,7 +585,9 @@ screen."
 (use-package undo-tree
   :ensure t
   :diminish undo-tree-mode
-  :config (add-to-list 'evil-emacs-state-modes 'undo-tree-visualizer-mode))
+  :config (progn
+            (add-to-list 'evil-emacs-state-modes 'undo-tree-visualizer-mode)
+            (bind-key "C-x u" 'undo-tree-visualize)))
 
 (use-package eldoc
   :ensure t
