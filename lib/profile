@@ -80,6 +80,12 @@ then
     alias inst='brew install'
     alias upd='brew update && brew upgrade'
     alias sea='brew search'
+elif uname | grep -q "FreeBSD"
+then
+    source `which virtualenvwrapper.sh`
+    alias inst='sudo pkg install -y'
+    alias upd='pkg upgrade'
+    alias sea='pkg search'
 elif cat /etc/*-release | grep -q "Ubuntu"
 then
     alias inst='sudo apt-get install'
