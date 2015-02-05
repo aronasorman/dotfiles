@@ -39,7 +39,7 @@ PATH=$GOPATH/bin:$PATH
 export PATH
 
 # Load nix
-. $HOME/.nix-profile/etc/profile.d/nix.sh
+# . $HOME/.nix-profile/etc/profile.d/nix.sh
 
 alias em=$EDITOR
 alias mux='tmuxinator'
