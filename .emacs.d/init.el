@@ -505,6 +505,7 @@ screen."
             (bind-key "C-'" 'magit-status dired-mode-map)
             (bind-key "C-p" 'projectile-find-file dired-mode-map)
             (bind-key "C-/" 'projectile-switch-project-from-marks dired-mode-map)))
+(bind-key "C-/" 'projectile-switch-project-from-marks dired-mode-map)
 
 (use-package slime
   :load-path "~/.emacs.d/slime"
@@ -587,7 +588,9 @@ screen."
   :diminish undo-tree-mode
   :config (progn
             (add-to-list 'evil-emacs-state-modes 'undo-tree-visualizer-mode)
-            (bind-key "C-x u" 'undo-tree-visualize)))
+            (add-hook 'dired-mode-hook (lambda ()
+                                         (undo-tree-mode -1)))
+            (bind-key "C-/" nil undo-tree-map)))
 
 (use-package eldoc
   :ensure t
