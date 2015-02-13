@@ -313,10 +313,9 @@ screen."
          (marks (directory-files markdir)))
     (mapcar (lambda (filename)
               (let ((long-filename (file-truename (concat markdir filename))))
-                (when (not (s-contains? long-filename (projectile-project-root)))
-                  (projectile-add-known-project long-filename))))
+                (projectile-add-known-project long-filename)))
             marks)
-    (projectile-switch-project)))
+    (projectile-persp-switch-project)))
 
 
 (use-package ido-vertical-mode
