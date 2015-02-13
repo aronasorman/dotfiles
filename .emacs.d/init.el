@@ -420,12 +420,6 @@ screen."
 
 (bind-key "C-'" 'magit-status evil-normal-state-map) ;; somehow i need to put this outside so it will bite
 
-;; (use-package magit-gh-pulls
-;;   :ensure t
-;;   :config (progn
-;;             (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)))
-
-
 (use-package dired
   :config (progn
             (add-to-list 'evil-emacs-state-modes 'dired-mode)
