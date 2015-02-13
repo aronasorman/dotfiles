@@ -306,13 +306,15 @@ screen."
 (bind-key "C-/" 'projectile-switch-project-from-marks evil-normal-state-map)
 
 (defun projectile-switch-project-from-marks ()
+  "Switch projects based on the symbolic links in ~/marks."
   (interactive)
   (projectile-clear-known-projects)
   (let* ((markdir (expand-file-name "~/marks/"))
          (marks (directory-files markdir)))
     (mapcar (lambda (filename)
               (let ((long-filename (file-truename (concat markdir filename))))
-                (projectile-add-known-project long-filename)))
+                (when (not (s-contains? long-filename (projectile-project-root)))
+                  (projectile-add-known-project long-filename))))
             marks)
     (projectile-switch-project)))
 
