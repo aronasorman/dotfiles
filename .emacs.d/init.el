@@ -552,15 +552,11 @@ screen."
           (add-to-list 'org-export-backends 'md)
           (setq org-html-doctype "html5")
           (setq org-html-html5-fancy t)
-          (setq org-capture-templates `(("f" "For all things FLE related" entry
-                                         (file "~/notes/todo/fle.org")
-                                         ;; "\n* TODO %? \nDEADLINE: %(org-time-stamp nil)\n"
-                                         "\n* TODO %? \n"
+          (bind-key "C-+" (lambda () (interactive) (find-file-other-window "~/notes/todo/planning.org")))
+          (setq org-capture-templates `(("t" "Day planning" entry
+                                         (file+datetree+prompt "~/notes/todo/planning.org")
+                                         "\n* TODO %? %(org-set-tags-command)\n %(org-time-stamp t)\n"
                                          )
-
-                                        ("p" "Personal stuff" entry
-                                         (file "~/notes/todo/personal.org")
-                                         "\n* TODO %? \n")
 
                                         ;; activate again if we ever need timesheet reports
                                         ("r" "Timesheet reports for time spent per task")
@@ -784,25 +780,58 @@ screen."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector [default bold shadow italic underline bold bold-italic bold])
- '(ansi-color-names-vector (vector "#4d4d4c" "#c82829" "#718c00" "#eab700" "#4271ae" "#8959a8" "#3e999f" "#ffffff"))
+ '(ansi-color-faces-vector
+   [default bold shadow italic underline bold bold-italic bold])
+ '(ansi-color-names-vector
+   (vector "#4d4d4c" "#c82829" "#718c00" "#eab700" "#4271ae" "#8959a8" "#3e999f" "#ffffff"))
  '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
- '(custom-safe-themes (quote ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
+ '(custom-safe-themes
+   (quote
+    ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
  '(evil-show-paren-range 3)
  '(fci-rule-color "#efefef")
  '(midnight-mode t nil (midnight))
- '(org-agenda-files (quote ("~/notes/todo/fle.org")))
+ '(org-agenda-files
+   (quote
+    ("~/notes/todo/planning.org" "~/notes/todo/fle.org")))
  '(org-export-backends (quote (ascii html icalendar latex md odt)))
- '(org-html-table-default-attributes (quote (:border "2" :cellspacing "5" :cellpadding "6" :rules "groups" :frame "hsides")))
- '(org-modules (quote (org-bbdb org-bibtex org-crypt org-docview org-gnus org-habit org-id org-info org-inlinetask org-invoice org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m org-invoice)))
- '(safe-local-variable-values (quote ((ledger-master-file . "transactions.ldgr") (major-mode quote ledger-mode) (major-mode . ledger-mode))))
+ '(org-html-table-default-attributes
+   (quote
+    (:border "2" :cellspacing "5" :cellpadding "6" :rules "groups" :frame "hsides")))
+ '(org-modules
+   (quote
+    (org-bbdb org-bibtex org-crypt org-docview org-gnus org-habit org-id org-info org-inlinetask org-invoice org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m org-invoice)))
+ '(safe-local-variable-values
+   (quote
+    ((ledger-master-file . "transactions.ldgr")
+     (major-mode quote ledger-mode)
+     (major-mode . ledger-mode))))
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 587)
  '(sp-navigate-close-if-unbalanced t)
  '(sp-show-pair-from-inside t)
  '(vc-annotate-background nil)
- '(vc-annotate-color-map (quote ((20 . "#c82829") (40 . "#f5871f") (60 . "#eab700") (80 . "#718c00") (100 . "#3e999f") (120 . "#4271ae") (140 . "#8959a8") (160 . "#c82829") (180 . "#f5871f") (200 . "#eab700") (220 . "#718c00") (240 . "#3e999f") (260 . "#4271ae") (280 . "#8959a8") (300 . "#c82829") (320 . "#f5871f") (340 . "#eab700") (360 . "#718c00"))))
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#c82829")
+     (40 . "#f5871f")
+     (60 . "#eab700")
+     (80 . "#718c00")
+     (100 . "#3e999f")
+     (120 . "#4271ae")
+     (140 . "#8959a8")
+     (160 . "#c82829")
+     (180 . "#f5871f")
+     (200 . "#eab700")
+     (220 . "#718c00")
+     (240 . "#3e999f")
+     (260 . "#4271ae")
+     (280 . "#8959a8")
+     (300 . "#c82829")
+     (320 . "#f5871f")
+     (340 . "#eab700")
+     (360 . "#718c00"))))
  '(vc-annotate-very-old-color nil)
  '(web-mode-code-indent-offset 4 t))
 (custom-set-faces
