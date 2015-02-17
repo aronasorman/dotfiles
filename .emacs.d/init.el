@@ -27,9 +27,6 @@
         (buffer-substring (region-beginning) (region-end))
       (read-string "Google: ")))))
 
-(defun concat-dir (x y)
-  (concat x "/" y))
-
 (defvar src-dir "~/src")
 
 ;; calendar format
