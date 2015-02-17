@@ -235,6 +235,7 @@ screen."
           (use-package ghc
             :ensure t
             :init (progn
+                    (add-hook 'haskell-mode-hook 'eldoc-mode)
                     (add-hook 'haskell-mode-hook 'ghc-init)))))
 
 (use-package tidal
