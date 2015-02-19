@@ -3,3 +3,6 @@
 local_init.el
 /.emacs.d/abbrev_defs
 /.emacs.d/projectile-bookmarks.eld
+/.emacs.d/%backup%~
+/.emacs.d/bookmarks
+/.emacs.d/tramp
