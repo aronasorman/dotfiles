@@ -31,6 +31,9 @@ PATH=$PATH:bin/
 ## for fixing Homebrew
 PATH=/usr/local/bin:/usr/local/sbin:/sbin:$PATH
 
+# elm executables
+PATH=$SRC/Elm-Platform/0.14.1/bin:$PATH
+
 # cabal executables
 PATH=$HOME/.cabal/bin:$PATH
 
