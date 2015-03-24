@@ -322,6 +322,10 @@ screen."
             marks)
     (projectile-persp-switch-project)))
 
+(defun projectile-reset-project ()
+  "Reset the project's perspective"
+  (interactive))
+
 
 (use-package ido-vertical-mode
   :ensure t
