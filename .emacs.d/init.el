@@ -134,6 +134,10 @@
 (use-package diminish
   :ensure t)
 
+(use-package dtrace-script-mode
+  :mode ("\\.d$" . dtrace-script-mode)
+  :ensure t)
+
 (use-package restclient
   :load-path "~/.emacs.d/"
   :mode ("\\.rest$" . restclient-mode)
