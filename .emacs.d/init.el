@@ -309,6 +309,12 @@ screen."
           (require 'persp-projectile)
           (projectile-global-mode t)))
 (bind-key "C-/" 'projectile-switch-project-from-marks evil-normal-state-map)
+(defun mark-dir ()
+  (interactive)
+  (let* ((name (or (buffer-file-name) dired-directory))
+         (cwd (file-name-directory name))
+         (basename (file-name-nondirectory (directory-file-name name))))
+    (make-symbolic-link cwd (format "~/marks/%s" basename))))
 
 (defun projectile-switch-project-from-marks ()
   "Switch projects based on the symbolic links in ~/marks."
