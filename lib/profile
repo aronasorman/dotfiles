@@ -63,6 +63,8 @@ alias tat='tmux attach -t'
 alias sd="docker"
 alias sdr="docker run -t -i"
 
+alias ap='ansible-playbook'
+
 alias cl='clear'
 alias rel='source ~/lib/profile'
 alias pm='python manage.py'
