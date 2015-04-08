@@ -316,6 +316,7 @@ for window movement we defined above."
             (bind-key "C-x C-x" 'toggle-project-eshell)
             (bind-key "C-'" 'magit-status)
             (bind-key "C-/" 'projectile-switch-project-from-marks eshell-mode-map)
+            (bind-key "<C-M-return>" 'compile-goto-error)
             (add-hook 'eshell-first-time-mode-hook 'compilation-shell-minor-mode)
             (evil-set-initial-state 'eshell-mode 'emacs)
             ;; sigh, so many hacks for eshell.  so somehow not
