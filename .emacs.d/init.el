@@ -194,7 +194,6 @@
           (bind-key "C-d" 'mc/mark-more-like-this-extended evil-visual-state-map)))
 
 
-
 (use-package color-theme
   :ensure t)
 
@@ -303,10 +302,39 @@
             marks)
     (projectile-persp-switch-project)))
 
-(defun projectile-reset-project ()
-  "Reset the project's perspective"
-  (interactive))
+(use-package eshell
+  :config (progn
+            (bind-key "C-x C-x" 'toggle-project-eshell)
+            (bind-key "C-'" 'magit-status)
+            (bind-key "C-/" 'projectile-switch-project-from-marks eshell-mode-map)
+            (add-hook 'eshell-mode-hook 'compilation-shell-minor-mode)))
 
+(setq project-shell-mappings (make-hash-table :test 'equal))
+(defun proj-name ()
+  "custom function for deriving a unique name for a given project.
+ Simply (projectile-project-root) for now."
+  (projectile-project-root))
+
+(defun initialize-eshell-for-project ()
+  (interactive)
+  (let* ((eshell-buffer-name (format "%s-eshell" (proj-name))))
+    (puthash (proj-name) (current-buffer) project-shell-mappings)
+    (eshell)
+    ;; to make eshell work with virtualenvs, make sure we set the
+    ;; eshell's path as buffer local, so it gets permanently set once
+    ;; we create it. This assumes we've set the virtualenv once we start eshell.
+    (make-local-variable 'eshell-path-env)
+    (setq eshell-path-env (getenv "PATH"))))
+
+(defun toggle-project-eshell ()
+  (interactive)
+  (let ((buf (gethash (proj-name) project-shell-mappings)))
+    (if (not buf)
+        (initialize-eshell-for-project)
+      (progn
+        (puthash (proj-name) (current-buffer) project-shell-mappings)
+        (switch-to-buffer buf)))))
+(bind-key "C-x C-x" 'toggle-project-eshell)
 
 (use-package elpy
   :ensure t
