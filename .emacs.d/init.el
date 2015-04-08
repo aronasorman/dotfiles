@@ -308,7 +308,8 @@
             (bind-key "C-x C-x" 'toggle-project-eshell)
             (bind-key "C-'" 'magit-status)
             (bind-key "C-/" 'projectile-switch-project-from-marks eshell-mode-map)
-            (add-hook 'eshell-mode-hook 'compilation-shell-minor-mode)))
+            (add-hook 'eshell-first-time-mode-hook 'compilation-shell-minor-mode)
+            (evil-set-initial-state 'eshell-mode 'emacs)))
 
 (setq project-shell-mappings (make-hash-table :test 'equal))
 (defun proj-name ()
