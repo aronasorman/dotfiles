@@ -85,6 +85,14 @@
 (global-set-key (kbd "C-M-j") 'windmove-down)
 (global-set-key (kbd "C-M-k") 'windmove-up)
 
+(defun define-window-movements-for-mode (keymap)
+  "Use for when a certain mode does not follow the global keys
+for window movement we defined above."
+  (bind-key "C-M-l" 'windmove-right keymap)
+  (bind-key "C-M-h" 'windmove-left keymap)
+  (bind-key "C-M-j" 'windmove-down keymap)
+  (bind-key "C-M-k" 'windmove-up keymap))
+
 ;; debug line shortcuts
 (setq debug-line-alist
       '((python-mode . "import pdb; pdb.set_trace()")))
@@ -309,7 +317,11 @@
             (bind-key "C-'" 'magit-status)
             (bind-key "C-/" 'projectile-switch-project-from-marks eshell-mode-map)
             (add-hook 'eshell-first-time-mode-hook 'compilation-shell-minor-mode)
-            (evil-set-initial-state 'eshell-mode 'emacs)))
+            (evil-set-initial-state 'eshell-mode 'emacs)
+            ;; sigh, so many hacks for eshell.  so somehow not
+            ;; defining keys outside of a hook doesn't work. So now we
+            ;; do it every time eshell starts.
+            (add-hook 'eshell-mode-hook (lambda () (define-window-movements-for-mode eshell-mode-map)))))
 
 (setq project-shell-mappings (make-hash-table :test 'equal))
 (defun proj-name ()
