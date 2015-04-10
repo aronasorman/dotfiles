@@ -322,7 +322,7 @@ for window movement we defined above."
             ;; do it every time eshell starts.
             (add-hook 'eshell-mode-hook (lambda () (define-window-movements-for-mode eshell-mode-map)))))
 
-(setq project-shell-mappings (make-hash-table :test 'equal))
+(defvar project-shell-mappings (make-hash-table :test 'equal))
 (defun proj-name ()
   "custom function for deriving a unique name for a given project.
  Simply (projectile-project-root) for now."
