@@ -350,6 +350,23 @@ for window movement we defined above."
         (switch-to-buffer buf)))))
 (bind-key "C-x C-x" 'toggle-project-eshell)
 
+(defvar extra-eshell-buffer nil)
+(defun show-extra-eshell ()
+  "Show the global extra eshell.
+
+  An extra eshell is a global miscellaneous eshell that doesn't
+  correspond to any projects.  Use it for when you need an extra
+  global eshell."
+  (interactive)
+  (if extra-eshell-buffer
+      (switch-to-buffer-other-window extra-eshell-buffer)
+    (progn
+      (let ((eshell-buffer-name "extra-eshell")
+            (default-directory "~/"))
+        (split-window)
+        (setq extra-eshell-buffer (eshell))))))
+(bind-key "M-`" 'show-extra-eshell)
+
 (use-package elpy
   :ensure t
   :config (progn
