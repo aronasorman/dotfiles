@@ -339,9 +339,10 @@ for window movement we defined above."
     (make-local-variable 'eshell-path-env)
     (setq eshell-path-env (getenv "PATH"))))
 
-(defun toggle-project-eshell ()
+(defun toggle-project-eshell (&optional project-name)
   (interactive)
-  (let ((buf (gethash (proj-name) project-shell-mappings)))
+  (let* ((key (or project-name (proj-name)))
+         (buf (gethash key project-shell-mappings)))
     (if (not buf)
         (initialize-eshell-for-project)
       (progn
