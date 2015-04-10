@@ -1,3 +1,4 @@
 alias sea apt-cache search
 alias inst sudo apt-get install
 alias upd sudo apt-get 	update && sudo apt-get upgrade
+alias cdpr cd (projectile-project-root)
