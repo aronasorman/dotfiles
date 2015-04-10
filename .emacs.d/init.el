@@ -174,7 +174,6 @@ for window movement we defined above."
   :ensure t
   :config (progn
             (add-to-list 'evil-emacs-state-modes 'grep-mode)
-            (add-to-list 'evil-emacs-state-modes 'eshell-mode)
             (add-to-list 'evil-emacs-state-modes 'git-rebase-mode)
             (add-to-list 'evil-emacs-state-modes 'sql-interactive-mode)
             (add-to-list 'evil-emacs-state-modes 'compilation-mode)
@@ -193,7 +192,6 @@ for window movement we defined above."
             (bind-key "M-," nil evil-normal-state-map)
             (bind-key "C-j" 'evil-force-normal-state evil-insert-state-map))
   :init (progn
-          (add-hook 'eshell-mode-hook 'turn-off-evil-mode) ; evil-emacs-state-modes ain't working for eshell!
           (evil-mode t)))
 
 (use-package multiple-cursors
