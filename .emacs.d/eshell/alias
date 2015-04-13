@@ -2,3 +2,5 @@ alias sea apt-cache search $*
 alias inst sudo apt-get install $*
 alias upd sudo apt-get 	update && sudo apt-get upgrade
 alias cdpr cd (projectile-project-root)
+alias ff find-file $1
+alias ffo find-file-other-window $1
