@@ -506,6 +506,19 @@ screen."
 
 (bind-key "C-'" 'magit-status evil-normal-state-map) ;; somehow i need to put this outside so it will bite
 
+(defun magit/visit-pull-request-url ()
+  "Visit the current branch's PR on Github."
+  (interactive)
+  (browse-url
+   (format "https://github.com/%s/compare/%s"
+           (replace-regexp-in-string
+            "\\`.+github\\.com:\\(.+\\)\\.git\\'" "\\1"
+            (magit-get "remote"
+                       (magit-get-current-remote)
+                       "url"))
+           (magit-get-current-branch))))
+(bind-key "V" 'magit/visit-pull-request-url magit-mode-map)
+
 (use-package dired
   :config (progn
             (add-to-list 'evil-emacs-state-modes 'dired-mode)
