@@ -8,3 +8,4 @@ local_init.el
 /.emacs.d/tramp
 /.emacs.d/eshell/lastdir
 /.emacs.d/eshell/history
+/.emacs.d/session*
