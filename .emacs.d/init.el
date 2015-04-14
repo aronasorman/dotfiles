@@ -358,7 +358,7 @@ for window movement we defined above."
   correspond to any projects.  Use it for when you need an extra
   global eshell."
   (interactive)
-  (if extra-eshell-buffer
+  (if (buffer-live-p extra-eshell-buffer)
       (switch-to-buffer-other-window extra-eshell-buffer)
     (progn
       (let ((eshell-buffer-name "extra-eshell")
