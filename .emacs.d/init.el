@@ -523,6 +523,7 @@ screen."
   :config (progn
             (add-to-list 'evil-emacs-state-modes 'dired-mode)
             (setq dired-dwim-target t)
+            (bind-key "C-=" 'dired)
             (bind-key "C-'" 'magit-status dired-mode-map)
             (bind-key "C-p" 'projectile-find-file dired-mode-map)
             (bind-key "|" 'split-window-right dired-mode-map)
