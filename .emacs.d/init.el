@@ -84,6 +84,7 @@
 (global-set-key (kbd "C-M-h") 'windmove-left)
 (global-set-key (kbd "C-M-j") 'windmove-down)
 (global-set-key (kbd "C-M-k") 'windmove-up)
+(bind-key "C-S-f" 'find-dired)
 
 (defun define-window-movements-for-mode (keymap)
   "Use for when a certain mode does not follow the global keys
