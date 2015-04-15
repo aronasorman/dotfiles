@@ -287,6 +287,7 @@ for window movement we defined above."
             (projectile-global-mode t))
   :init (progn
           (bind-key "C-M-r" 'projectile-find-tag evil-normal-state-map)
+          (bind-key "C-_" 'projectile-compile-project)
           (require 'persp-projectile)
           (projectile-global-mode t)))
 (bind-key "C-/" 'projectile-switch-project-from-marks evil-normal-state-map)
