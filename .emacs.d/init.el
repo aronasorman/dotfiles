@@ -333,6 +333,13 @@ for window movement we defined above."
             marks)
     (projectile-persp-switch-project)))
 
+(defun projectile-pdb ()
+  "Run pdb within the project root."
+  (interactive)
+  (let ((default-directory (projectile-project-root)))
+    (call-interactively 'pdb)))
+(bind-key "C-c p P" 'projectile-pdb projectile-mode-map)
+
 (use-package eshell
   :config (progn
             (bind-key "C-x C-x" 'toggle-project-eshell)
@@ -390,6 +397,10 @@ for window movement we defined above."
         (split-window)
         (setq extra-eshell-buffer (eshell))))))
 (bind-key "M-`" 'show-extra-eshell)
+
+(use-package python
+  :config (progn
+            (add-hook 'comint-output-filter-functions 'python-pdbtrack-comint-output-filter-function)))
 
 (use-package elpy
   :ensure t
