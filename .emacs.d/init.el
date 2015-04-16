@@ -154,6 +154,27 @@ for window movement we defined above."
           (use-package json-reformat
             :ensure t)) )
 
+(use-package gud
+  :init (progn
+          (define-window-movements-for-mode gud-mode-map)
+          (bind-key "C-x S" 'gud-stop-subjob gud-mode-map)))
+
+(use-package engine-mode
+  :ensure t
+  :init (progn
+          (engine-mode t)
+          (defengine github
+            "https://github.com/search?ref=simplesearch&q=%s"
+            "h")
+
+          (defengine python
+            "https://docs.python.org/2/search.html?q=%s"
+            "p")
+
+          (defengine google
+            "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
+            "g")))
+
 (use-package handlebars-mode
   :ensure t)
 
@@ -178,6 +199,7 @@ for window movement we defined above."
             (add-to-list 'evil-emacs-state-modes 'git-rebase-mode)
             (add-to-list 'evil-emacs-state-modes 'sql-interactive-mode)
             (add-to-list 'evil-emacs-state-modes 'compilation-mode)
+            (evil-set-initial-state 'gud-mode 'emacs)
             (bind-key "<SPC>" 'ace-jump-mode evil-normal-state-map)
             (bind-key ";" 'evil-ex evil-normal-state-map)
             (bind-key "\\" 'evil-repeat-find-char evil-normal-state-map)
