@@ -531,6 +531,7 @@ screen."
   :ensure t
   :diminish magit-auto-revert-mode
   :config (progn
+            (setq magit-last-seen-setup-instructions "1.4.0")
             (add-to-list 'evil-emacs-state-modes 'magit-process-mode))
   :init (progn
           (bind-key "q" 'magit-quit-session magit-status-mode-map)
