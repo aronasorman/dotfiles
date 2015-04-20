@@ -171,6 +171,10 @@ for window movement we defined above."
             "https://docs.python.org/2/search.html?q=%s"
             "p")
 
+          (defengine wolfram-alpha
+            "http://www.wolframalpha.com/input/?i=%s"
+            "w")
+
           (defengine google
             "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
             "g")))
