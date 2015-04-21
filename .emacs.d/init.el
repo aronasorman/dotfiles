@@ -403,6 +403,11 @@ for window movement we defined above."
         (setq extra-eshell-buffer (eshell))))))
 (bind-key "M-`" 'show-extra-eshell)
 
+(use-package vagrant-tramp
+  :ensure t
+  :init (progn
+          (vagrant-tramp-enable)))
+
 (use-package python
   :config (progn
             (add-hook 'comint-output-filter-functions 'python-pdbtrack-comint-output-filter-function)))
