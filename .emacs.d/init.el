@@ -200,11 +200,12 @@ for window movement we defined above."
 (use-package evil
   :ensure t
   :config (progn
-            (add-to-list 'evil-emacs-state-modes 'grep-mode)
-            (add-to-list 'evil-emacs-state-modes 'git-rebase-mode)
-            (add-to-list 'evil-emacs-state-modes 'sql-interactive-mode)
-            (add-to-list 'evil-emacs-state-modes 'compilation-mode)
             (evil-set-initial-state 'gud-mode 'emacs)
+            (evil-set-initial-state 'eww-mode 'emacs)
+            (evil-set-initial-state 'grep-mode 'emacs)
+            (evil-set-initial-state 'git-rebase-mode 'emacs)
+            (evil-set-initial-state 'sql-interactive-mode 'emacs)
+            (evil-set-initial-state 'compilation-mode 'emacs)
             (bind-key "<SPC>" 'ace-jump-mode evil-normal-state-map)
             (bind-key ";" 'evil-ex evil-normal-state-map)
             (bind-key "\\" 'evil-repeat-find-char evil-normal-state-map)
