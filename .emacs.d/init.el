@@ -405,10 +405,10 @@ for window movement we defined above."
         (setq extra-eshell-buffer (eshell))))))
 (bind-key "M-`" 'show-extra-eshell)
 
-(use-package vagrant-tramp
+(use-package vagrant
   :ensure t
   :init (progn
-          (vagrant-tramp-enable)))
+          (evil-set-initial-state 'shell-mode 'emacs)))
 
 (use-package python
   :config (progn
