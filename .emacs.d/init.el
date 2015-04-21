@@ -313,6 +313,7 @@ for window movement we defined above."
             (setq projectile-switch-project-action 'projectile-dired)
             (projectile-global-mode t))
   :init (progn
+          (bind-key "C-c p d" 'projectile-dired projectile-mode-map)
           (bind-key "C-M-r" 'projectile-find-tag evil-normal-state-map)
           (bind-key "C-_" 'projectile-compile-project)
           (require 'persp-projectile)
