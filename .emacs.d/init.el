@@ -499,11 +499,8 @@ screen."
           (setq evil-leader/leader ",")
           (global-evil-leader-mode t))
   :config (evil-leader/set-key
-            "gs" 'magit-status
             "gb" 'magit-blame-mode
             "go" 'google-it
-            "ps" 'projectile-switch-project
-            "cc" 'projectile-compile-project
             "C" 'compile
             "sl" 'sort-lines
             "b" 'helm-buffers-list
@@ -511,8 +508,6 @@ screen."
             "t" 'deft
             "d" 'dired
             "m" 'mu4e
-            "|" 'split-window-right
-            "-" 'split-window-below
             "." 'find-tag
             "(" 'paredit-wrap-round
             "u." 'pop-tag-mark
