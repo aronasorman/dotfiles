@@ -9,3 +9,5 @@ local_init.el
 /.emacs.d/eshell/lastdir
 /.emacs.d/eshell/history
 /.emacs.d/session*
+/.emacs.d/network-security.data
+/.emacs.d/url/
