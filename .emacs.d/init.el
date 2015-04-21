@@ -947,6 +947,9 @@ screen."
  '(org-modules
    (quote
     (org-bbdb org-bibtex org-crypt org-docview org-gnus org-habit org-id org-info org-inlinetask org-invoice org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m org-invoice)))
+ '(package-selected-packages
+   (quote
+    (vagrant yaml-mode web-mode vagrant-tramp tuareg s rust-mode rainbow-delimiters perspective paredit multiple-cursors markdown-mode magit lua-mode json-reformat js2-mode ido-vertical-mode handlebars-mode grizzl go-mode github-browse-file ghc flycheck-haskell flx-ido exec-path-from-shell evil-numbers evil-leader engine-mode elpy dtrace-script-mode diminish deft company-go color-theme-monokai cider browse-kill-ring alchemist aggressive-indent ace-jump-mode)))
  '(safe-local-variable-values
    (quote
     ((ledger-master-file . "transactions.ldgr")
