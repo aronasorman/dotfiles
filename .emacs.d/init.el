@@ -547,6 +547,16 @@ screen."
   :init (progn
           (bind-key "C-p" 'magit-pr/open-pull-request magit-status-mode-map)))
 
+(use-package git-timemachine
+  :ensure t
+  :config (progn
+            (evil-make-overriding-map git-timemachine-mode-map 'normal)
+            ;; force update evil keymaps after git-timemachine-mode loaded
+            (add-hook 'git-timemachine-mode-hook 'evil-normalize-keymaps)
+            (setq git-timemachine-abbreviation-length 5)
+            (setq git-timemachine-show-minibuffer-details nil)
+            (evil-set-initial-state 'git-timemachine-mode 'emacs)))
+
 (bind-key "C-'" 'magit-status evil-normal-state-map) ;; somehow i need to put this outside so it will bite
 
 (defun magit/visit-pull-request-url ()
