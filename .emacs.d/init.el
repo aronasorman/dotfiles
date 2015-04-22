@@ -353,6 +353,8 @@ for window movement we defined above."
             (bind-key "C-'" 'magit-status)
             (bind-key "C-/" 'projectile-switch-project-from-marks eshell-mode-map)
             (bind-key "<C-M-return>" 'compile-goto-error)
+            (bind-key "M-a" 'eshell-bol eshell-mode-map)
+            (bind-key "M-k" 'kill-line eshell-mode-map)
             (add-hook 'eshell-first-time-mode-hook 'compilation-shell-minor-mode)
             (evil-set-initial-state 'eshell-mode 'emacs)
             ;; sigh, so many hacks for eshell.  so somehow not
@@ -408,6 +410,9 @@ for window movement we defined above."
 (use-package vagrant
   :ensure t
   :init (progn
+          (add-hook 'shell-mode-hook 'compilation-shell-minor-mode)
+          ;; Set C-k to the proper keybinding
+          (add-hook 'shell-mode-hook 'turn-off-smartparens-mode)
           (evil-set-initial-state 'shell-mode 'emacs)))
 
 (use-package python
@@ -625,7 +630,6 @@ screen."
             (bind-key "C-<left>" 'sp-backward-slurp-sexp evil-insert-state-map)
             (bind-key "]]" 'sp-forward-barf-sexp evil-normal-state-map)
             (bind-key "[[" 'sp-backward-barf-sexp evil-normal-state-map)
-            (bind-key "C-S-k" 'sp-kill-hybrid-sexp evil-normal-state-map)
             (bind-key "C-M-\\" 'sp-splice-sexp evil-normal-state-map)
             (bind-key "C-M-=" 'sp-indent-defun evil-normal-state-map)
             (bind-key "M-(" 'sp-backward-sexp evil-normal-state-map)
