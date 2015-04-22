@@ -866,17 +866,19 @@ screen."
   :ensure t)
 
 (use-package clojure-mode
+  :ensure t)
+
+(use-package cider
   :ensure t
-  :config (progn
-            ;; (use-package clojure-test-mode
-            ;;   :ensure t)
-            (use-package cider
-              :ensure t
-              :init (progn
-                      (add-to-list 'evil-emacs-state-modes 'cider-test-report-mode)
-                      (add-to-list 'evil-emacs-state-modes 'cider-docview-mode)
-                      (add-to-list 'evil-emacs-state-modes 'cider-stacktrace-mode)
-                      (cider-repl-toggle-pretty-printing)))))
+  :init (progn
+          (add-to-list 'evil-emacs-state-modes 'cider-test-report-mode)
+          (add-to-list 'evil-emacs-state-modes 'cider-docview-mode)
+          (add-to-list 'evil-emacs-state-modes 'cider-stacktrace-mode)
+          (evil-set-initial-state 'cider-repl-mode 'emacs)
+          (bind-key "C-c d" 'cider-doc cider-mode-map)
+          (bind-key "C-c D" 'cider-grimoire cider-mode-map)
+          (cider-turn-on-eldoc-mode)
+          (cider-repl-toggle-pretty-printing)))
 
 ;; mu and mu4e
 (use-package mu4e
