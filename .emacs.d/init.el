@@ -163,7 +163,7 @@ for window movement we defined above."
   :ensure t
   :init (progn
           (engine-mode t)
-          (setq browse-url-browser-function 'eww-browse-url)
+          (setq browse-url-browser-function 'browse-url-default-browser)
           (defengine github
             "https://github.com/search?ref=simplesearch&q=%s"
             "h")
