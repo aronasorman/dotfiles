@@ -824,6 +824,11 @@ screen."
           (add-hook 'prog-mode-hook 'flycheck-mode)
           (add-hook 'flycheck-mode-hook 'flycheck-haskell-setup)))
 
+(use-package flycheck-pos-tip
+  :ensure t
+  :init (progn
+          (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)))
+
 (use-package go-mode
   :ensure t
   :config (progn
