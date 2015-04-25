@@ -893,7 +893,7 @@ screen."
           (evil-set-initial-state 'cider-repl-mode 'emacs)
           (bind-key "C-c d" 'cider-doc cider-mode-map)
           (bind-key "C-c D" 'cider-grimoire cider-mode-map)
-          (cider-turn-on-eldoc-mode)
+          (add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
           (cider-repl-toggle-pretty-printing)))
 
 ;; mu and mu4e
