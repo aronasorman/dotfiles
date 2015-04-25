@@ -313,6 +313,7 @@ for window movement we defined above."
             (setq projectile-remember-window-configs t)
             (setq projectile-completion-system 'grizzl)
             (setq projectile-switch-project-action 'projectile-dired)
+            (add-hook 'persp-switch-hook 'projectile-visit-project-tags-table)
             (projectile-global-mode t))
   :init (progn
           (bind-key "C-c p d" 'projectile-dired projectile-mode-map)
