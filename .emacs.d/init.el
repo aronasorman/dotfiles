@@ -157,6 +157,7 @@ for window movement we defined above."
 (use-package gud
   :init (progn
           (define-window-movements-for-mode gud-mode-map)
+          (setq gdb-many-windows t)
           (bind-key "C-x S" 'gud-stop-subjob gud-mode-map)))
 
 (use-package engine-mode
@@ -883,6 +884,17 @@ screen."
   :init (progn
           (cljr-add-keybindings-with-prefix "C-c C-v")
           (add-hook 'clojure-mode-hook (lambda () (clj-refactor-mode 1)))))
+
+(use-package typed-clojure-mode
+  :ensure t
+  :init (progn
+          (add-hook 'clojure-mode-hook 'typed-clojure-mode)))
+
+(use-package flycheck-clojure
+  :ensure t
+  :config (progn
+            (add-to-list 'flycheck-disabled-checkers 'clojure-cider-kibit)
+            (eval-after-load 'flycheck '(flycheck-clojure-setup))))
 
 (use-package cider
   :ensure t
