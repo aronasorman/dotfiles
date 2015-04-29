@@ -138,6 +138,8 @@ for window movement we defined above."
 (use-package company
   :ensure t
   :init (progn
+          (add-hook 'gud-mode-hook (lambda ()
+                                     (company-mode -1)))
           (add-hook 'after-init-hook 'global-company-mode)))
 
 (use-package diminish
