@@ -419,6 +419,8 @@ for window movement we defined above."
 
 (use-package python
   :config (progn
+            (add-hook 'python-mode-hook (lambda ()
+                                          (glasses-mode 1)))
             (add-hook 'comint-output-filter-functions 'python-pdbtrack-comint-output-filter-function)))
 
 (use-package elpy
@@ -967,63 +969,31 @@ screen."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default bold shadow italic underline bold bold-italic bold])
- '(ansi-color-names-vector
-   (vector "#4d4d4c" "#c82829" "#718c00" "#eab700" "#4271ae" "#8959a8" "#3e999f" "#ffffff"))
+ '(ansi-color-faces-vector [default bold shadow italic underline bold bold-italic bold])
+ '(ansi-color-names-vector (vector "#4d4d4c" "#c82829" "#718c00" "#eab700" "#4271ae" "#8959a8" "#3e999f" "#ffffff"))
  '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
- '(custom-safe-themes
-   (quote
-    ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
+ '(custom-safe-themes (quote ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
  '(evil-show-paren-range 3)
  '(fci-rule-color "#efefef")
+ '(glasses-original-separator "¬")
+ '(glasses-separate-parentheses-p nil)
+ '(glasses-separator "¬")
  '(midnight-mode t nil (midnight))
- '(org-agenda-files
-   (quote
-    ("~/notes/todo/planning.org" "~/notes/todo/fle.org")))
+ '(org-agenda-files (quote ("~/notes/todo/planning.org" "~/notes/todo/fle.org")))
  '(org-export-backends (quote (ascii html icalendar latex md odt)))
- '(org-html-table-default-attributes
-   (quote
-    (:border "2" :cellspacing "5" :cellpadding "6" :rules "groups" :frame "hsides")))
- '(org-modules
-   (quote
-    (org-bbdb org-bibtex org-crypt org-docview org-gnus org-habit org-id org-info org-inlinetask org-invoice org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m org-invoice)))
- '(package-selected-packages
-   (quote
-    (vagrant yaml-mode web-mode vagrant-tramp tuareg s rust-mode rainbow-delimiters perspective paredit multiple-cursors markdown-mode magit lua-mode json-reformat js2-mode ido-vertical-mode handlebars-mode grizzl go-mode github-browse-file ghc flycheck-haskell flx-ido exec-path-from-shell evil-numbers evil-leader engine-mode elpy dtrace-script-mode diminish deft company-go color-theme-monokai cider browse-kill-ring alchemist aggressive-indent ace-jump-mode)))
- '(safe-local-variable-values
-   (quote
-    ((ledger-master-file . "transactions.ldgr")
-     (major-mode quote ledger-mode)
-     (major-mode . ledger-mode))))
+ '(org-html-table-default-attributes (quote (:border "2" :cellspacing "5" :cellpadding "6" :rules "groups" :frame "hsides")))
+ '(org-modules (quote (org-bbdb org-bibtex org-crypt org-docview org-gnus org-habit org-id org-info org-inlinetask org-invoice org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m org-invoice)))
+ '(package-selected-packages (quote (vagrant yaml-mode web-mode vagrant-tramp tuareg s rust-mode rainbow-delimiters perspective paredit multiple-cursors markdown-mode magit lua-mode json-reformat js2-mode ido-vertical-mode handlebars-mode grizzl go-mode github-browse-file ghc flycheck-haskell flx-ido exec-path-from-shell evil-numbers evil-leader engine-mode elpy dtrace-script-mode diminish deft company-go color-theme-monokai cider browse-kill-ring alchemist aggressive-indent ace-jump-mode)))
+ '(safe-local-variable-values (quote ((ledger-master-file . "transactions.ldgr") (major-mode quote ledger-mode) (major-mode . ledger-mode))))
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 587)
  '(sp-navigate-close-if-unbalanced t)
  '(sp-show-pair-from-inside t)
  '(vc-annotate-background nil)
- '(vc-annotate-color-map
-   (quote
-    ((20 . "#c82829")
-     (40 . "#f5871f")
-     (60 . "#eab700")
-     (80 . "#718c00")
-     (100 . "#3e999f")
-     (120 . "#4271ae")
-     (140 . "#8959a8")
-     (160 . "#c82829")
-     (180 . "#f5871f")
-     (200 . "#eab700")
-     (220 . "#718c00")
-     (240 . "#3e999f")
-     (260 . "#4271ae")
-     (280 . "#8959a8")
-     (300 . "#c82829")
-     (320 . "#f5871f")
-     (340 . "#eab700")
-     (360 . "#718c00"))))
+ '(vc-annotate-color-map (quote ((20 . "#c82829") (40 . "#f5871f") (60 . "#eab700") (80 . "#718c00") (100 . "#3e999f") (120 . "#4271ae") (140 . "#8959a8") (160 . "#c82829") (180 . "#f5871f") (200 . "#eab700") (220 . "#718c00") (240 . "#3e999f") (260 . "#4271ae") (280 . "#8959a8") (300 . "#c82829") (320 . "#f5871f") (340 . "#eab700") (360 . "#718c00"))))
  '(vc-annotate-very-old-color nil)
- '(web-mode-code-indent-offset 4 t))
+ '(web-mode-code-indent-offset 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
