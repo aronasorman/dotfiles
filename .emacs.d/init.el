@@ -372,9 +372,13 @@ for window movement we defined above."
  Simply (projectile-project-root) for now."
   (projectile-project-root))
 
+(defun -project-eshell-name ()
+  "Return the name of the project's eshell."
+  (format "%s-eshell" (proj-name)))
+
 (defun initialize-eshell-for-project ()
   (interactive)
-  (let* ((eshell-buffer-name (format "%s-eshell" (proj-name))))
+  (let* ((eshell-buffer-name (-project-eshell-name)))
     (puthash (proj-name) (current-buffer) project-shell-mappings)
     (eshell)
     ;; to make eshell work with virtualenvs, make sure we set the
@@ -383,6 +387,10 @@ for window movement we defined above."
     (make-local-variable 'eshell-path-env)
     (setq eshell-path-env (getenv "PATH"))))
 
+(defun -eshell-p ()
+  "Return t if in eshell buffer."
+  (eq major-mode 'eshell-mode))
+
 (defun toggle-project-eshell (&optional project-name)
   (interactive)
   (let* ((key (or project-name (proj-name)))
@@ -390,8 +398,11 @@ for window movement we defined above."
     (if (not buf)
         (initialize-eshell-for-project)
       (progn
-        (puthash (proj-name) (current-buffer) project-shell-mappings)
-        (switch-to-buffer buf)))))
+        (if (-eshell-p)
+            (switch-to-buffer buf)
+          (progn
+            (puthash (proj-name) (current-buffer) project-shell-mappings)
+            (switch-to-buffer (-project-eshell-name))))))))
 (bind-key "C-x C-x" 'toggle-project-eshell)
 
 (defvar extra-eshell-buffer nil)
