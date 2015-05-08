@@ -894,11 +894,11 @@ screen."
 (use-package clojure-mode
   :ensure t)
 
-(use-package clj-refactor
-  :ensure t
-  :init (progn
-          (cljr-add-keybindings-with-prefix "C-c C-v")
-          (add-hook 'clojure-mode-hook (lambda () (clj-refactor-mode 1)))))
+;; (use-package clj-refactor
+;;   :ensure t
+;;   :init (progn
+;;           (cljr-add-keybindings-with-prefix "C-c C-v")
+;;           (add-hook 'clojure-mode-hook (lambda () (clj-refactor-mode 1)))))
 
 (use-package typed-clojure-mode
   :ensure t
