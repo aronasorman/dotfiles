@@ -501,6 +501,7 @@ screen."
   :init (progn
           (setq helm-ff-transformer-show-only-basename nil)
           (bind-key "M-x" 'helm-M-x)
+          (bind-key "C-:" 'helm-resume)
           (require 'helm-mode)
           (helm-mode t)))
 
