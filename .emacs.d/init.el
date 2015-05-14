@@ -17,16 +17,6 @@
 (require 'use-package)
 
 ;;;;; custom functions and macros
-(defun google-it ()
-  "Googles a query or region if any."
-  (interactive)
-  (browse-url
-   (concat
-    "http://www.google.com/search?ie=utf-8&oe=utf-8&q="
-    (if mark-active
-        (buffer-substring (region-beginning) (region-end))
-      (read-string "Google: ")))))
-
 (defvar src-dir "~/src")
 
 ;; calendar format
