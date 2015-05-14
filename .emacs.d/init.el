@@ -63,26 +63,29 @@
 ;; font
 (set-face-attribute 'default nil :font "Inconsolata-11")
 
-;;;;; vanilla keybindings
-(global-set-key (kbd "<RET>") 'newline-and-indent)
-(global-set-key (kbd "C-\\") 'delete-other-windows)
-(global-set-key (kbd "M-\\") 'delete-window)
-(define-key emacs-lisp-mode-map (kbd "C-c C-c") 'eval-defun)
-(define-key emacs-lisp-mode-map (kbd "C-c C-r") 'eval-region)
-(global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
-(global-set-key (kbd "C-M-l") 'windmove-right)
-(global-set-key (kbd "C-M-h") 'windmove-left)
-(global-set-key (kbd "C-M-j") 'windmove-down)
-(global-set-key (kbd "C-M-k") 'windmove-up)
-(bind-key "C-S-f" 'find-dired)
+(define-minor-mode custom-keymaps-mode
+  :global t
+  :keymap (let ((map (make-sparse-keymap)))
+            (bind-key "<RET>" 'newline-and-indent map)
+            (bind-key "C-\\" 'delete-other-windows map)
+            (bind-key "M-\\" 'delete-window map)
+            (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'eval-defun)
+            (define-key emacs-lisp-mode-map (kbd "C-c C-r") 'eval-region)
+            (bind-key "M-j" (lambda () (interactive) (join-line -1)) map)
+            (bind-key "C-M-l" 'windmove-right map)
+            (bind-key "C-M-h" 'windmove-left map)
+            (bind-key "C-M-j" 'windmove-down map)
+            (bind-key "C-M-k" 'windmove-up map)
+            (bind-key "C-S-f" 'find-dired map)
 
-(defun define-window-movements-for-mode (keymap)
-  "Use for when a certain mode does not follow the global keys
-for window movement we defined above."
-  (bind-key "C-M-l" 'windmove-right keymap)
-  (bind-key "C-M-h" 'windmove-left keymap)
-  (bind-key "C-M-j" 'windmove-down keymap)
-  (bind-key "C-M-k" 'windmove-up keymap))
+            map))
+
+(defun turn-off-custom-keymaps-mode ()
+  "Turn off custom keymaps mode."
+  (interactive)
+  (custom-keymaps-mode -1))
+
+(add-hook 'minibuffer-setup-hook 'turn-off-custom-keymaps-mode)
 
 ;; debug line shortcuts
 (setq debug-line-alist
@@ -148,7 +151,6 @@ for window movement we defined above."
 
 (use-package gud
   :init (progn
-          (define-window-movements-for-mode gud-mode-map)
           (setq gdb-many-windows t)
           (bind-key "C-x S" 'gud-stop-subjob gud-mode-map)))
 
@@ -350,11 +352,7 @@ for window movement we defined above."
             (bind-key "M-a" 'eshell-bol eshell-mode-map)
             (bind-key "M-k" 'kill-line eshell-mode-map)
             (add-hook 'eshell-first-time-mode-hook 'compilation-shell-minor-mode)
-            (evil-set-initial-state 'eshell-mode 'emacs)
-            ;; sigh, so many hacks for eshell.  so somehow not
-            ;; defining keys outside of a hook doesn't work. So now we
-            ;; do it every time eshell starts.
-            (add-hook 'eshell-mode-hook (lambda () (define-window-movements-for-mode eshell-mode-map)))))
+            (evil-set-initial-state 'eshell-mode 'emacs)))
 
 (defvar project-shell-mappings (make-hash-table :test 'equal))
 (defun proj-name ()
