@@ -422,6 +422,9 @@ for window movement we defined above."
         (setq extra-eshell-buffer (eshell))))))
 (bind-key "M-`" 'show-extra-eshell)
 
+(use-package prodigy
+  :ensure t)
+
 (use-package vagrant
   :ensure t
   :init (progn
@@ -472,6 +475,13 @@ screen."
     (if function
         (funcall copy-or-message function)
       (funcall copy-or-message "Not in a function"))))
+
+(use-package stickyfunc-enhance
+  :ensure t
+  :config (progn
+            (add-hook 'prog-mode-hook 'semantic-mode)
+            (global-semantic-decoration-mode)
+            (global-semantic-stickyfunc-mode)))
 
 (use-package ido-vertical-mode
   :ensure t
@@ -998,7 +1008,7 @@ screen."
  '(org-html-table-default-attributes (quote (:border "2" :cellspacing "5" :cellpadding "6" :rules "groups" :frame "hsides")))
  '(org-modules (quote (org-bbdb org-bibtex org-crypt org-docview org-gnus org-habit org-id org-info org-inlinetask org-invoice org-jsinfo org-habit org-irc org-mew org-mhe org-rmail org-vm org-wl org-w3m org-invoice)))
  '(package-selected-packages (quote (vagrant yaml-mode web-mode vagrant-tramp tuareg s rust-mode rainbow-delimiters perspective paredit multiple-cursors markdown-mode magit lua-mode json-reformat js2-mode ido-vertical-mode handlebars-mode grizzl go-mode github-browse-file ghc flycheck-haskell flx-ido exec-path-from-shell evil-numbers evil-leader engine-mode elpy dtrace-script-mode diminish deft company-go color-theme-monokai cider browse-kill-ring alchemist aggressive-indent ace-jump-mode)))
- '(safe-local-variable-values (quote ((ledger-master-file . "transactions.ldgr") (major-mode quote ledger-mode) (major-mode . ledger-mode))))
+ '(safe-local-variable-values (quote ((eval progn (prodigy-define-service :name "KA Lite kaserve server" :command "./kalite" :args (quote ("manage" "kaserve")) :tags (quote (work)) :kill-process-buffer-on-stop t :cwd (concat (projectile-project-root) "bin/"))) (eval progn (prodigy-define-service :name "KA Lite kaserve server" :command "kalite" :args (quote ("manage" "kaserve")) :tags (quote (work)) :kill-process-buffer-on-stop t :cwd (concat (projectile-project-root) "bin/"))) (eval progn (prodigy-define-service :name "KA Lite kaserve server" :command "bin/kalite" :args (quote ("manage" "kaserve")) :tags (quote (work)) :kill-process-buffer-on-stop t)) (eval message "hi") (ledger-master-file . "transactions.ldgr") (major-mode quote ledger-mode) (major-mode . ledger-mode))))
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 587)
@@ -1007,7 +1017,7 @@ screen."
  '(vc-annotate-background nil)
  '(vc-annotate-color-map (quote ((20 . "#c82829") (40 . "#f5871f") (60 . "#eab700") (80 . "#718c00") (100 . "#3e999f") (120 . "#4271ae") (140 . "#8959a8") (160 . "#c82829") (180 . "#f5871f") (200 . "#eab700") (220 . "#718c00") (240 . "#3e999f") (260 . "#4271ae") (280 . "#8959a8") (300 . "#c82829") (320 . "#f5871f") (340 . "#eab700") (360 . "#718c00"))))
  '(vc-annotate-very-old-color nil)
- '(web-mode-code-indent-offset 4))
+ '(web-mode-code-indent-offset 4 t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
