@@ -423,7 +423,9 @@ for window movement we defined above."
 (bind-key "M-`" 'show-extra-eshell)
 
 (use-package prodigy
-  :ensure t)
+  :ensure t
+  :config (progn
+            (evil-make-overriding-map prodigy-mode-map)))
 
 (use-package vagrant
   :ensure t
