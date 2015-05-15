@@ -169,19 +169,19 @@ for window movement we defined above."
           (setq browse-url-browser-function 'browse-url-default-browser)
           (defengine github
             "https://github.com/search?ref=simplesearch&q=%s"
-            "h")
+            :keybinding "h")
 
           (defengine python
             "https://docs.python.org/2/search.html?q=%s"
-            "p")
+            :keybinding "p")
 
           (defengine wolfram-alpha
             "http://www.wolframalpha.com/input/?i=%s"
-            "w")
+            :keybinding "w")
 
           (defengine google
             "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
-            "g")))
+            :keybinding "g")))
 
 (use-package handlebars-mode
   :ensure t)
