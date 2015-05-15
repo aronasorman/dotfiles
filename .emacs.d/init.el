@@ -442,8 +442,7 @@ for window movement we defined above."
 (use-package elpy
   :ensure t
   :config (progn
-            (elpy-enable)
-            (elpy-use-ipython))
+            (elpy-enable))
   :init (progn
           ;; disable flymake mode for python
           (setq elpy-modules (remove 'elpy-module-flymake elpy-modules))
