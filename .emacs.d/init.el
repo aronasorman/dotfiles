@@ -66,7 +66,6 @@
 (define-minor-mode custom-keymaps-mode
   :global t
   :keymap (let ((map (make-sparse-keymap)))
-            (bind-key "<RET>" 'newline-and-indent map)
             (bind-key "C-\\" 'delete-other-windows map)
             (bind-key "M-\\" 'delete-window map)
             (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'eval-defun)
@@ -86,6 +85,8 @@
   (custom-keymaps-mode -1))
 
 (add-hook 'minibuffer-setup-hook 'turn-off-custom-keymaps-mode)
+
+(bind-key "<RET>" 'newline-and-indent)
 
 ;; debug line shortcuts
 (setq debug-line-alist
@@ -119,7 +120,7 @@
     (progn
       (maximize-window)
       (setq frame-maximized-p t))))
-(bind-key "M-RET" 'toggle-window-maximization)
+(bind-key* "M-RET" 'toggle-window-maximization)
 
 ;;;;; path configuration
 
@@ -148,6 +149,10 @@
   :init (progn
           (use-package json-reformat
             :ensure t)) )
+
+(use-package man
+  :config (progn
+            (add-hook 'Man-mode-hook 'longlines-mode)))
 
 (use-package gud
   :init (progn
@@ -201,6 +206,7 @@
             (evil-set-initial-state 'git-rebase-mode 'emacs)
             (evil-set-initial-state 'sql-interactive-mode 'emacs)
             (evil-set-initial-state 'compilation-mode 'emacs)
+            (evil-make-overriding-map custom-keymaps-mode-map)
             (bind-key "<SPC>" 'ace-jump-mode evil-normal-state-map)
             (bind-key ";" 'evil-ex evil-normal-state-map)
             (bind-key "\\" 'evil-repeat-find-char evil-normal-state-map)
