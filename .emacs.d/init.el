@@ -939,59 +939,6 @@ screen."
           (add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
           (cider-repl-toggle-pretty-printing)))
 
-;; mu and mu4e
-(use-package mu4e
-  :load-path "~/src/dotfiles/mu4e"
-  :init (progn
-          (add-to-list 'mu4e-bookmarks '("flag:flagged" "All flagged email" ?F))
-          (add-to-list 'mu4e-bookmarks '("flag:flagged AND date:today..now" "Flagged email for today" ?f))
-          (setq mu4e-maildir "~/mail")
-          (setenv "GPGKEY" "0B78EF87")
-          ;; startup GPG agent
-          (let ((gpg-agent (executable-find "gpg-agent")))
-            (if gpg-agent
-                (let* ((gpg-agent-cmd (shell-command-to-string "gpg-agent --daemon"))
-                       (gpg-agent-info-var (first (split-string gpg-agent-cmd ";")))
-                       (gpg-agent-info (second (split-string gpg-agent-info-var "="))))
-                  (message "gpg-agent found. Activating for Emacs...")
-                  (setenv "GPG_AGENT_INFO" gpg-agent-info))
-              (message "gpg-agent exectuable not found. Oh well.")))
-          (setq mml2015-use 'epg))
-  :config (progn
-            (use-package org-mu4e)
-	    (add-to-list 'evil-emacs-state-modes 'mu4e-main-mode)
-	    (add-to-list 'evil-emacs-state-modes 'mu4e-view-mode)
-	    (add-to-list 'evil-emacs-state-modes 'mu4e-headers-mode)
-	    (add-hook 'mu4e-view-mode-hook 'turn-on-visual-line-mode)
-	    (add-hook 'mu4e-compose-mode-hook 'evil-local-mode)
-	    (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
-	    (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)))
-(defvar local/mu4e-account-specific-settings)
-(setq local/mu4e-account-specific-settings
-      '(("fastmail"
-	 (user-mail-address "aronasorman@fastmail.fm")
-	 (smtpmail-smtp-server "mail.messagingengine.com")
-	 (smtpmail-smtp-service 587))
-	("learningequality"
-	 (user-mail-address "aron@learningequality.org")
-	 (smtpmail-smtp-server "smtp.gmail.com")
-	 (smtpmail-smtp-service 587))))
-
-(defun local/mu4e-set-account-settings ()
-  "Set the account for composing a message."
-  (let* ((account
-	  (completing-read (format "Compose with account: (%s) "
-				   (mapconcat #'(lambda (var) (car var)) local/mu4e-account-specific-settings "/"))
-			   (mapcar #'(lambda (var) (car var)) local/mu4e-account-specific-settings)
-			   nil t nil nil (caar local/mu4e-account-specific-settings)))
-	 (account-vars (cdr (assoc account local/mu4e-account-specific-settings))))
-    (if account-vars
-	(mapc #'(lambda (var)
-		  (set (car var) (cadr var)))
-	      account-vars)
-      (error "No email account found"))))
-(add-hook 'mu4e-compose-pre-hook 'local/mu4e-set-account-settings)
-
 (add-hook 'prog-mode-hook 'linum-mode) ;; avoid loading global-linum-mode now
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
