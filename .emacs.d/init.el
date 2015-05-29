@@ -515,6 +515,8 @@ screen."
 (use-package helm-cmd-t
   :load-path "~/.emacs.d/helm-cmd-t"
   :diminish projectile-mode
+  :config (progn
+            (add-to-list 'helm-cmd-t-find-ignored-files "*.json"))
   :init (progn
           (bind-key "C-p" 'projectile-find-file evil-normal-state-map)
           (bind-key "M-P" (lambda ()
