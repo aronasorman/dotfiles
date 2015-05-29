@@ -507,7 +507,9 @@ screen."
   :diminish helm-mode
   :init (progn
           (setq helm-ff-transformer-show-only-basename nil)
+          (helm-autoresize-mode 1)
           (bind-key "M-x" 'helm-M-x)
+          (setq helm-M-x-fuzzy-match t)
           (bind-key "C-:" 'helm-resume)
           (require 'helm-mode)
           (helm-mode t)))
