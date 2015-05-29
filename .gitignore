@@ -11,3 +11,4 @@ local_init.el
 /.emacs.d/session*
 /.emacs.d/network-security.data
 /.emacs.d/url/
+/.emacs.d/semanticdb/
