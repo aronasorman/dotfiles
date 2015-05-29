@@ -302,13 +302,8 @@
 (use-package grizzl
   :ensure t)
 
-(use-package perspective
-  :ensure t
-  :init (progn
-          (persp-mode t)))
-
 (use-package projectile
-  :load-path "~/.emacs.d/projectile"
+  :ensure t
   :diminish projectile-mode
   :config (progn
             (setq projectile-remember-window-configs t)
@@ -320,7 +315,6 @@
           (bind-key "C-c p d" 'projectile-dired projectile-mode-map)
           (bind-key "C-M-r" 'projectile-find-tag evil-normal-state-map)
           (bind-key "C-_" 'projectile-compile-project)
-          (require 'persp-projectile)
           (projectile-global-mode t)))
 (bind-key "C-/" 'projectile-switch-project-from-marks evil-normal-state-map)
 (defun mark-dir ()
@@ -340,7 +334,7 @@
               (let ((long-filename (file-truename (concat markdir filename))))
                 (projectile-add-known-project long-filename)))
             marks)
-    (projectile-persp-switch-project)))
+    (call-interactively 'projectile-persp-switch-project)))
 
 (defun projectile-pdb ()
   "Run pdb within the project root."
@@ -348,6 +342,12 @@
   (let ((default-directory (projectile-project-root)))
     (call-interactively 'pdb)))
 (bind-key "C-c p P" 'projectile-pdb projectile-mode-map)
+
+(use-package perspective
+  :ensure t
+  :init (progn
+          (use-package persp-projectile :ensure t)
+          (persp-mode t)))
 
 (use-package eshell
   :config (progn
@@ -445,7 +445,7 @@
           (setq elpy-rpc-backend "jedi")
           (setq elpy-rpc-timeout 5)     ; wait for 5 seconds before timing out
           (bind-key "M-," 'pop-tag-mark)
-          (add-hook 'persp-switch-hook 'activate-virtualenv-for-project)
+          (add-hook 'projectile-switch-project-hook 'activate-virtualenv-for-project)
           (bind-key "C-c d" 'elpy-doc elpy-mode-map)))
 (defalias 'workon 'pyvenv-workon)
 (defun activate-virtualenv-for-project ()
@@ -743,7 +743,6 @@ screen."
           (setq org-log-done 'note)
           (setq org-log-into-drawer t)
           (setq org-default-notes-file "~/notes/capture.org")
-          (add-to-list 'org-export-backends 'md)
           (setq org-html-doctype "html5")
           (setq org-html-html5-fancy t)
           (bind-key "C-+" (lambda () (interactive) (find-file-other-window "~/notes/todo/planning.org")))
