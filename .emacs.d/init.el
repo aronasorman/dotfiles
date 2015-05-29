@@ -514,13 +514,17 @@ screen."
           (require 'helm-mode)
           (helm-mode t)))
 
+(use-package helm-projectile
+  :ensure t
+  :config (progn
+            (bind-key "C-p" 'helm-projectile evil-normal-state-map)))
+
 (use-package helm-cmd-t
   :load-path "~/.emacs.d/helm-cmd-t"
   :diminish projectile-mode
   :config (progn
             (add-to-list 'helm-cmd-t-find-ignored-files "*.json"))
   :init (progn
-          (bind-key "C-p" 'projectile-find-file evil-normal-state-map)
           (bind-key "M-P" (lambda ()
                             (interactive)
                             (with-helm-default-directory (projectile-project-root)
@@ -612,7 +616,7 @@ screen."
             (setq dired-dwim-target t)
             (bind-key "C-=" 'dired)
             (bind-key "C-'" 'magit-status dired-mode-map)
-            (bind-key "C-p" 'projectile-find-file dired-mode-map)
+            (bind-key "C-p" 'helm-projectile dired-mode-map)
             (bind-key "|" 'split-window-right dired-mode-map)
             (bind-key "-" 'split-window-below dired-mode-map)
             (bind-key "C-/" 'projectile-switch-project-from-marks dired-mode-map)))
