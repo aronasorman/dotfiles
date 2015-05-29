@@ -455,20 +455,6 @@
         (pyvenv-deactivate)
         (message "turned off virtualenv.")))))
 
-(defun elpy-show-defun (copy-to-clipboard)
-  "Show the current class and method, in case they are not on
-screen."
-  (interactive "P")
-  (let ((function (python-info-current-defun))
-        (copy-or-message (if copy-to-clipboard
-                             (lambda (format-string &rest objects)
-                               (kill-new (format format-string objects))
-                               (message "copied to clipboard"))
-                           'message)))
-    (if function
-        (funcall copy-or-message function)
-      (funcall copy-or-message "Not in a function"))))
-
 (use-package stickyfunc-enhance
   :ensure t
   :config (progn
