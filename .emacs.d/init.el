@@ -475,9 +475,10 @@ screen."
 (use-package stickyfunc-enhance
   :ensure t
   :config (progn
+            (bind-key* "C-#" 'helm-semantic)
             (add-hook 'prog-mode-hook 'semantic-mode)
-            (global-semantic-decoration-mode)
-            (global-semantic-stickyfunc-mode)))
+            (global-semantic-decoration-mode 1)
+            (global-semantic-stickyfunc-mode 1)))
 
 (use-package ido-vertical-mode
   :ensure t
