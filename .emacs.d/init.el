@@ -455,6 +455,9 @@
         (pyvenv-deactivate)
         (message "turned off virtualenv.")))))
 
+(use-package ein
+  :ensure t)
+
 (use-package stickyfunc-enhance
   :ensure t
   :config (progn
