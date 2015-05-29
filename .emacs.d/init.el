@@ -443,6 +443,7 @@
           ;; disable flymake mode for python
           (setq elpy-modules (remove 'elpy-module-flymake elpy-modules))
           (setq elpy-rpc-backend "jedi")
+          (setq elpy-rpc-timeout 5)     ; wait for 5 seconds before timing out
           (bind-key "M-," 'pop-tag-mark)
           (add-hook 'persp-switch-hook 'activate-virtualenv-for-project)
           (bind-key "C-c d" 'elpy-doc elpy-mode-map)))
