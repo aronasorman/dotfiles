@@ -503,7 +503,7 @@ screen."
                                           (aggressive-indent-mode t))))))
 
 (use-package helm
-  :load-path "~/.emacs.d/helm"
+  :ensure t
   :diminish helm-mode
   :init (progn
           (setq helm-ff-transformer-show-only-basename nil)
