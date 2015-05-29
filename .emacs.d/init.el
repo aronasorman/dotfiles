@@ -307,7 +307,7 @@
   :diminish projectile-mode
   :config (progn
             (setq projectile-remember-window-configs t)
-            (setq projectile-completion-system 'grizzl)
+            (setq projectile-completion-system 'helm)
             (setq projectile-switch-project-action 'projectile-dired)
             (add-hook 'persp-switch-hook 'projectile-visit-project-tags-table)
             (projectile-global-mode t))
