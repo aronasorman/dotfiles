@@ -299,9 +299,6 @@
           (add-hook 'emacs-lisp-mode-hook 'paredit-mode))
   :config (progn))
 
-(use-package grizzl
-  :ensure t)
-
 (use-package projectile
   :ensure t
   :diminish projectile-mode
