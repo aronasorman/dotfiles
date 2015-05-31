@@ -456,7 +456,11 @@
         (message "turned off virtualenv.")))))
 
 (use-package ein
-  :ensure t)
+  :ensure t
+  :init (progn
+          (evil-set-initial-state 'ein:notebook-multilang-mode 'emacs)
+          (add-hook 'ein:connect-mode-hook 'ein:jedi-setup)
+          (add-hook 'ein:notebooklist-mode-hook 'evil-emacs-state)))
 
 (use-package stickyfunc-enhance
   :ensure t
