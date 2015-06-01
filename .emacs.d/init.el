@@ -386,6 +386,7 @@
             (bind-key "M-a" 'eshell-bol eshell-mode-map)
             (bind-key "M-k" 'kill-line eshell-mode-map)
             (add-hook 'eshell-first-time-mode-hook 'compilation-shell-minor-mode)
+            (add-hook 'eshell-mode-hook (lambda () (interactive) (smartparens-strict-mode -1)))
             (evil-set-initial-state 'eshell-mode 'emacs)))
 
 (defvar project-shell-mappings (make-hash-table :test 'equal))
