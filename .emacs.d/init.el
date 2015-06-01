@@ -76,6 +76,7 @@
             (bind-key "C-M-j" 'windmove-down map)
             (bind-key "C-M-k" 'windmove-up map)
             (bind-key "C-S-f" 'find-dired map)
+            (bind-key "C-h C-f" 'find-function)
 
             map))
 
