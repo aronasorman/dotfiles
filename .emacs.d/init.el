@@ -300,6 +300,31 @@
           (add-hook 'emacs-lisp-mode-hook 'paredit-mode))
   :config (progn))
 
+(setq helm-projectile-fuzzy-match t)  ; activate fuzzy matching
+(use-package helm
+  :ensure t
+  :diminish helm-mode
+  :init (progn
+          (setq helm-ff-transformer-show-only-basename nil)
+          (helm-autoresize-mode 1)
+          (bind-key "M-x" 'helm-M-x)
+          (setq helm-M-x-fuzzy-match t)
+          (bind-key "C-:" 'helm-resume)
+          (require 'helm-mode)
+          (helm-mode t)))
+
+
+(use-package helm-cmd-t
+  :ensure t
+  :diminish projectile-mode
+  :config (progn
+            (add-to-list 'helm-cmd-t-find-ignored-files "*.json"))
+  :init (progn
+          (bind-key "M-P" (lambda ()
+                            (interactive)
+                            (with-helm-default-directory (projectile-project-root)
+                                (helm-cmd-t-git-grep (current-buffer) ""))))))
+
 (use-package projectile
   :ensure t
   :diminish projectile-mode
@@ -313,6 +338,11 @@
           (bind-key "C-c p d" 'projectile-dired projectile-mode-map)
           (bind-key "C-M-r" 'projectile-find-tag evil-normal-state-map)
           (bind-key "C-_" 'projectile-compile-project)
+          (use-package helm-projectile
+            :ensure t
+            :config (progn
+                      (bind-key "C-p" 'helm-projectile evil-normal-state-map)
+                      (helm-projectile-on)))
           (projectile-global-mode t)))
 (bind-key "C-/" 'projectile-switch-project-from-marks evil-normal-state-map)
 (defun mark-dir ()
@@ -332,7 +362,7 @@
               (let ((long-filename (file-truename (concat markdir filename))))
                 (projectile-add-known-project long-filename)))
             marks)
-    (call-interactively 'projectile-persp-switch-project)))
+    (call-interactively 'helm-projectile-switch-project)))
 
 (defun projectile-pdb ()
   "Run pdb within the project root."
@@ -492,34 +522,6 @@
                                         (when (not (member major-mode
                                                            exclude-aggressive-indent-from-these-major-modes))
                                           (aggressive-indent-mode t))))))
-
-(use-package helm
-  :ensure t
-  :diminish helm-mode
-  :init (progn
-          (setq helm-ff-transformer-show-only-basename nil)
-          (helm-autoresize-mode 1)
-          (bind-key "M-x" 'helm-M-x)
-          (setq helm-M-x-fuzzy-match t)
-          (bind-key "C-:" 'helm-resume)
-          (require 'helm-mode)
-          (helm-mode t)))
-
-(use-package helm-projectile
-  :ensure t
-  :config (progn
-            (bind-key "C-p" 'helm-projectile evil-normal-state-map)))
-
-(use-package helm-cmd-t
-  :ensure t
-  :diminish projectile-mode
-  :config (progn
-            (add-to-list 'helm-cmd-t-find-ignored-files "*.json"))
-  :init (progn
-          (bind-key "M-P" (lambda ()
-                            (interactive)
-                            (with-helm-default-directory (projectile-project-root)
-                                (helm-cmd-t-git-grep (current-buffer) ""))))))
 
 (use-package github-browse-file
   :ensure t
