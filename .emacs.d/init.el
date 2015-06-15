@@ -445,6 +445,9 @@
         (setq extra-eshell-buffer (eshell))))))
 (bind-key "M-`" 'show-extra-eshell)
 
+(use-package symon
+  :ensure t)
+
 (use-package prodigy
   :ensure t
   :config (progn
