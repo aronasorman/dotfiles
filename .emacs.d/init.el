@@ -467,6 +467,15 @@
                                           (glasses-mode 1)))
             (add-hook 'comint-output-filter-functions 'python-pdbtrack-comint-output-filter-function)))
 
+(defun python-delete-defun ()
+  "Delete the defun where the cursor is in."
+  (interactive)
+  (python-nav-beginning-of-defun)
+  (let ((beg (point)))
+    (python-nav-end-of-defun)
+    (delete-region beg (point))))
+(bind-key "C-S-k" 'python-delete-defun python-mode-map)
+
 (use-package elpy
   :ensure t
   :config (progn
