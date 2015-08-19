@@ -12,3 +12,4 @@ local_init.el
 /.emacs.d/network-security.data
 /.emacs.d/url/
 /.emacs.d/semanticdb/
+/.emacs.d/request/

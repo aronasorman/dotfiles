@@ -137,6 +137,9 @@
                                      (company-mode -1)))
           (add-hook 'after-init-hook 'global-company-mode)))
 
+(use-package julia-mode
+  :ensure t)
+
 (use-package diminish
   :ensure t)
 
@@ -235,10 +238,22 @@
 (use-package color-theme
   :ensure t)
 
-(use-package color-theme-monokai
-  :ensure t
-  :config (progn
-            (color-theme-monokai)))
+(use-package material-theme
+  :ensure t)
+(load-theme 'material t)
+
+;; (use-package powerline
+;;   :ensure t)
+
+;; (use-package theming
+;;   :load-path "~/.emacs.d/"
+;;   :config (progn
+;;             (powerline-spacemacs-imitation-theme)))
+
+;; (use-package color-theme-monokai
+;;   :ensure t
+;;   :config (progn
+;;             (color-theme-monokai)))
 
 (use-package haskell-mode
   :ensure t
@@ -503,6 +518,7 @@
   :ensure t
   :init (progn
           (evil-set-initial-state 'ein:notebook-multilang-mode 'emacs)
+          (bind-key "C-M-`" 'ein:notebooklist-open)
           (add-hook 'ein:connect-mode-hook 'ein:jedi-setup)
           (add-hook 'ein:notebooklist-mode-hook 'evil-emacs-state)))
 
@@ -952,13 +968,13 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector (vector "#4d4d4c" "#c82829" "#718c00" "#eab700" "#4271ae" "#8959a8" "#3e999f" "#ffffff"))
- '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
- '(custom-safe-themes (quote ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
+ '(custom-safe-themes (quote ("44f015a4c080c3943bc1d9428ccd70caa7c54eceeb68b7f53e7adef961880ad8" "4a162cd971cf3c059e827d6b5aa0bd07488cb5995782c0fa0ce20621bbc4a596" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "47583b577fb062aeb89d3c45689a4f2646b7ebcb02e6cb2d5f6e2790afb91a18" default)))
  '(evil-show-paren-range 3)
  '(fci-rule-color "#efefef")
  '(glasses-original-separator "¬")
  '(glasses-separate-parentheses-p nil)
  '(glasses-separator "¬")
+ '(hl-sexp-background-color "#1c1f26")
  '(midnight-mode t nil (midnight))
  '(org-agenda-files (quote ("~/notes/todo/planning.org" "~/notes/todo/fle.org")))
  '(org-export-backends (quote (ascii html icalendar latex md odt)))
