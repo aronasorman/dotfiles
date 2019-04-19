@@ -53,12 +53,12 @@
       shell: snap connect docker:home && newgrp docker
       become: yes
 
-    - name: change hostname to myserver
+    - name: change hostname to {{ laptop_name }}
       hostname:
         name: "{{ laptop_name }}"
       become: yes
 
-    - name: add myself to /etc/hosts
+    - name: add {{ laptop_name }} to /etc/hosts
       lineinfile:
         dest: /etc/hosts
         regexp: '^127\.0\.0\.1[ \t]+localhost'
