@@ -3,21 +3,39 @@
 # for now only for Linux, since that's the easiest to run on a VM
 #
 # Pipe this script to a python shell with sudo:
-# $ curl https://github.com/aronasorman/dotfiles/blob/master/bin/bootstrap | sudo python -
+# $ curl https://github.com/aronasorman/dotfiles/blob/master/bin/executable_bootstrap | sudo python - {github_token} {laptop_name}
 
 import logging
 import subprocess
+import sys
 
-logging.basicConfig()
+logging.basicConfig(level=logging.INFO)
 
 def bootstrap_ubuntu():
     logging.info("Bootstrapping ansible...")
-    subprocess.call(["apt", "install", "-y", "ansible", "curl"])
+    subprocess.call(["apt", "update"])
+    subprocess.call(["apt", "install", "-y", "ansible", "curl", "git", "python-requests", "python3-requests"])
 
-    logging.info("Fetching playbook setup...")
-    # TODO!
+    logging.info("Fetching bootstrap scripts...")
+    import requests
+    r = requests.get(
+        "https://raw.githubusercontent.com/aronasorman/dotfiles/master/bootstrap/host",
+    )
+    open("/tmp/host", "w").write(r.content)
+    r = requests.get(
+        "https://raw.githubusercontent.com/aronasorman/dotfiles/master/bootstrap/playbook.yaml"
+    )
+    open("/tmp/playbook.yaml", "w").write(r.content)
 
     logging.info("Continuing setup scripts through ansible...")
+    subprocess.call([
+        "ansible-playbook",
+        "-i", "host",
+        "playbook.yaml",
+        "-e","github_token={token}".format(token=sys.argv[1]),
+        "-e", "laptop_name={laptop_name}".format(laptop_name=sys.argv[2]),
+    ], cwd="/tmp",
+    )
 
 if __name__ == "__main__":
     uname = subprocess.check_output(["uname", "-a"])
