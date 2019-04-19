@@ -9,6 +9,7 @@
       - zeal
       - fish
       - python
+      - firefox
       - i3
       - rofi
     snap_packages:
