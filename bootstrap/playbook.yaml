@@ -106,6 +106,15 @@
       tags:
         - dotfiles
 
+    - name: update dotfiles
+      command: chezmoi update
+      args:
+        chdir: /home/{{ real_username }}/
+      become: yes
+      become_user: "{{ real_username }}"
+      tags:
+        - dotfiles
+
     - name: upload {{ real_username }} ssh key to github.
       github_key:
         name: Access Key for {{ laptop_name }}
