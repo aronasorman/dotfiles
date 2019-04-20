@@ -115,6 +115,17 @@
       tags:
         - dotfiles
 
+    - name: fetch spacemacs
+      git: 
+        repo: https://github.com/syl20bnr/spacemacs 
+        dest: /home/{{ real_username }}/.emacs.d
+        version: develop
+      become: yes
+      become_user: "{{ real_username }}"
+      tags:
+        - dotfiles
+        - emacs
+
     - name: upload {{ real_username }} ssh key to github.
       github_key:
         name: Access Key for {{ laptop_name }}
