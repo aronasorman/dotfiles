@@ -18,6 +18,12 @@ font pango:monospace 8
 # to force parallels to always use the resolution of our monitor
 exec prlcc
 
+# allocate the workspaces to the following screens
+workspace 1 output primary Virtual1
+workspace 2 output Virtual2 primary
+workspace 3 output primary Virtual1
+workspace 4 output Virtual2 Virtual1
+
 # set a default workspace layout that's similar to xmonad:
 # a master pane on the left, 
 
@@ -46,7 +52,11 @@ bindsym $mod+Shift+q kill
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+d exec --no-startup-id rofi -show run
+
+# show the list of windows, and jump to them
+bindsym $mod+p exec --no-startup-id rofi -show window
 
 # move this to the master pane
 # bindsym $mod+Shift+Return mark "_swapee", focus left, swap with mark "_swapee", unmark "_swapee", focus left
@@ -64,10 +74,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
+bindsym $mod+Ctrl+h move left
+bindsym $mod+Ctrl+j move down
+bindsym $mod+Ctrl+k move up
+bindsym $mod+Ctrl+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -117,11 +127,15 @@ bindsym $mod+0 workspace 10
 bindsym $mod+bracketleft workspace prev
 bindsym $mod+bracketright workspace next
 
+# switch to screen by position
+# bindsym $mod+Ctrl+l output right
+# bindsym $mod+Ctrl+h output left
+
 # move the current workspace either to the left or right screen
-bindsym $mod+Ctrl+l move workspace to output right
-bindsym $mod+Ctrl+h move workspace to output left
-bindsym $mod+Ctrl+j move workspace to output down
-bindsym $mod+Ctrl+k move workspace to output up
+bindsym $mod+Ctrl+left move workspace to output right
+bindsym $mod+Ctrl+right move workspace to output left
+bindsym $mod+Ctrl+down move workspace to output down
+bindsym $mod+Ctrl+up move workspace to output up
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
@@ -150,10 +164,10 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+        bindsym h resize shrink width 5 px or 5 ppt
+        bindsym k resize grow height 5 px or 5 ppt
+        bindsym j resize shrink height 5 px or 5 ppt
+        bindsym l resize grow width 5 px or 5 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
