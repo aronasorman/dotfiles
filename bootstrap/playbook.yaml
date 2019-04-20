@@ -106,14 +106,14 @@
       tags:
         - dotfiles
 
-    - name: update dotfiles
-      command: chezmoi update
-      args:
-        chdir: /home/{{ real_username }}/
-      become: yes
-      become_user: "{{ real_username }}"
-      tags:
-        - dotfiles
+    # - name: update dotfiles
+    #   command: chezmoi update
+    #   args:
+    #     chdir: /home/{{ real_username }}/
+    #   become: yes
+    #   become_user: "{{ real_username }}"
+    #   tags:
+    #     - dotfiles
 
     - name: fetch spacemacs
       git: 
@@ -125,6 +125,27 @@
       tags:
         - dotfiles
         - emacs
+
+    - name: install fzf
+      shell: git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
+      args:
+        creates: /home/{{ real_username }}/.fzf
+      become: yes
+      become_user: "{{ real_username }}"
+      tags:
+        - dotfiles
+
+    - name: install asdf
+      git:
+        repo: https://github.com/asdf-vm/asdf.git
+        dest: /home/{{ real_username }}/.asdf
+        version: v0.7.1
+        update: no
+      become: yes
+      become_user: "{{ real_username }}"
+      tags:
+        - dotfiles
+      
 
     - name: upload {{ real_username }} ssh key to github.
       github_key:
