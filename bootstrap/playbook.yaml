@@ -30,8 +30,10 @@
     brew_packages:
       - fzf
     external_deb_packages:
-      - name: google-chrome
-        deb_link:
+      # - name: google-chrome
+      #   deb_link:
+      - name: chezmoi
+        url: https://github.com/twpayne/chezmoi/releases/download/v1.4.2/chezmoi_1.4.2-621_linux_amd64.deb
   handlers:
     - name: restart docker
       service:
@@ -44,6 +46,11 @@
         update_cache: yes
       loop: "{{ apt_packages }}"
       become: yes
+
+    - name: install external apt packages
+      apt:
+        deb: "{{ item.url }}"
+      loop: "{{ external_deb_packages }}"
 
     - name: install snap packages
       shell: snap install {{ item }} --classic
@@ -88,6 +95,16 @@
       register: aron_user
       notify:
         - restart docker
+
+    - name: setup {{ real_username }}s dotfiles
+      command: chezmoi init --apply --verbose https://github.com/aronasorman/dotfiles.git
+      args:
+        chdir: /home/{{ real_username }}/
+        creates: /home/{{ real_username}}/bin/bootstrap
+      become: yes
+      become_user: "{{ real_username }}"
+      tags:
+        - dotfiles
 
     - name: upload {{ real_username }} ssh key to github.
       github_key:
