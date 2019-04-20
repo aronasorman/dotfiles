@@ -4,7 +4,6 @@ set -x EDITOR "code -w"
 set -x SHELL /usr/local/bin/fish
 set -x GOPATH /Users/aron
 set -x PIPENV_MAX_DEPTH 6
-set -gx HOMEBREW_GITHUB_API_TOKEN 5c22e8314949cb47547ae829fe1f93c8f1eb1466
 
 # activate nix-darwin
 
