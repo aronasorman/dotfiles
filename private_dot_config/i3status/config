@@ -1,0 +1,24 @@
+general {
+        output_format = "i3bar"
+        colors = true
+        interval = 5
+}
+
+order += "cpu_usage"
+order += "disk /"
+order += "time"
+
+time {
+}
+
+cpu_usage {
+    format = "CPU: %usage"
+    max_threshold = "80"
+}
+
+load {
+    format = "CPU load: %1min 1min, %5min 5min, %15min 15min"
+}
+disk "/" {
+    format = "Space: %avail"
+}
