@@ -19,10 +19,10 @@ font pango:monospace 8
 exec prlcc
 
 # allocate the workspaces to the following screens
-workspace 1 output primary Virtual1
-workspace 2 output Virtual2 primary
-workspace 3 output primary Virtual1
-workspace 4 output Virtual2 Virtual1
+# workspace 1 output primary Virtual1
+# workspace 2 output Virtual2 primary
+# workspace 3 output primary Virtual1
+# workspace 4 output Virtual2 Virtual1
 
 # set a default workspace layout that's similar to xmonad:
 # a master pane on the left, 
