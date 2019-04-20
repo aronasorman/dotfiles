@@ -39,6 +39,11 @@
     asdf_plugins:
       - nodejs
       - python
+    fonts:
+      - https://github.com/supermarin/YosemiteSanFranciscoFont/raw/master/System%20San%20Francisco%20Display%20Bold.ttf
+      - https://github.com/supermarin/YosemiteSanFranciscoFont/raw/master/System%20San%20Francisco%20Display%20Regular.ttf
+      - https://github.com/supermarin/YosemiteSanFranciscoFont/raw/master/System%20San%20Francisco%20Display%20Thin.ttf
+      - https://github.com/supermarin/YosemiteSanFranciscoFont/raw/master/System%20San%20Francisco%20Display%20Ultralight.ttf
   handlers:
     - name: restart docker
       service:
@@ -130,6 +135,27 @@
       tags:
         - dotfiles
         - emacs
+
+    - name: create font directory
+      file:
+        path: ~/.fonts
+        state: directory
+      become: yes
+      become_user: "{{ real_username }}"
+      tags:
+        - dotfiles
+        - fonts
+
+    - name: fetch fonts
+      get_url:
+        url: "{{ item }}"
+        dest: ~/.fonts/
+      become: yes
+      become_user: "{{ real_username }}"
+      loop: "{{ fonts }}"
+      tags:
+        - dotfiles
+        - fonts
 
     - name: install fzf
       shell: git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --key-bindings --completion --no-update-rc --no-bash --no-zsh
