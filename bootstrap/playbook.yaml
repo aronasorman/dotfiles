@@ -9,12 +9,14 @@
       - zeal
       - fish
       - python
+      - python-virtualenv
       - firefox
       - i3
       - rofi
     snap_packages:
       - jq
       - helm
+      - hub
       - code
       - docker
       - terraform
@@ -34,6 +36,9 @@
       #   deb_link:
       - name: chezmoi
         url: https://github.com/twpayne/chezmoi/releases/download/v1.4.2/chezmoi_1.4.2-621_linux_amd64.deb
+    asdf_plugins:
+      - nodejs
+      - python
   handlers:
     - name: restart docker
       service:
@@ -127,13 +132,14 @@
         - emacs
 
     - name: install fzf
-      shell: git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
+      shell: git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --key-bindings --completion --no-update-rc --no-bash --no-zsh
       args:
         creates: /home/{{ real_username }}/.fzf
       become: yes
       become_user: "{{ real_username }}"
       tags:
         - dotfiles
+        - fzf
 
     - name: install asdf
       git:
@@ -145,6 +151,26 @@
       become_user: "{{ real_username }}"
       tags:
         - dotfiles
+        - asdf
+
+    - name: install asdf plugins
+      command: asdf plugin-add {{ item }}
+      args:
+        creates: ~/.asdf/plugins/{{ item }}
+      become: yes
+      become_user: "{{ real_username }}"
+      loop: "{{ asdf_plugins }}"
+      tags:
+        - dotfiles
+        - asdf
+
+    - name: add asdf nodejs keyrings
+      command: bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+      become: yes
+      become_user: "{{ real_username }}"
+      tags:
+        - dotfiles
+        - asdf
       
 
     - name: upload {{ real_username }} ssh key to github.
