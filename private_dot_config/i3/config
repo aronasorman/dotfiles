@@ -186,16 +186,16 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 
-# color schemes copied from github.com/alexbooker/dotfiles. Thanks!
-set $bg-color 	         #2f343f
-set $inactive-bg-color   #2f343f
-set $text-color          #f3f4f5
-set $inactive-text-color #676E7D
-set $urgent-bg-color     #E53935
+# color schemes structure copied from github.com/alexbooker/dotfiles. Thanks!
+# colors are based on the nord theme: https://www.nordtheme.com/docs/colors-and-palettes. Thanks!
+set $bg-color 	         #4C566A
+set $inactive-bg-color   #2E3440
+set $text-color          #88C0D0
+set $urgent-bg-color     #BF616A
 
 # window colors
 #                       border              background         text                 indicator
-client.focused           $bg-color          $bg-color          $text-color          #00ff00
+client.focused          $bg-color           $bg-color          $text-color          #00ff00
 client.unfocused         $inactive-bg-color $inactive-bg-color $inactive-text-color #00ff00
 client.focused_inactive  $inactive-bg-color $inactive-bg-color $inactive-text-color #00ff00
 client.urgent            $urgent-bg-color   $urgent-bg-color   $text-color          #00ff00
