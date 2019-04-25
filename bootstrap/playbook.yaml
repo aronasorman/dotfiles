@@ -60,25 +60,43 @@
         update_cache: yes
       loop: "{{ apt_packages }}"
       become: yes
+      tags:
+        - system
+        - packages
 
     - name: install external apt packages
       apt:
         deb: "{{ item.url }}"
       loop: "{{ external_deb_packages }}"
+      become: yes
+      tags:
+        - system
+        - packages
 
     - name: install snap packages
       shell: snap install {{ item }} --classic
       loop: "{{ snap_packages }}"
       become: yes
+      tags:
+        - system
+        - packages
 
     - name: make docker work without sudo
       shell: snap connect docker:home && newgrp docker
       become: yes
+      tags:
+        - system
+        - docker
+        - user
 
     - name: change hostname to {{ laptop_name }}
       hostname:
         name: "{{ laptop_name }}"
       become: yes
+      tags:
+        - system
+        - hostname
+        - user
 
     - name: add {{ laptop_name }} to /etc/hosts
       lineinfile:
@@ -87,6 +105,10 @@
         line: '127.0.0.1 localhost {{ laptop_name }}'
         state: present
       become: yes
+      tags:
+        - system
+        - hostname
+        - user
 
     - name: ensure {{ real_username }} groups exist
       group:
@@ -95,6 +117,9 @@
         system: yes
       loop: "{{ user_groups }}"
       become: yes
+      tags:
+        - system
+        - user
 
     - name: create {{ real_username }} user
       user:
@@ -109,6 +134,9 @@
       register: aron_user
       notify:
         - restart docker
+      tags:
+        - system
+        - user
 
     - name: setup {{ real_username }}s dotfiles
       command: chezmoi init --apply --verbose https://github.com/aronasorman/dotfiles.git
