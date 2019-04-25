@@ -11,11 +11,13 @@
       - python
       - python-virtualenv
       - firefox
+      - lxappearance
       - i3
       - rofi
     snap_packages:
       - jq
       - helm
+      - tusk
       - hub
       - code
       - docker
@@ -36,6 +38,8 @@
       #   deb_link:
       - name: chezmoi
         url: https://github.com/twpayne/chezmoi/releases/download/v1.4.2/chezmoi_1.4.2-621_linux_amd64.deb
+      - name: bazel
+        url: https://github.com/bazelbuild/bazel/releases/download/0.24.1/bazel_0.24.1-linux-x86_64.deb
     asdf_plugins:
       - nodejs
       - python
