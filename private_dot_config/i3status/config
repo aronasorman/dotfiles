@@ -20,5 +20,5 @@ load {
     format = "CPU load: %1min 1min, %5min 5min, %15min 15min"
 }
 disk "/" {
-    format = "Space: %avail"
+    format = "Space Avail: %avail"
 }
