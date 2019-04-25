@@ -133,10 +133,10 @@ bindsym $mod+bracketright workspace next
 # bindsym $mod+Ctrl+h output left
 
 # move the current workspace either to the left or right screen
-bindsym $mod+Ctrl+left move workspace to output right
-bindsym $mod+Ctrl+right move workspace to output left
-bindsym $mod+Ctrl+down move workspace to output down
-bindsym $mod+Ctrl+up move workspace to output up
+bindsym $mod+Ctrl+Right move workspace to output right
+bindsym $mod+Ctrl+Left move workspace to output left
+bindsym $mod+Ctrl+Down move workspace to output down
+bindsym $mod+Ctrl+Up move workspace to output up
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
