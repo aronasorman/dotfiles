@@ -5,8 +5,10 @@
       - admin
       - sudo
       - docker
+      - wireshark
     apt_packages:
       - zeal
+      - tmuxinator
       - fish
       - python
       - python-virtualenv
@@ -14,6 +16,7 @@
       - lxappearance
       - i3
       - rofi
+      - tshark
     snap_packages:
       - jq
       - helm
@@ -23,9 +26,10 @@
       - docker
       - terraform
       - google-cloud-sdk
-      - pycharm-professional
       - microk8s
       - bpftrace
+    optional_apt_packages:
+      - exploitdb
     snap_aliases:
       - azure-cli.az: az
     extra_script_packages:
@@ -72,6 +76,17 @@
       tags:
         - system
         - packages
+
+    - name: install optional apt packages
+      apt:
+        name: "{{ item.url }}"
+        loop: "{{ optional_deb_packages }}"
+        become: yes
+      ignore_errors: yes
+      tags:
+        - system
+        - packages
+
 
     - name: install snap packages
       shell: snap install {{ item }} --classic
@@ -167,6 +182,16 @@
       tags:
         - dotfiles
         - emacs
+
+    - name: fetch gpakosz tmux config
+      git:
+        repo: https://github.com/gpakosz/.tmux
+        dest: /home/{{ real_username }}/.tmux
+      become: yes
+      become_user: "{{ real_username }}"
+      tags:
+        - dotfiles
+        - tmux
 
     - name: create font directory
       file:
