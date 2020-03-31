@@ -117,6 +117,7 @@
     - name: change hostname to {{ laptop_name }}
       hostname:
         name: "{{ laptop_name }}"
+        use: systemd
       become: yes
       tags:
         - system
