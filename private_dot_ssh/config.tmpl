@@ -1,0 +1,32 @@
+# Added by OrbStack: 'orb' SSH host for Linux machines
+# This only works if it's at the top of ssh_config (before any Host blocks).
+# This won't be added again if you remove it.
+Include ~/.orbstack/ssh/config
+
+Host *
+	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+{{- if .work }}
+Host pairing
+  HostName {{ .pairing_host | default "10.16.26.6" }}
+  User aron
+
+Host i-*
+  User ec2-user
+  IdentityFile "~/.ssh/accenture-prod-ssh.pub"
+  ProxyCommand aws ec2-instance-connect open-tunnel --instance-id %h
+
+Host icebox-runner
+  HostName {{ .icebox_runner_ip | default "54.88.158.255" }}
+  User ubuntu
+  IdentityFile "~/.ssh/udacity_backup_ops_rsa.pub"
+
+Host test-2-bastion
+  User aron_asor_udacity_com
+  HostName {{ .test_bastion_ip | default "34.123.40.0" }}
+  IdentityFile "~/.ssh/accenture-prod-ssh.pub"
+{{- end }}
+
+Host aron-github
+  HostName github.com
+  IdentityFile "~/.ssh/quiet.pub"
