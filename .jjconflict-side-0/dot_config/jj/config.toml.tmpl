@@ -1,0 +1,14 @@
+"$schema" = "https://jj-vcs.github.io/jj/latest/config-schema.json"
+
+[user]
+name = "{{ .name }}"
+email = "{{ .email }}"
+
+[ui]
+editor = "nvim"
+
+[git]
+push-new-bookmarks = true
+
+[revset-aliases]
+'pr_stack' = 'trunk()..@ & bookmarks() ~ bookmarks("wip-")'
