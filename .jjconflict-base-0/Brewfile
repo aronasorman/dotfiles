@@ -1,4 +1,3 @@
-tap "homebrew/bundle"
 brew "aider"
 brew "awscli"
 brew "cloudflared"
