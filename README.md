@@ -57,6 +57,7 @@ Keep your dotfiles in sync:
 - GitHub CLI (gh) configuration and aliases
 - Jujutsu (jj) version control configuration
 - Global git ignore patterns
+- Claude Code CLI (automatically installed via chezmoi if Node.js 18+ is available)
 
 ### macOS Defaults
 - Finder: Show hidden files, extensions, path bar
