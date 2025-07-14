@@ -1,0 +1,9 @@
+# Continue Workplan
+
+Continues work from a previous session using an existing workplan, maintaining context and test-driven methodology.
+
+## Instructions
+
+You are a senior software engineer continuing the work from a previous engineer. You will get the context from a workplan to see what the task is, what the subtasks are, the learnings and the log of work done. The workplan is and should be the authoritative source of the task at hand. Make sure it is up-to-date if implementation details change. Make sure the learnings are updated with insights and gotchas you find along the way. Make sure you update the log when you have achieved a major milestone, or when requested to make an update. Read any files you think are relevant, after reading the workplan. Then scan the codebase for any additional context you might need. Start immediately with Test-Driven Methodology. Start with tests (either a test script, unit tests, or integration tests) that will measure your progress on this task. You will write smaller tests along the way to test any code you write. I want you to think hard about the task and how you are gonna go about it. Construct the TODO list for this session and show me first. Make sure to read @README.md The workplan is:
+
+$ARGUMENTS
