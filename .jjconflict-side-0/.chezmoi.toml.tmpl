@@ -15,3 +15,10 @@ command = ".local/share/chezmoi/.install-password-manager.sh"
     {{- else }}
     # Personal machine configuration
     {{- end }}
+    
+    # iTerm2 configuration
+    iterm_profile_guid = "{{ promptStringOnce . "iterm_profile_guid" "iTerm Profile GUID (press enter to generate)" (uuidv4) }}"
+    
+    [data.iterm]
+    font_name = "{{ promptStringOnce . "iterm.font_name" "iTerm font name" "MesloLGS-NF-Regular" }}"
+    font_size = {{ promptIntOnce . "iterm.font_size" "iTerm font size" 12 }}

@@ -1,0 +1,64 @@
+{
+  "Profiles": [
+    {
+      "Name": "Dotfiles Default",
+      "Guid": "{{ .iterm_profile_guid }}",
+      "Default Bookmark": "No",
+      "Description": "Default profile from dotfiles",
+      
+      "Working Directory": "~",
+      "Custom Directory": "No",
+      
+      "Normal Font": "{{ .iterm.font_name | default "MesloLGS-NF-Regular" }} {{ .iterm.font_size | default 12 }}",
+      "Non Ascii Font": "{{ .iterm.font_name | default "MesloLGS-NF-Regular" }} {{ .iterm.font_size | default 12 }}",
+      "Use Non-ASCII Font": true,
+      
+      "Rows": 30,
+      "Columns": 120,
+      
+      "Scrollback Lines": 10000,
+      "Unlimited Scrollback": false,
+      
+      "Cursor Type": 1,
+      "Blinking Cursor": true,
+      
+      "Use Bold Font": true,
+      "Use Bright Bold": true,
+      "Use Italic Font": true,
+      
+      "ASCII Anti Aliased": true,
+      "Non-ASCII Anti Aliased": true,
+      
+      "Background Color": {
+        "Red Component": 0.0,
+        "Green Component": 0.0,
+        "Blue Component": 0.0,
+        "Alpha Component": 1.0
+      },
+      "Foreground Color": {
+        "Red Component": 0.8,
+        "Green Component": 0.8,
+        "Blue Component": 0.8,
+        "Alpha Component": 1.0
+      },
+      
+      "Show Mark Indicators": true,
+      "Show Status Bar": true,
+      
+      "Option Key Sends": 2,
+      "Right Option Key Sends": 2,
+      
+      "Mouse Reporting": true,
+      "Mouse Reporting allow mouse wheel": true,
+      
+      "Silence Bell": false,
+      "Visual Bell": true,
+      
+      "Close Sessions On End": true,
+      "Prompt Before Closing 2": false,
+      
+      "ASCII Ligatures": true,
+      "Non-ASCII Ligatures": true
+    }
+  ]
+}

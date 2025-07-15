@@ -49,6 +49,7 @@ Keep your dotfiles in sync:
 - Git configuration with work/personal conditional setup
 - SSH config with 1Password SSH agent integration
 - Claude AI personal instructions (CLAUDE.md)
+- iTerm2 dynamic profiles (JSON-based, version-control friendly)
 
 ### Development Tools
 - Homebrew packages and casks
