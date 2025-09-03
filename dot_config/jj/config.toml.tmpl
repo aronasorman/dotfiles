@@ -6,6 +6,7 @@ email = "{{ .email }}"
 
 [ui]
 editor = "nvim"
+merge-editor = ["meld", "$left", "$base", "$right", "-o", "$output"]
 
 [git]
 push-new-bookmarks = true
