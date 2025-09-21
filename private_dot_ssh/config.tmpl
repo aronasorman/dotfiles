@@ -27,6 +27,13 @@ Host test-2-bastion
   IdentityFile "~/.ssh/accenture-prod-ssh.pub"
 {{- end }}
 
+{{- if not .work }}
+Host bclub-prod
+  HostName {{ onepasswordRead "op://eBirthdayClubs/eBirthdayClubs Production Credentials/SSH Host" }}
+  User {{ onepasswordRead "op://eBirthdayClubs/eBirthdayClubs Production Credentials/SSH User" }}
+  Port 22
+{{- end }}
+
 Host aron-github
   HostName github.com
   IdentityFile "~/.ssh/quiet.pub"
