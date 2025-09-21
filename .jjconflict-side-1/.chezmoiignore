@@ -1,9 +1,0 @@
-README.md
-**/README.md
-.DS_Store
-*.swp
-.install-password-manager.sh
-.git
-.gitignore
-Brewfile
-.claude/

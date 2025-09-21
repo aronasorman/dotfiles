@@ -1,1 +1,0 @@
- Think hard on what else you should add to the workplan. We will be clearing your context so make sure the next claude instance has enough info it needs in the    workplan. MAKE SURE NOT TO INCLUDE SENSITIVE INFORMATION. Update the architecture, learnings and logs if you deem them necessary.
