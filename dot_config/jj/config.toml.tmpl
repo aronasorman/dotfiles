@@ -7,6 +7,7 @@ email = "{{ .email }}"
 [ui]
 editor = "hx"
 merge-editor = ["meld", "$left", "$base", "$right", "-o", "$output"]
+pager = "delta"
 diff-formatter = ":git"
 
 
@@ -15,3 +16,4 @@ push-new-bookmarks = true
 
 [revset-aliases]
 'pr_stack' = 'trunk()..@ & bookmarks() ~ bookmarks("wip-") ~ bookmarks("per-")'
+'branch-roots' = 'roots(trunk()..@)'
