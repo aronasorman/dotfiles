@@ -1,1 +1,4 @@
 theme = "nord-night"
+
+[keys.normal.space.w]
+d = ":buffer-close"
