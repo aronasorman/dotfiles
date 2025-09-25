@@ -5,11 +5,13 @@ name = "{{ .name }}"
 email = "{{ .email }}"
 
 [ui]
-editor = "nvim"
+editor = "hx"
 merge-editor = ["meld", "$left", "$base", "$right", "-o", "$output"]
+diff-formatter = ":git"
+
 
 [git]
 push-new-bookmarks = true
 
 [revset-aliases]
-'pr_stack' = 'trunk()..@ & bookmarks() ~ bookmarks("wip-")'
+'pr_stack' = 'trunk()..@ & bookmarks() ~ bookmarks("wip-") ~ bookmarks("per-")'
