@@ -35,5 +35,11 @@
     "bindings": {
       "alt-cmd-right": "workspace::ActivatePaneRight"
     }
+  },
+  {
+    "context": "(vim_mode == helix_normal && !menu)",
+    "bindings": {
+      "space w /": "pane::SplitRight"
+    }
   }
 ]
