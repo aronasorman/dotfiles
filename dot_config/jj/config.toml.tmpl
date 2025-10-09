@@ -15,5 +15,5 @@ diff-formatter = ":git"
 push-new-bookmarks = true
 
 [revset-aliases]
-'pr_stack' = 'trunk()..@ & bookmarks() ~ bookmarks("wip-") ~ bookmarks("per-")'
+'pr_stack' = 'trunk()..descendants(@) & bookmarks() ~ bookmarks("wip-") ~ bookmarks("per-")'
 'branch-roots' = 'roots(trunk()..@)'
