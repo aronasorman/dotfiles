@@ -7,9 +7,37 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "languages": {
+    "Elixir": {
+      "language_servers": [
+        "expert",
+        "!elixir-ls",
+        "!next-ls",
+        "!lexical",
+        "..."
+      ]
+    },
+    "HEEX": {
+      "language_servers": [
+        "expert",
+        "!elixir-ls",
+        "!next-ls",
+        "!lexical",
+        "..."
+      ]
+    }
+  },
+  "features": {
+    "edit_prediction_provider": "copilot"
+  },
+  "show_completions_on_input": false,
   "agent": {
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-5-mini"
+    },
     "inline_assistant_model": {
-      "provider": "zed.dev",
+      "provider": "copilot_chat",
       "model": "claude-sonnet-4-5"
     },
     "model_parameters": []
@@ -19,6 +47,9 @@
   "ui_font_size": 14,
   "buffer_font_size": 14,
   "use_system_window_tabs": true,
+  "terminal": {
+    "default_height": 9999
+  },
   "tab_bar": {
     "show": false
   },
