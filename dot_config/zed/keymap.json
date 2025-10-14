@@ -41,5 +41,11 @@
     "bindings": {
       "space w /": "pane::SplitRight"
     }
+  },
+  {
+    "context": "(Editor && edit_prediction_conflict)",
+    "bindings": {
+      "alt-cmd-tab": "editor::AcceptEditPrediction"
+    }
   }
 ]
