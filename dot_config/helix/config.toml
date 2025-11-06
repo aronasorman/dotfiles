@@ -1,4 +1,11 @@
 theme = "nord-night"
 
+[keys.insert]
+"C-[" = "normal_mode"
+
+[keys.normal]
+"C-r" = [":reload-all", ":echo 'Files reloaded'"]
+";" = "command_mode"
+
 [keys.normal.space.w]
 d = ":buffer-close"

@@ -186,8 +186,8 @@ automatically-unhide-macos-hidden-apps = true
     # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
     alt-shift-right = 'move-node-to-monitor --focus-follows-window right'
     alt-shift-left = 'move-node-to-monitor --focus-follows-window left'
-    alt-shift-ctrl-right = 'move-workspace-to-monitor right'
-    alt-shift-ctrl-left = 'move-workspace-to-monitor left'
+    alt-shift-ctrl-right = 'move-workspace-to-monitor secondary'
+    alt-shift-ctrl-left = 'move-workspace-to-monitor main'
     alt-ctrl-right = 'focus-monitor right'
     alt-ctrl-left = 'focus-monitor left'
 
