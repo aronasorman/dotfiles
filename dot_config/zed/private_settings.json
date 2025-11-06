@@ -7,6 +7,9 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "edit_predictions": {
+    "mode": "subtle"
+  },
   "languages": {
     "Elixir": {
       "language_servers": [
@@ -38,7 +41,7 @@
     },
     "inline_assistant_model": {
       "provider": "copilot_chat",
-      "model": "claude-sonnet-4-5"
+      "model": "gpt-5-mini"
     },
     "model_parameters": []
   },
