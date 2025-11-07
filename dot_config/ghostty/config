@@ -53,3 +53,4 @@ keybind = cmd+opt+left=unbind
 keybind = cmd+opt+right=unbind
 keybind = cmd+opt+down=unbind
 keybind = cmd+opt+up=unbind
+keybind = cmd+shift+enter=unbind
