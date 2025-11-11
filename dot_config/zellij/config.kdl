@@ -1,12 +1,5 @@
 keybinds clear-defaults=true {
     normal {
-        bind "Super t" { NewTab; }
-        bind "Super d" { NewPane; SwitchToMode "normal"; }
-        bind "Alt Super right" { MoveFocus "right"; }
-        bind "Alt Super left" { MoveFocus "left"; }
-        bind "Alt Super up" { MoveFocus "up"; }
-        bind "Alt Super down" { MoveFocus "down"; }
-        bind "Super Shift enter" { ToggleFocusFullscreen; }
     }
     locked {
         bind "Ctrl g" { SwitchToMode "normal"; }
@@ -164,6 +157,15 @@ keybinds clear-defaults=true {
         bind "Alt p" { TogglePaneInGroup; }
         bind "Alt Shift p" { ToggleGroupMarking; }
         bind "Ctrl q" { Quit; }
+        bind "Super t" { NewTab; }
+        bind "Super Shift t" { SwitchToMode "tab"; }
+        bind "Super d" { NewPane; SwitchToMode "normal"; }
+        bind "Super Shift p" { SwitchToMode "pane"; }
+        bind "Alt Super right" { MoveFocus "right"; }
+        bind "Alt Super left" { MoveFocus "left"; }
+        bind "Alt Super up" { MoveFocus "up"; }
+        bind "Alt Super down" { MoveFocus "down"; }
+        bind "Super Shift enter" { ToggleFocusFullscreen; }
     }
     shared_except "locked" "move" {
         bind "Ctrl h" { SwitchToMode "move"; }
