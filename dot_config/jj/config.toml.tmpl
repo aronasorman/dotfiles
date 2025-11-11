@@ -17,3 +17,7 @@ push-new-bookmarks = true
 [revset-aliases]
 'pr_stack' = 'trunk()..descendants(@) & bookmarks() ~ bookmarks("wip-") ~ bookmarks("per-")'
 'branch-roots' = 'roots(trunk()..@)'
+'closest_bookmark(to)' = 'heads(::to & bookmarks())'
+
+[aliases]
+tug = ["bookmark", "move", "--from", "closest_bookmark(@-)", "--to", "@"]
