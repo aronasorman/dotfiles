@@ -55,3 +55,4 @@ keybind = cmd+opt+down=unbind
 keybind = cmd+opt+up=unbind
 keybind = cmd+shift+enter=unbind
 keybind = cmd+shift+p=unbind
+keybind = alt+right=unbind
