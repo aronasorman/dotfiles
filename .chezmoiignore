@@ -6,6 +6,5 @@ README.md
 .git
 .gitignore
 Brewfile
-.claude/
 .ssh/config
 .config/fish/config.fish
