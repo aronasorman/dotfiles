@@ -1,13 +1,6 @@
 ---
 name: codemap
-description: >
-  Generate hierarchical maps with code snippets showing execution flow, component
-  relationships, and bug context. Use when users want to debug issues, understand
-  how features work, or explain parts of the codebase. Includes 5-10 line code
-  snippets with containing function/class for self-contained understanding.
-  Can generate Mermaid diagrams when explicitly requested.
-  Triggers: "debug", "why is X failing", "explain how", "show me", "trace",
-  "understand", "how does", "what causes".
+description: Use when debugging errors, understanding feature implementations, or tracing execution flow through unfamiliar code - generates hierarchical maps with inline code snippets (5-10 lines), file:line references, and execution traces. Supports Mermaid diagrams when explicitly requested. Triggers: debug, trace, explain, understand.
 ---
 
 # CodeMap Skill
