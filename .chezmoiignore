@@ -7,4 +7,3 @@ README.md
 .gitignore
 Brewfile
 .ssh/config
-.config/fish/config.fish

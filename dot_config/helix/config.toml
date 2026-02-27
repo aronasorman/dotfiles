@@ -1,11 +1,29 @@
 theme = "nord-night"
 
+[editor]
+line-number = "absolute"
+mouse = true
+bufferline = "multiple"
+color-modes = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.file-picker]
+hidden = false
+
 [keys.insert]
 "C-[" = "normal_mode"
 
 [keys.normal]
-"C-r" = [":reload-all", ":echo 'Files reloaded'"]
 ";" = "command_mode"
+"C-r" = [":reload-all", ":echo 'Files reloaded'"]
+
+[keys.normal.space]
+"/" = "vsplit"
+space = "file_picker"
 
 [keys.normal.space.w]
 d = ":buffer-close"
