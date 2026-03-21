@@ -16,6 +16,9 @@ command = ".local/share/chezmoi/.install-password-manager.sh"
     # Personal machine configuration
     {{- end }}
     
+    # Obsidian vault path (differs per machine)
+    vault_path = "{{ promptStringOnce . "vault_path" "Obsidian vault path" "~/Desktop/notes/PER" }}"
+
     # iTerm2 configuration
     iterm_profile_guid = "{{ promptStringOnce . "iterm_profile_guid" "iTerm Profile GUID (press enter to generate)" (uuidv4) }}"
     

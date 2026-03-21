@@ -1,9 +1,0 @@
-[metadata]
-name = "todoist"
-description = "Fuzzy find Todoist tasks"
-
-[source]
-command = "td ls -a"
-
-[preview]
-command = "td get (echo '{}' | string match -r '\\[([^\\]]+)\\]' | tail -1)"

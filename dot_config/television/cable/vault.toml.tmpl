@@ -3,7 +3,7 @@ name = "vault"
 description = "Search Obsidian vault"
 
 [source]
-command = "find ~/Desktop/notes/PER -name '*.md' -type f"
+command = "find {{ .vault_path }} -name '*.md' -type f"
 
 [preview]
 command = "head -50 '{}'"
