@@ -1,0 +1,16 @@
+[metadata]
+name = "vault"
+description = "Search Obsidian vault"
+
+[source]
+command = "find {{ .vault_path }} -name '*.md' -type f"
+
+[preview]
+command = "head -50 '{}'"
+
+[keybindings]
+ctrl-e = "actions:open"
+
+[actions.open]
+command = "hx '{}'"
+mode = "execute"

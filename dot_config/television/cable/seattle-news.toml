@@ -1,0 +1,16 @@
+[metadata]
+name = "seattle-news"
+description = "Seattle Times headlines → Kagi summary"
+
+[source]
+command = "~/.config/television/scripts/seattle-headlines.sh | cut -f1"
+
+[preview]
+command = "~/.config/television/scripts/kagi-summarize.sh '{}'"
+
+[keybindings]
+ctrl-o = "actions:open"
+
+[actions.open]
+command = "~/.config/television/scripts/seattle-headlines.sh | grep -F '{}' | cut -f2 | head -1 | xargs -I@ open 'https://kagi.com/summarizer/index.html?target_language=&summary=keypoints&url=@'"
+mode = "execute"

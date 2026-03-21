@@ -4,6 +4,7 @@ end
 
 starship init fish | source
 fzf --fish | source
+tv init fish | source
 abbr --add nn jj
 abbr --add tm task-master
 abbr --add claude-yolo claude --dangerously-skip-permissions
