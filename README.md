@@ -1,10 +1,27 @@
 # Aron's Dotfiles
 
-Personal macOS dotfiles managed with [chezmoi](https://www.chezmoi.io/) and integrated with the [1Password CLI](https://developer.1password.com/docs/cli/) for secrets management.
+Personal macOS dotfiles managed with [Nix Home Manager](https://nix-community.github.io/home-manager/) (and previously [chezmoi](https://www.chezmoi.io/)).
 
-## Installation
+## Quick Start (Nix Home Manager)
 
-This setup is designed to be idempotent—run it on a fresh Mac or an existing one without worry.
+```bash
+# Clone the repo
+git clone git@github.com:aronasorman/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+
+# Install nix (Determinate Systems):
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh
+
+# Apply the configuration
+nix run home-manager -- switch --flake .
+```
+
+That's it. Home Manager will symlink all configs into place.
+
+## Legacy Setup (chezmoi)
+
+<details>
+<summary>Click to expand chezmoi instructions</summary>
 
 ### Prerequisites
 
@@ -27,6 +44,8 @@ During setup, you'll be prompted for:
 - **Your full name** (for Git config)
 - **Your email** (for Git config)  
 - **Work machine?** (toggles work-specific tools and configs)
+
+</details>
 
 ## Daily Usage
 
