@@ -1,0 +1,7 @@
+interface:
+  display_name: "QA Friction"
+  short_description: "Run observational cold QA passes"
+  default_prompt: "Use $qa-friction to run an observational cold-user or cold-developer QA friction pass for the current feature."
+
+policy:
+  allow_implicit_invocation: false
