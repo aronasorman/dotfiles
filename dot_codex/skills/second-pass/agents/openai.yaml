@@ -1,0 +1,7 @@
+interface:
+  display_name: "Second Pass"
+  short_description: "Fold V1 learnings into a PER spec"
+  default_prompt: "Use $second-pass to update the monolithic PER spec from V1 learnings, then reset the code worktree to the base branch."
+
+policy:
+  allow_implicit_invocation: false
