@@ -1,0 +1,7 @@
+interface:
+  display_name: "Verifier"
+  short_description: "Run test gates and smoke QA"
+  default_prompt: "Use $verifier to independently run required checks, focused smoke QA, and test-adequacy assessment for the current implementation."
+
+policy:
+  allow_implicit_invocation: false
