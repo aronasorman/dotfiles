@@ -13,6 +13,34 @@ Do not create beads.
 Do not create tests.
 Do not implement missing behavior.
 
+## Execution Model
+
+QA friction is a fresh-context gate, not work performed by the same agent
+session that wrote the implementation.
+
+When invoked:
+
+1. Dispatch a new QA friction subagent. In Claude Code, use the Task tool with
+   a fresh general-purpose subagent. Pass only the focus, repo/worktree path,
+   relevant implementation summary, relevant spec or acceptance criteria,
+   current git diff context, known command results, app/docs entrypoints, and
+   these QA friction instructions.
+2. The QA friction subagent runs the cold-user, cold-developer, API, CLI, docs,
+   or onboarding pass and returns the QA Friction Report. It must not edit
+   files.
+3. The implementation agent/session reviews the report. If the gate result is
+   `FAIL`, the implementation agent/session fixes the implementation or docs in
+   its original context and then dispatches a new fresh QA friction subagent for
+   the next iteration.
+4. Repeat until QA friction returns `PASS` or `HUMAN DECISION`.
+
+Freshness comes from isolated subagent context, not from an opposite-model
+review. Do not require Claude-vs-Codex model switching for this gate.
+
+If no subagent facility is available, stop and report that `/qa-friction`
+requires a fresh QA friction subagent. Do not self-QA in the implementation
+context.
+
 ## Usage
 
 ```text
@@ -303,6 +331,28 @@ Use it for:
 
 Do not require such a file. Use it only if available.
 
+## Gate Result
+
+Use `PASS` only when the target workflow can be completed, no material friction
+remains, and available instrumentation does not show failed requests,
+user-impacting console/runtime errors, duplicate writes, or spec-inconsistent
+behavior.
+
+Use `FAIL` when the workflow is blocked, requires a workaround, shows
+medium/high/blocker friction, produces failed requests, duplicate writes,
+user-impacting console/runtime errors, stale or misleading docs, or behavior
+that contradicts the spec or acceptance criteria.
+
+Use `HUMAN DECISION` when QA depends on unavailable credentials, external
+access, destructive actions, ambiguous requirements, environment setup the
+agent cannot perform, or product judgment.
+
+`FAIL` is an iteration gate, not a final verdict on the project. Return the
+report to the implementation agent/session, let it fix the implementation or
+docs, and rerun `/qa-friction` in a new fresh subagent. Do not let the
+implementation agent/session downgrade, reinterpret, or override the QA
+friction gate result.
+
 ## Report format
 
 Produce this report:
@@ -324,6 +374,8 @@ Success criteria:
 <what counts as completing the task>
 Result:
 completed | completed with friction | blocked | not attempted
+Gate result:
+PASS | FAIL | HUMAN DECISION
 ## Summary
 <3-6 sentences summarizing what was tested and what friction was found.>
 ## Instrumentation

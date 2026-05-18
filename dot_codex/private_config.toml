@@ -1,0 +1,73 @@
+model = "gpt-5.5"
+model_reasoning_effort = "xhigh"
+personality = "pragmatic"
+suppress_unstable_features_warning = true
+[projects."/Users/aron/src/bclub/legacy"]
+trust_level = "trusted"
+
+[projects."/Users/aron/Documents/New project"]
+trust_level = "trusted"
+
+[projects."/Users/aron/gc"]
+trust_level = "trusted"
+
+[projects."/Users/aron/gc/eclub"]
+trust_level = "trusted"
+
+[projects."/Users/aron/Documents/Codex/2026-05-10/what-is-an-idempotency-key-in"]
+trust_level = "trusted"
+
+[projects."/Users/aron/Documents/Codex/2026-05-17/create-a-claude-code-and-codex"]
+trust_level = "trusted"
+
+[projects."/Users/aron/Documents/Codex/2026-05-17/can-you-run-subagents-and-review"]
+trust_level = "trusted"
+
+[plugins."github@openai-curated"]
+enabled = true
+
+[plugins."linear@openai-curated"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."computer-use@openai-bundled"]
+enabled = true
+
+[plugins."superpowers@openai-curated"]
+enabled = true
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."chrome@openai-bundled"]
+enabled = true
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
+
+[marketplaces.openai-bundled]
+last_updated = "2026-05-18T01:39:55Z"
+source_type = "local"
+source = "/Users/aron/.codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[marketplaces.openai-primary-runtime]
+last_updated = "2026-05-18T00:13:17Z"
+source_type = "local"
+source = "/Users/aron/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[features]
+terminal_resize_reflow = true
+memories = true
+chronicle = true
+
+[memories]
+generate_memories = true
+use_memories = true
