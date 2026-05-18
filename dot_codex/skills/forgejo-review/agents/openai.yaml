@@ -1,0 +1,4 @@
+interface:
+  display_name: "Forgejo Review"
+  short_description: "Manage internal Forgejo review PRs"
+  default_prompt: "Use $forgejo-review to open or manage an internal Forgejo review PR."
