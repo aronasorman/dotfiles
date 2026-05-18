@@ -1,6 +1,6 @@
 ---
 name: verifier
-description: Use when the user explicitly invokes /verifier or asks to independently verify a completed implementation with test runs, build/type/lint gates, focused smoke QA, and test-adequacy assessment before QA friction or hard review gates. Observational and verification-only: do not fix code, edit docs, update specs, create beads, create tests, or implement missing behavior.
+description: "Use when the user explicitly invokes /verifier or asks to independently verify a completed implementation with test runs, build/type/lint gates, focused smoke QA, and test-adequacy assessment before QA friction or hard review gates. Observational and verification-only: do not fix code, edit docs, update specs, create beads, create tests, or implement missing behavior."
 ---
 
 # /verifier
@@ -15,6 +15,31 @@ Do not create follow-up work items.
 Do not create tests.
 Do not implement missing behavior.
 Do not run hard review gates.
+
+## Execution Model
+
+The verifier is a fresh-context gate, not work performed by the same agent
+session that wrote the implementation.
+
+When invoked:
+
+1. Dispatch a new verifier subagent. In Codex, use `spawn_agent` with
+   `fork_context=false`. Pass only the focus, repo/worktree path, relevant
+   implementation summary, relevant spec or acceptance criteria, current git
+   diff context, known command results, and these verifier instructions.
+2. The verifier subagent runs the verification workflow and returns the
+   Verification Packet. It must not edit files.
+3. The implementation agent/session reviews the packet. If the result is
+   `FAIL`, the implementation agent/session fixes the code in its original
+   context and then dispatches a new fresh verifier subagent for the next
+   iteration.
+4. Repeat until the verifier returns `PASS` or `HUMAN DECISION`.
+
+Freshness comes from isolated subagent context, not from an opposite-model
+review. Do not require Claude-vs-Codex model switching for this gate.
+
+If no subagent facility is available, stop and report that `/verifier` requires
+a fresh verifier subagent. Do not self-verify in the implementation context.
 
 ## Usage
 
@@ -135,6 +160,11 @@ Use `PASS` only when required gates passed, focused smoke QA supports the change
 Use `FAIL` when a required gate fails, the feature behavior fails, the implementation cannot run, required test coverage is missing for high-risk behavior, or evidence contradicts the implementation claim.
 
 Use `HUMAN DECISION` when verification depends on unavailable credentials, environment, production access, destructive actions, ambiguous requirements, or policy/product judgment.
+
+`FAIL` is an iteration gate, not a final verdict on the project. Return the
+packet to the implementation agent/session, let it fix the implementation, and
+rerun `/verifier` in a new fresh subagent. Do not let the implementation
+agent/session downgrade, reinterpret, or override the verifier result.
 
 ## Output Format
 
