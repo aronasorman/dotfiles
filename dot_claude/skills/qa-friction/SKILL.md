@@ -1,6 +1,6 @@
 ---
 name: qa-friction
-description: Use when the user explicitly invokes /qa-friction or asks for a cold-user, cold-developer, API, CLI, docs, or onboarding QA friction pass for a feature. Observational only: do not fix code, edit docs, update specs, create beads, create tests, or implement missing behavior.
+description: "Use when the user explicitly invokes /qa-friction or asks for a cold-user, cold-developer, API, CLI, docs, or onboarding QA friction pass for a feature. Observational only: do not fix code, edit docs, update specs, create beads, create tests, or implement missing behavior."
 ---
 
 # /qa-friction

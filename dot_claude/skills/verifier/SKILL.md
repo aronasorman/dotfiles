@@ -1,6 +1,6 @@
 ---
 name: verifier
-description: Use when the user explicitly invokes /verifier or asks to independently verify a completed implementation with test runs, build/type/lint gates, focused smoke QA, and test-adequacy assessment before QA friction or hard review gates. Observational and verification-only: do not fix code, edit docs, update specs, create beads, create tests, or implement missing behavior.
+description: "Use when the user explicitly invokes /verifier or asks to independently verify a completed implementation with test runs, build/type/lint gates, focused smoke QA, and test-adequacy assessment before QA friction or hard review gates. Observational and verification-only: do not fix code, edit docs, update specs, create beads, create tests, or implement missing behavior."
 ---
 
 # /verifier
