@@ -1,11 +1,11 @@
 ---
 name: agent-driven-pr-workflow
-description: Use when working from an approved spec and the user asks for the full or lite agent-driven build-to-draft-PR process.
+description: Use when working from an approved spec and the user asks for the full or lite agent-driven build-to-draft-PR process or autonomous post-merge main CI, deploy, and production-smoke follow-through for an agent-created PR.
 ---
 
 # Agent-Driven PR Workflow
 
-Orchestrate an approved spec through build, verification, hard review, optional second pass, and draft PR creation.
+Orchestrate an approved spec through build, verification, hard review, optional second pass, draft PR creation, and required post-merge `main` CI/deploy monitoring plus production smoke follow-through.
 
 This skill assumes the spec already exists. It does not cover collaborative spec writing.
 
@@ -27,6 +27,7 @@ The controller owns:
 - The `second-pass` stage in full mode.
 - Rewriting the final commit history into a better developer narrative that is easy to review commit by commit before the final review gate and push.
 - Final git hygiene, push, and draft PR creation.
+- Post-merge `main` CI/deploy monitoring and production smoke tracking when repo instructions, the spec, or the user require it.
 
 The controller must not do the normal build implementation manually. Build work belongs to `subagent-driven-development`.
 
@@ -42,10 +43,12 @@ Fresh or external gates own:
 Resolve these before starting:
 
 - Spec path.
+- Architecture model packet path or Beads attachment, if the spec includes one.
 - Repo/worktree path.
 - Target base branch for reset, review, push, and draft PR.
 - Mode: `full` or `lite`.
 - Any repo instructions for Beads, issue tracking, PR body format, tests, or hosted CI.
+- Any repo-local production smoke skill or runbook, target `main` CI/deploy workflow, and noninteractive credential path needed to run it autonomously.
 
 If the spec path, repo path, or base branch cannot be resolved safely, stop before making changes.
 
@@ -68,6 +71,7 @@ Run this sequence continuously. Do not pause between stages unless blocked, a ga
 8. Rewrite the final commit history into a better developer narrative that is easy to review commit by commit.
 9. Run `pr-review-gates` again. Iterate until PASS or an issue needs human judgment.
 10. Push the branch and create a draft PR.
+11. Create or confirm the post-merge `main` CI/deploy and production smoke Bead when required.
 
 ## Lite Mode
 
@@ -79,6 +83,7 @@ Lite is a single-pass workflow. Run each build or gate once. If any gate returns
 4. Rewrite the commit history into a better developer narrative that is easy to review commit by commit.
 5. Run `pr-review-gates` once.
 6. Push the branch and create a draft PR if all gates passed.
+7. Create or confirm the post-merge `main` CI/deploy and production smoke Bead when required.
 
 Lite never runs `second-pass`, a second build, or repeated gate iterations unless the user explicitly upgrades to full mode.
 
@@ -93,6 +98,8 @@ Lite never runs `second-pass`, a second build, or repeated gate iterations unles
 `HUMAN DECISION` means stop and surface the decision needed. Do not reinterpret or override it.
 
 For `verifier`, preserve the existing verifier contract: infer missing `success criteria` from the just-written implementation, mark inferred criteria as verifier-inferred, and rerun a fresh verifier subagent after fixes in full mode.
+
+When a spec includes an architecture model packet, pass the packet to every verifier run. The verifier must check implementation shape against the modeled states, transitions, invariants, assumptions, and verifier obligations without requiring the code to mirror Quint syntax.
 
 For `pr-review-gates`, use the opposite family reviewer from the implementation writer whenever possible. Do not push or create the draft PR until the required review gates have passed for the selected mode.
 
@@ -118,17 +125,42 @@ After the commit narrative stage and final gates pass:
 - Ensure only intended files are included.
 - Run required repo-local final checks if the gate output says they must be rerun after the last fix.
 - Honor repo instructions for Beads, issue IDs, PR body content, and tracking.
+- If production smoke is required, create or identify the Bead that will track post-merge `main` CI/deploy monitoring and the smoke run before reporting the PR handoff complete.
 
 Create a draft PR, not a ready-for-review PR.
 
 The PR body should include:
 
 - Spec path.
+- Architecture model packet path or `not used`.
 - Mode used: `full` or `lite`.
 - Build summary.
 - Verifier result or results.
 - PR review gate result or results.
 - Tracking issue or bead, when required by the repo.
+- Post-merge `main` CI/deploy and production smoke Bead plus expected trigger, when required.
+
+## Post-Merge Production Smoke Stage
+
+Production smoke is repo-specific. Use the repo-local smoke skill or runbook instead of inventing a new script. For Birthday Club Hub, use `eclub-prod-smoke` after the `Test and Deploy` workflow succeeds on `main` and deploys the agent's code.
+
+Before or while creating the draft PR:
+
+- Create or claim a Beads task for monitoring `main` CI/deploy and running production smoke after this PR merges.
+- Link it to the PR's tracking Bead when available, or reference the PR branch/URL in a Beads comment once the PR exists.
+- Record the deploy workflow, target branch, smoke skill/runbook, and credential path needed for the autonomous run.
+- Do not close this Bead at draft PR time unless the smoke has actually run.
+
+After the PR is merged:
+
+- Resolve the merge SHA on the target base branch and monitor hosted CI for that exact SHA on the base branch. For Birthday Club Hub, watch the GitHub Actions `Test and Deploy` push run on `main`.
+- If `main` CI fails before deployment, record the failure evidence in the smoke Bead and stop for repair.
+- If the workflow succeeds and deployed the agent's code to production, run the repo-defined production smoke against production and record pass/fail evidence in the smoke Bead.
+- If the workflow succeeds but did not deploy the agent's code, record the no-deploy evidence in the smoke Bead and close it without running production smoke.
+- Use only noninteractive credentials: GitHub Actions secrets, a 1Password service account, 1Password Connect, or an already-approved runner secret.
+- Do not trigger desktop-biometric, Touch ID, or other interactive 1Password prompts for autonomous post-deploy smoke.
+- If credentials or network access are unavailable without prompting, stop with `Authentication unavailable` or `Network unavailable`, leave the smoke Bead open, and record the blocker.
+- Close the smoke Bead only after recording the actual CI/deploy/smoke outcome. A failed smoke is still a completed smoke run with production-incident evidence.
 
 ## Stop States
 
@@ -140,6 +172,7 @@ Stop and report clearly when:
 - A full-mode gate cannot be made to pass after a technically valid fix path is exhausted.
 - A lite-mode gate returns anything other than PASS.
 - Authentication, credentials, network, hosted CI, or PR creation is unavailable.
+- Required post-merge `main` CI/deploy monitoring or production smoke cannot run autonomously because the only credential path would prompt a human.
 
 ## Report Format
 
@@ -149,6 +182,7 @@ Report:
 Agent-driven PR workflow complete.
 Mode: full | lite
 Spec: <path>
+Architecture model: <path | not used>
 Repo: <path>
 Base: <branch/ref>
 Branch: <branch>
@@ -164,6 +198,8 @@ Second pass:
 <run / skipped / not applicable>
 Draft PR:
 <url or not created with reason>
+Post-merge CI/deploy and smoke:
+<not required | bead pending merge/deploy | main CI failed | no deploy for this code | PASS/FAIL evidence>
 Residual risk:
 - <risk or none>
 ```

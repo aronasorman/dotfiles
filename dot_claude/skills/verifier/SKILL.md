@@ -71,6 +71,7 @@ The verifier answers:
 - Were obvious checks missed?
 - Is test coverage adequate for the changed surface and risk?
 - Does the feature basically work from the relevant user, developer, API, CLI, or docs entrypoint?
+- If an architecture model packet is present, does the implementation preserve the modeled shape and constraints?
 - What exact evidence supports PASS, FAIL, or HUMAN DECISION?
 
 This is verification, not code review. Architecture fit, simplicity, summary truth, and hard-review rubric belong to hard review gates.
@@ -86,7 +87,7 @@ Use this priority order:
 1. Natural-language focus from the command line
 2. Current conversation/task context
 3. Implementation summary or patch notes, if present
-4. PER spec or acceptance criteria for the current feature
+4. PER spec, architecture model packet, or acceptance criteria for the current feature
 5. Recent test results, QA notes, or failure logs
 6. Git branch name
 7. Current git diff
@@ -107,8 +108,9 @@ Use:
 3. New or changed user-visible behavior
 4. New or changed developer-visible behavior
 5. New or changed error paths, loading states, auth/session behavior, permissions, data writes, background jobs, retries, or external calls
-6. Existing nearby tests and conventions
-7. Existing behavior implied by unchanged adjacent code
+6. Architecture model packet states, transitions, invariants, assumptions, and verifier obligations, if present
+7. Existing nearby tests and conventions
+8. Existing behavior implied by unchanged adjacent code
 
 Turn those observations into concrete verification success criteria before running checks.
 
@@ -129,14 +131,16 @@ When invoked:
 2. Identify the current repo/worktree and relevant git state.
 3. Read applicable repo instructions before running commands.
 4. Infer success criteria from the spec, task context, diff, changed behavior, or implementation just written.
-5. Identify required gates: build, compile, lint, typecheck, unit, integration, e2e, contract, coverage, smoke, API, CLI, or docs commands.
-6. Run checks already reported when needed to confirm evidence.
-7. Run checks that were missed but should have been run.
-8. Perform focused smoke QA for the changed behavior when the target surface supports it.
-9. Capture browser console/network evidence if available and useful.
-10. Assess whether tests cover the changed behavior and risk.
-11. Record exact commands, pass/fail status, relevant output summary, and residual risk.
-12. Produce a compact verification packet with PASS, FAIL, or HUMAN DECISION.
+5. If an architecture model packet is present, derive model-conformance checks from its states, transitions, invariants, assumptions, and verifier obligations.
+6. Identify required gates: build, compile, lint, typecheck, unit, integration, e2e, contract, coverage, smoke, API, CLI, or docs commands.
+7. Run checks already reported when needed to confirm evidence.
+8. Run checks that were missed but should have been run.
+9. Perform focused smoke QA for the changed behavior when the target surface supports it.
+10. Capture browser console/network evidence if available and useful.
+11. Assess whether tests cover the changed behavior and risk.
+12. Assess whether implementation shape matches any architecture model packet without requiring textual or syntactic similarity to Quint.
+13. Record exact commands, pass/fail status, relevant output summary, and residual risk.
+14. Produce a compact verification packet with PASS, FAIL, or HUMAN DECISION.
 
 ## Command Selection
 
@@ -184,6 +188,8 @@ Worktree:
 <path and git branch/ref>
 Changed surface:
 <files, routes, APIs, CLI commands, docs, or behavior verified>
+Architecture model:
+<packet path and model-conformance focus, or "not present">
 Success criteria:
 - <explicit criterion>
 - <verifier-inferred criterion, marked as inferred>
@@ -209,6 +215,15 @@ Changed behaviors covered:
 - <behavior>
 Gaps:
 - <gap, or "No material gaps found.">
+## Model Conformance
+Present:
+yes | no
+States and transitions:
+- <mapped / missing / not applicable>
+Invariants:
+- <covered / missing / not applicable>
+Assumptions and abstractions:
+- <respected / violated / not applicable>
 ## Findings
 No verifier findings.
 ## Result

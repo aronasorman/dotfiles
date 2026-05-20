@@ -1,7 +1,7 @@
 interface:
   display_name: "Agent-Driven PR Workflow"
   short_description: "Run the full or lite build-to-draft-PR workflow"
-  default_prompt: "Use $agent-driven-pr-workflow to take an approved spec through the full or lite agent-driven build, verification, review, and draft PR workflow."
+  default_prompt: "Use $agent-driven-pr-workflow to take an approved spec through the full or lite agent-driven build, verification, review, draft PR, and post-merge main CI/deploy smoke workflow."
 
 policy:
   allow_implicit_invocation: false

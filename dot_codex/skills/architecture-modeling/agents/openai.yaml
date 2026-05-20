@@ -1,0 +1,7 @@
+interface:
+  display_name: "Architecture Modeling"
+  short_description: "Bootstrap Quint-backed architecture models"
+  default_prompt: "Use $architecture-modeling after brainstorming and before writing the implementation spec when the design needs a Quint-backed state, transition, or invariant model."
+
+policy:
+  allow_implicit_invocation: false
