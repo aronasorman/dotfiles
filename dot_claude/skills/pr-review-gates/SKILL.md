@@ -81,8 +81,13 @@ Output exactly:
 If Codex wrote the code, run Claude Opus:
 
 ```bash
-claude -p "$(cat /private/tmp/<repo>-pr-review-gate-prompt.md)" --model opus
+claude -p "$(cat /private/tmp/<repo>-pr-review-gate-prompt.md)" --model opus --output-format stream-json --include-partial-messages --verbose
 ```
+
+Use the streamed JSON form so long-running reviews show hook, tool, and partial
+message progress instead of appearing hung. When reporting the gate result,
+extract the final assistant text from the stream and summarize only the scored
+review.
 
 If Claude wrote the code, run GPT-5.5 via Codex:
 
