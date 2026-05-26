@@ -1,0 +1,4 @@
+interface:
+  display_name: "USCIS Case Status"
+  short_description: "Check USCIS receipt status with native browser automation"
+  default_prompt: "Use $uscis-case-status to check a USCIS Case Status Online receipt number."

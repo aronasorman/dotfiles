@@ -1,0 +1,4 @@
+interface:
+  display_name: "AutoBrowse"
+  short_description: "Iterate browser automation skills with browse CLI traces"
+  default_prompt: "Use $autobrowse to improve a site-specific browser automation skill through local browse CLI attempts and trace review."
