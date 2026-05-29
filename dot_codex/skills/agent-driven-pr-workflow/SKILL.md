@@ -7,6 +7,9 @@ description: Use when working from an approved spec and the user asks for the fu
 
 Orchestrate an approved spec through build, verification, hard review, optional second pass, draft PR creation, and required post-merge `main` CI/deploy monitoring plus production smoke follow-through.
 
+Full and lite both use hard gates and iterate until they pass. Full mode adds
+a second implementation pass; lite mode stops after one implementation pass.
+
 This skill assumes the spec already exists. It does not cover collaborative spec writing.
 
 ## Modes
@@ -36,7 +39,7 @@ Fresh or external gates own:
 - `spec-review-gates` review work.
 - `subagent-driven-development` build work.
 - `verifier` verification work.
-- `pr-review-gates` opposite-family hard review work.
+- `pr-review-gates` opposite-family review work.
 
 ## Inputs
 
@@ -75,25 +78,28 @@ Run this sequence continuously. Do not pause between stages unless blocked, a ga
 
 ## Lite Mode
 
-Lite is a single-pass workflow. Run each build or gate once. If any gate returns a non-pass result, stop with the result and evidence instead of entering the second-pass loop.
+Lite is a single implementation pass with hard gates and iteration. Iterate
+inside this one pass until each gate returns `PASS` or reaches a stop state.
 
-1. Run `spec-review-gates` once.
-2. Build once with `subagent-driven-development`.
-3. Run `verifier` once as a fresh-context gate.
+1. Run `spec-review-gates` on the spec. Iterate until PASS.
+2. Build with `subagent-driven-development`.
+3. Run `verifier` as a fresh-context gate. Iterate until PASS or `HUMAN DECISION`.
 4. Rewrite the commit history into a better developer narrative that is easy to review commit by commit.
-5. Run `pr-review-gates` once.
-6. Push the branch and create a draft PR if all gates passed.
+5. Run `pr-review-gates`. Iterate until PASS or an issue needs human judgment.
+6. Push the branch and create a draft PR.
 7. Create or confirm the post-merge `main` CI/deploy and production smoke Bead when required.
 
-Lite never runs `second-pass`, a second build, or repeated gate iterations unless the user explicitly upgrades to full mode.
+Lite never runs `second-pass` or a second implementation build unless the user
+explicitly upgrades to full mode.
 
 ## Gate Semantics
 
 `PASS` means proceed.
 
-`FAIL` or `ITERATE` in full mode means the responsible implementation context fixes the issue, then the same gate is rerun.
-
-`FAIL` or `ITERATE` in lite mode means stop and report the gate result.
+`FAIL` or `ITERATE` in full or lite mode means the responsible implementation
+context fixes the issue, then the same gate is rerun. Lite mode repeats gates
+inside the same implementation pass; it does not trigger the full-mode second
+pass.
 
 `HUMAN DECISION` means stop and surface the decision needed. Do not reinterpret or override it.
 
@@ -170,7 +176,6 @@ Stop and report clearly when:
 - A destructive reset would be unsafe.
 - A gate returns `HUMAN DECISION`.
 - A full-mode gate cannot be made to pass after a technically valid fix path is exhausted.
-- A lite-mode gate returns anything other than PASS.
 - Authentication, credentials, network, hosted CI, or PR creation is unavailable.
 - Required post-merge `main` CI/deploy monitoring or production smoke cannot run autonomously because the only credential path would prompt a human.
 
