@@ -55,20 +55,58 @@ latest fixes:
 - <COMMAND>: PASS, <SUMMARY>
 - <COMMAND>: PASS, <SUMMARY>
 
-Review only the diff from <BASE_BRANCH> plus local working-tree changes. Apply
-these six lenses and provide feedback for each lens:
+Review only the diff from <BASE_BRANCH> plus local working-tree changes.
+
+First determine the architecture mode for this change:
+- Current-shape preservation: default. Use this for features, bugfixes,
+  migration slices, mechanical ports, parity changes, and narrow
+  implementations.
+- Architecture refactor/rethink: use only when the task explicitly asks to
+  change architecture, introduce a new pattern, move boundaries, or replace an
+  existing design.
+
+If the mode is current-shape preservation, review architecture by comparing the
+diff to the app's existing shape. The implementation should fit the current
+architecture unless the task explicitly authorizes a redesign.
+
+Apply these six lenses and provide feedback for each lens:
 1. Test completeness - new code has tests, all pass, edge cases covered
 2. Correctness - bugs, data integrity, error handling, race conditions
 3. Simplicity - least code that works, no over-engineering
 4. Commit story - commits tell a narrative reviewable commit-by-commit
 5. Excellence - would a human be proud to ship this?
-6. Architecture - follows repo conventions including file placement, layer
-   boundaries, naming patterns, and how existing code is organized
+6. Architecture - follows the current app shape for this kind of change.
+   Required inspection:
+   - Read the repo architecture instructions.
+   - Identify at least 2 nearby existing files or patterns with the same role
+     as the changed code.
+   - List new exported types, interfaces, repository methods, app
+     commands/queries, and handler dependencies.
+   - Check whether the diff preserves existing dependency direction, package
+     ownership, naming style, interface granularity, and use-case boundaries.
+   For current-shape preservation tasks:
+   - Score 5 when the change fits nearby patterns with no meaningful new
+     architectural surface.
+   - Score 4 when there are small naming or placement concerns but the shape is
+     still clearly native to the app.
+   - Score 3 when the change works but introduces questionable abstractions,
+     page-shaped domain concepts, confusing exported methods, or broader
+     interfaces than the task requires.
+   - Score 2 when the change bends layer boundaries, invents a parallel
+     pattern, or makes future changes harder without clear need.
+   - Score 1 when it violates architecture rules or routes data access around
+     the intended app/domain/infrastructure boundaries.
+   For explicit architecture refactor/rethink tasks, score against the stated
+   architectural intent and migration plan, not merely against the old shape.
 
 Hard gate: all lenses must score 4+/5 AND total must be at least 27/30. If any
 lens is below 4 or total is below 27, result is ITERATE.
 
 Output exactly:
+- Architecture mode: current-shape preservation or architecture refactor/rethink
+- Nearby patterns inspected: at least 2 files or patterns
+- New architectural surface: exported APIs, repositories, handlers, queries, or
+  none
 - Result: PASS or ITERATE
 - Total: X/30
 - Lens scores: each lens score plus concise rationale
