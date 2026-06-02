@@ -233,9 +233,24 @@ codex exec -m gpt-5.5 -c model_reasoning_effort=high \
 If Codex wrote the spec, run Claude Opus:
 
 ```bash
+set -o pipefail
 claude -p "$(cat /private/tmp/<spec-slug>-spec-review-gate-prompt.md)" \
   --model opus \
-  > /private/tmp/<spec-slug>-spec-review-gate-iter-<N>.txt 2>&1
+  --output-format stream-json \
+  --include-partial-messages \
+  --verbose \
+  2>&1 | tee /private/tmp/<spec-slug>-spec-review-gate-iter-<N>.jsonl
+```
+
+For Claude reviewer runs, the streamed `.jsonl` file is the progress log.
+Extract the final assistant review text from the stream into the canonical
+`/private/tmp/<spec-slug>-spec-review-gate-iter-<N>.txt` artifact before
+classifying PASS/ITERATE:
+
+```bash
+jq -r 'select(.type == "result") | .result' \
+  /private/tmp/<spec-slug>-spec-review-gate-iter-<N>.jsonl \
+  > /private/tmp/<spec-slug>-spec-review-gate-iter-<N>.txt
 ```
 
 If the opposite CLI is provably unavailable AND the user explicitly approves
@@ -348,9 +363,24 @@ codex exec -m gpt-5.5 -c model_reasoning_effort=low \
 If Codex wrote the spec:
 
 ```bash
+set -o pipefail
 claude -p "$(cat /private/tmp/<spec-slug>-presentation-gate-prompt.md)" \
   --model haiku \
-  > /private/tmp/<spec-slug>-presentation-gate-iter-<N>.txt 2>&1
+  --output-format stream-json \
+  --include-partial-messages \
+  --verbose \
+  2>&1 | tee /private/tmp/<spec-slug>-presentation-gate-iter-<N>.jsonl
+```
+
+For Claude presentation-gate runs, the streamed `.jsonl` file is the progress
+log. Extract the final assistant review text from the stream into the
+canonical `/private/tmp/<spec-slug>-presentation-gate-iter-<N>.txt` artifact
+before classifying PASS/ITERATE:
+
+```bash
+jq -r 'select(.type == "result") | .result' \
+  /private/tmp/<spec-slug>-presentation-gate-iter-<N>.jsonl \
+  > /private/tmp/<spec-slug>-presentation-gate-iter-<N>.txt
 ```
 
 ### Presentation gate prompt

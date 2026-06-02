@@ -32,12 +32,31 @@ The controller owns:
 - Final git hygiene, push, and draft PR creation.
 - Post-merge `main` CI/deploy monitoring and production smoke tracking when repo instructions, the spec, or the user require it.
 
-The controller must not do the normal build implementation manually. Build work belongs to `subagent-driven-development`.
+The controller must not do the normal build implementation manually.
+
+Full-mode build work belongs to Claude Code in Opus mode. Invoke it with
+streamed progress enabled:
+
+```bash
+claude -p "$(cat /private/tmp/<slug>-build-prompt.md)" \
+  --model opus \
+  --output-format stream-json \
+  --include-partial-messages \
+  --verbose
+```
+
+Use the streamed JSON form so long-running implementation work exposes tool,
+hook, and partial-message progress instead of appearing hung. Extract the final
+assistant text for the workflow log.
+
+Lite-mode build work may still use `subagent-driven-development` unless the
+user explicitly asks for the full-mode Claude Opus builder.
 
 Fresh or external gates own:
 
 - `spec-review-gates` review work.
-- `subagent-driven-development` build work.
+- Claude Code Opus build work in full mode.
+- `subagent-driven-development` build work in lite mode.
 - `verifier` verification work.
 - `pr-review-gates` opposite-family review work.
 
@@ -60,19 +79,19 @@ If the spec path, repo path, or base branch cannot be resolved safely, stop befo
 Run this sequence continuously. Do not pause between stages unless blocked, a gate returns `HUMAN DECISION`, or the next destructive operation cannot be made safe.
 
 1. Run `spec-review-gates` on the spec. Iterate until PASS.
-2. Build with `subagent-driven-development`.
+2. Build with Claude Code Opus using `--include-partial-messages --verbose`.
 3. Run `verifier` as a fresh-context gate. Iterate until PASS or `HUMAN DECISION`.
-4. Run `pr-review-gates`. Iterate until PASS or an issue needs human judgment.
+4. Run `pr-review-gates` with writer recorded as Claude Opus so the hard reviewer is a Codex subagent. Iterate until PASS or an issue needs human judgment.
 5. Run the second pass in the controller context.
    - Use the existing `second-pass` workflow if available.
    - Treat the V1 implementation as evidence, not a template.
    - Fold durable learnings into the spec.
    - Reset the code worktree to the target base branch.
    - Preserve the intended spec update if the spec lives inside the worktree.
-6. Build again with `subagent-driven-development` from the updated spec.
+6. Build again with Claude Code Opus from the updated spec, using `--include-partial-messages --verbose`.
 7. Run `verifier` again as a fresh-context gate. Iterate until PASS or `HUMAN DECISION`.
 8. Rewrite the final commit history into a better developer narrative that is easy to review commit by commit.
-9. Run `pr-review-gates` again. Iterate until PASS or an issue needs human judgment.
+9. Run `pr-review-gates` again with writer recorded as Claude Opus so the hard reviewer is a Codex subagent. Iterate until PASS or an issue needs human judgment.
 10. Push the branch and create a draft PR.
 11. Create or confirm the post-merge `main` CI/deploy and production smoke Bead when required.
 
@@ -107,7 +126,7 @@ For `verifier`, preserve the existing verifier contract: infer missing `success 
 
 When a spec includes an architecture model packet, pass the packet to every verifier run. The verifier must check implementation shape against the modeled states, transitions, invariants, assumptions, and verifier obligations without requiring the code to mirror Quint syntax.
 
-For `pr-review-gates`, use the opposite family reviewer from the implementation writer whenever possible. Do not push or create the draft PR until the required review gates have passed for the selected mode.
+For `pr-review-gates`, use the opposite family reviewer from the implementation writer whenever possible. In full mode, the implementation writer is Claude Opus, so the code reviewer must be a Codex subagent. Do not run Claude Opus as the hard reviewer for code it authored. Do not push or create the draft PR until the required review gates have passed for the selected mode.
 
 ## Commit Narrative Stage
 

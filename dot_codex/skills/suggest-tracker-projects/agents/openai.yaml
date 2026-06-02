@@ -1,0 +1,4 @@
+interface:
+  display_name: "Suggest Tracker Projects"
+  short_description: "Rank civic-tech tracker ideas from current news"
+  default_prompt: "Use $suggest-tracker-projects to generate the top 10 tracker/watchdog project ideas from Seattle Times and ABS-CBN signals."
