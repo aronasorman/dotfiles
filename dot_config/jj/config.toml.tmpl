@@ -11,8 +11,9 @@ pager = "delta"
 diff-formatter = ":git"
 
 
-[git]
-push-new-bookmarks = true
+[remotes.origin]
+auto-track-bookmarks = "*"
+auto-track-created-bookmarks = "*"
 
 [revset-aliases]
 'pr_stack' = 'trunk()..descendants(@) & bookmarks() ~ bookmarks("wip-") ~ bookmarks("per-")'

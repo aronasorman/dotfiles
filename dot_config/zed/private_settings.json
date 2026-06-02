@@ -7,6 +7,39 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "cli_default_open_behavior": "existing_window",
+  "agent_servers": {
+    "claude-acp": {
+      "favorite_config_option_values": {
+        "effort": [
+          "xhigh"
+        ]
+      },
+      "default_config_options": {
+        "mode": "auto"
+      },
+      "type": "registry"
+    },
+    "codex-acp": {
+      "type": "registry"
+    }
+  },
+  "project_panel": {
+    "dock": "right"
+  },
+  "outline_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
+  "git_panel": {
+    "dock": "right"
+  },
+  "icon_theme": "Zed (Default)",
+  "session": {
+    "trust_all_worktrees": true
+  },
   "edit_predictions": {
     "mode": "subtle"
   },
@@ -35,6 +68,7 @@
   },
   "show_completions_on_input": false,
   "agent": {
+    "dock": "left",
     "default_model": {
       "provider": "copilot_chat",
       "model": "gpt-5-mini"
@@ -57,8 +91,8 @@
     "show": false
   },
   "theme": {
-    "mode": "system",
+    "mode": "dark",
     "light": "One Light",
-    "dark": "Nord"
+    "dark": "One Dark"
   }
 }

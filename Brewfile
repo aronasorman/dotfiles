@@ -46,7 +46,6 @@ brew "gopls"
 brew "golangci-lint"
 brew "node"
 brew "pnpm"
-brew "bun"
 brew "uv"
 brew "poetry"
 brew "rust-analyzer"
@@ -55,7 +54,6 @@ brew "zls"
 # cloud / infra
 brew "awscli"
 brew "azure-cli"
-brew "terraform"
 brew "tfenv"
 brew "kubernetes-cli"
 brew "kubie"
@@ -74,7 +72,7 @@ brew "redis"
 
 # ai clis
 brew "aider"
-brew "claude_code"
+brew "claude-code"
 brew "gemini-cli"
 
 # apis / oauth / work
@@ -83,7 +81,6 @@ brew "jira-cli"
 
 # tapped
 brew "charmbracelet/tap/crush"
-brew "steveyegge/beads"
 brew "withgraphite/tap/gt"
 brew "hashicorp/tap/packer"
 
