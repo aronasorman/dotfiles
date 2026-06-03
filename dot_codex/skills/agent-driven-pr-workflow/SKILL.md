@@ -1,16 +1,16 @@
 ---
 name: agent-driven-pr-workflow
-description: Use when working from an approved spec and the user asks for the full or lite agent-driven build-to-draft-PR process or autonomous post-merge main CI, deploy, and production-smoke follow-through for an agent-created PR.
+description: Use when working from an approved spec, or when Beads-tracked PR work needs a spec created first, and the user asks for the full or lite agent-driven build-to-draft-PR process or autonomous post-merge main CI, deploy, and production-smoke follow-through for an agent-created PR.
 ---
 
 # Agent-Driven PR Workflow
 
-Orchestrate an approved spec through build, verification, hard review, optional second pass, draft PR creation, and required post-merge `main` CI/deploy monitoring plus production smoke follow-through.
+Orchestrate a feature-scoped approved spec through build, verification, hard review, optional second pass, draft PR creation, and required post-merge `main` CI/deploy monitoring plus production smoke follow-through.
 
 Full and lite both use hard gates and iterate until they pass. Full mode adds
 a second implementation pass; lite mode stops after one implementation pass.
 
-This skill assumes the spec already exists. It does not cover collaborative spec writing.
+This skill normally starts from an approved spec. If the target bead has no readable spec or design attachment, the controller first writes one with `feature-spec-writing`, saves it to a repo file, syncs it to the bead, and then runs `spec-review-gates` until PASS before implementation. The spec is for the feature or PR slice being built, not a full-project design unless the project bootstrap itself is the feature.
 
 ## Modes
 
@@ -64,7 +64,7 @@ Fresh or external gates own:
 
 Resolve these before starting:
 
-- Spec path.
+- Spec path, or the bead id whose design/spec attachment must be checked and populated.
 - Architecture model packet path or Beads attachment, if the spec includes one.
 - Repo/worktree path.
 - Target base branch for reset, review, push, and draft PR.
@@ -72,13 +72,47 @@ Resolve these before starting:
 - Any repo instructions for Beads, issue tracking, PR body format, tests, or hosted CI.
 - Any repo-local production smoke skill or runbook, target `main` CI/deploy workflow, and noninteractive credential path needed to run it autonomously.
 
-If the spec path, repo path, or base branch cannot be resolved safely, stop before making changes.
+If the repo path or base branch cannot be resolved safely, stop before making changes. If no spec path can be resolved from inputs or Beads, run the spec bootstrap before implementation.
+
+## Spec Bootstrap
+
+Before choosing full or lite implementation steps, ensure there is a readable feature-scoped spec for the build phase:
+
+1. Inspect the tracking bead with `bd show <bead-id> --json` when a bead id is available.
+2. Treat an existing `spec-id`, design attachment, or repo spec path as the spec only if it resolves to a readable file.
+3. If no usable spec exists, invoke `feature-spec-writing`.
+4. Save the spec to a repo-local file. Prefer `history/port-specs/<feature-slug>.md` unless repo conventions point somewhere more specific.
+5. Sync the file to the bead:
+
+```bash
+bd update <bead-id> --spec-id <spec-path> --design-file <spec-path> --json
+bd comment <bead-id> "Spec materialized at <spec-path>; synced to bead design/spec-id."
+```
+
+6. Continue with `spec-review-gates` and iterate until PASS.
+7. Confirm the final spec path is readable and describes the feature or PR slice at enough detail for the builder to work from it.
+
+If Beads is unavailable, record the spec path in the repo artifact or PR body and continue only when the user provided another tracking source. Do not silently skip the spec materialization step.
+
+## Build-Phase Spec Contract
+
+No build phase starts without a readable spec path.
+
+Before invoking Claude Code Opus or `subagent-driven-development`, the controller must:
+
+- Pass the spec path to the builder.
+- State that the spec is the authoritative feature-level contract.
+- Include architecture model packet path when present.
+- Include any spec review gate findings that materially shape implementation.
+- Stop if the only available requirements are chat history, bead title, issue summary, or inferred intent.
+
+The spec should be as detailed as the feature requires. Do not expand it into a whole-project design unless the requested work is project bootstrap.
 
 ## Full Mode
 
 Run this sequence continuously. Do not pause between stages unless blocked, a gate returns `HUMAN DECISION`, or the next destructive operation cannot be made safe.
 
-1. Run `spec-review-gates` on the spec. Iterate until PASS.
+1. Resolve or bootstrap the feature-scoped spec, run `spec-review-gates` on it, and confirm the build-phase spec contract. Iterate until PASS.
 2. Build with Claude Code Opus using `--include-partial-messages --verbose`.
 3. Run `verifier` as a fresh-context gate. Iterate until PASS or `HUMAN DECISION`.
 4. Run `pr-review-gates` with writer recorded as Claude Opus so the hard reviewer is a Codex subagent. Iterate until PASS or an issue needs human judgment.
@@ -88,19 +122,20 @@ Run this sequence continuously. Do not pause between stages unless blocked, a ga
    - Fold durable learnings into the spec.
    - Reset the code worktree to the target base branch.
    - Preserve the intended spec update if the spec lives inside the worktree.
-6. Build again with Claude Code Opus from the updated spec, using `--include-partial-messages --verbose`.
-7. Run `verifier` again as a fresh-context gate. Iterate until PASS or `HUMAN DECISION`.
-8. Rewrite the final commit history into a better developer narrative that is easy to review commit by commit.
-9. Run `pr-review-gates` again with writer recorded as Claude Opus so the hard reviewer is a Codex subagent. Iterate until PASS or an issue needs human judgment.
-10. Push the branch and create a draft PR.
-11. Create or confirm the post-merge `main` CI/deploy and production smoke Bead when required.
+6. Rerun `spec-review-gates` on the updated spec and reconfirm the build-phase spec contract. Iterate until PASS before any second build starts.
+7. Build again with Claude Code Opus from the updated spec, using `--include-partial-messages --verbose`.
+8. Run `verifier` again as a fresh-context gate. Iterate until PASS or `HUMAN DECISION`.
+9. Rewrite the final commit history into a better developer narrative that is easy to review commit by commit.
+10. Run `pr-review-gates` again with writer recorded as Claude Opus so the hard reviewer is a Codex subagent. Iterate until PASS or an issue needs human judgment.
+11. Push the branch and create a draft PR.
+12. Create or confirm the post-merge `main` CI/deploy and production smoke Bead when required.
 
 ## Lite Mode
 
 Lite is a single implementation pass with hard gates and iteration. Iterate
 inside this one pass until each gate returns `PASS` or reaches a stop state.
 
-1. Run `spec-review-gates` on the spec. Iterate until PASS.
+1. Resolve or bootstrap the feature-scoped spec, run `spec-review-gates` on it, and confirm the build-phase spec contract. Iterate until PASS.
 2. Build with `subagent-driven-development`.
 3. Run `verifier` as a fresh-context gate. Iterate until PASS or `HUMAN DECISION`.
 4. Rewrite the commit history into a better developer narrative that is easy to review commit by commit.
@@ -192,6 +227,7 @@ After the PR is merged:
 Stop and report clearly when:
 
 - Required input cannot be resolved.
+- A readable feature-scoped spec is not available by the time build would start.
 - A destructive reset would be unsafe.
 - A gate returns `HUMAN DECISION`.
 - A full-mode gate cannot be made to pass after a technically valid fix path is exhausted.
@@ -205,7 +241,7 @@ Report:
 ```markdown
 Agent-driven PR workflow complete.
 Mode: full | lite
-Spec: <path>
+Spec: <path> (<pre-existing | bootstrapped with feature-spec-writing>)
 Architecture model: <path | not used>
 Repo: <path>
 Base: <branch/ref>

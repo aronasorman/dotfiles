@@ -1,0 +1,7 @@
+interface:
+  display_name: "Sync Chezmoi"
+  short_description: "Sync live files into chezmoi safely"
+  default_prompt: "Use $sync-chezmoi to copy live dotfile or skill changes into chezmoi, pull upstream changes, merge drift, commit, and push."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Human-Driven PR Workflow"
+  short_description: "Guide the human-driven build-to-PR flow"
+  default_prompt: "Use $human-driven-pr-workflow to take an agent-reviewed spec through a human-guided build phase, verifier and PR review gates, and draft PR creation."
+
+policy:
+  allow_implicit_invocation: false
