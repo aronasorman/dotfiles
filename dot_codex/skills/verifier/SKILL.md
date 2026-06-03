@@ -91,7 +91,7 @@ Use this priority order:
 6. Git branch name
 7. Current git diff
 8. Changed routes, docs, APIs, CLI commands, tests, or UI surfaces
-9. Repo-local verification or QA config
+9. Repo-local verification config, QA config, smoke skills, or smoke runbooks
 10. Local app/docs/API conventions
 
 If the feature, changed surface, or verification target cannot be determined from available context, stop and report exactly what is missing.
@@ -134,7 +134,7 @@ When invoked:
 6. Identify required gates: build, compile, lint, typecheck, unit, integration, e2e, contract, coverage, smoke, API, CLI, or docs commands.
 7. Run checks already reported when needed to confirm evidence.
 8. Run checks that were missed but should have been run.
-9. Perform focused smoke QA for the changed behavior when the target surface supports it.
+9. Perform focused smoke QA for the changed behavior when the target surface supports it. If a repo-local smoke skill or smoke runbook matches the target surface, use it as the smoke command source unless credentials, production access, or destructive side effects make it blocked.
 10. Capture browser console/network evidence if available and useful.
 11. Assess whether tests cover the changed behavior and risk.
 12. Assess whether implementation shape matches any architecture model packet without requiring textual or syntactic similarity to Quint.
@@ -147,11 +147,12 @@ Choose commands from the strongest available source:
 
 1. User-provided commands
 2. Repo instructions: `AGENTS.md`, `CLAUDE.md`, README, docs, QA config
-3. Implementation summary or recent evidence
-4. CI config
-5. Package scripts, Makefile, Justfile, Taskfile, language tooling
-6. Framework conventions
-7. Focused commands derived from changed files
+3. Repo-local smoke skills or runbooks, including `.agents/skills/*smoke*/SKILL.md`, when focused smoke QA is required
+4. Implementation summary or recent evidence
+5. CI config
+6. Package scripts, Makefile, Justfile, Taskfile, language tooling
+7. Framework conventions
+8. Focused commands derived from changed files
 
 Prefer the smallest command set that gives real confidence, but do not skip broad gates when the change has broad blast radius.
 
