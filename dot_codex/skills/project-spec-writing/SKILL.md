@@ -12,7 +12,7 @@ A project spec defines the system, its stable contracts, its non-goals, and the 
 ## Use When
 
 - A user asks to start, draft, write, materialize, or update a project spec.
-- A project idea needs architecture, data structures, API shape, behaviors, and scope decisions.
+- A project idea may need architecture, data structures, API shape, behaviors, algorithms, and scope decisions.
 - Requirements are being refined interactively before feature specs are ready.
 - The next useful artifact is a top-level project spec, not a feature spec.
 
@@ -22,10 +22,10 @@ Do not use this when the task is already a bounded feature slice; use `feature-s
 
 1. Gather context from the conversation, repo instructions, docs, notes, existing specs, and visible project constraints.
 2. Separate decisions already made from assumptions and open questions.
-3. Present draft sections, endpoint shapes, data structures, behavior decisions, and implementation-plan items to the user before writing files.
+3. Present draft required sections, needed optional sections, behavior decisions, and implementation-plan items to the user before writing files.
 4. Iterate in chat until the user explicitly approves the project spec shape.
 5. Write the approved spec to the user-requested path. If no path is given, choose the project or repo's existing spec location and state the path.
-6. Run the local spec self-review: scan for placeholders, contradictions, vague contracts, missing non-goals, missing decision status, and implementation-plan items that are too broad for future feature specs.
+6. Run the local spec self-review: scan for placeholders, contradictions, vague contracts, missing non-goals, missing decision status, missing needed optional sections, and implementation-plan items that are too broad for future feature specs.
 7. Show a final summary of the written spec and ordered implementation items.
 8. Hard stop and ask whether to start `feature-spec-writing` for the first item.
 
@@ -42,15 +42,23 @@ Every project spec must include these sections. Preserve the destination documen
 | Users and Actors | Human users, public viewers, admins, agents, systems, and external sources. |
 | Scope | What the project owns. Prefer a table of in-scope capabilities. |
 | Non-Goals | Explicit exclusions, deferred complexity, and behaviors the project must not take on yet. |
-| Core Data Structures | Main resources, fields, relationships, lifecycle ownership, persistence expectations, and queryability requirements. |
-| API Endpoints | Endpoint groups, purpose, auth, request shape, response shape, writes, errors, and side effects. |
 | Key Behaviors | Observable workflows, state transitions, publishing rules, validation, imports, previews, failure handling, and user/system-visible outcomes. |
-| Auth and Access | Public/private surfaces, token model, roles, preview access, and agent permissions. |
-| External Data and Integrations | Sources, import/update paths, provenance, trust boundaries, and refresh cadence. |
 | QA and Publishing Flow | Preview, review, approval, publish, rollback, screenshots, smoke checks, and verification expectations. |
 | Implementation Plan | Ordered feature-spec items with short summaries, dependencies, and intended handoff to `feature-spec-writing`. |
 | Decision Ledger | Decided, assumed, rejected, and open decisions. |
 | Open Questions | Remaining unresolved issues that block or shape implementation. |
+
+## Optional Sections
+
+Add optional sections only when they clarify important project contracts. Do not include empty sections.
+
+| Section | Use when | Required content when included |
+| --- | --- | --- |
+| Core Data Structures | The project depends on persistent resources, schemas, relationships, versioning, or queryable records. | Main resources, fields, relationships, lifecycle ownership, persistence expectations, queryability requirements, public exposure, and immutability rules. |
+| API Endpoints | The project exposes, consumes, or depends on HTTP/API surfaces. | Endpoint groups, purpose, actor, auth, request shape, response shape, reads/writes, errors, side effects, idempotency, and state transitions. |
+| Auth and Access | The project has public/private surfaces, privileged users, agents, previews, or token handling. | Public/private boundaries, roles, token model, preview access, agent permissions, denial behavior, and secret-handling constraints. |
+| External Data and Integrations | The project imports, refreshes, verifies, or depends on external systems or datasets. | Sources, import/update paths, provenance, trust boundaries, refresh cadence, failure handling, and review requirements. |
+| Core Algorithms | Important workflows depend on database queries, computations, ranking, matching, routing, geospatial processing, scheduling, aggregation, or other algorithmic work. | Algorithm purpose, inputs, outputs, core steps, runtime tradeoffs, indexing/data-structure assumptions, projected scaling, bottlenecks, and verification/observability signals. |
 
 ## Implementation Plan Section
 
@@ -95,9 +103,9 @@ Use a table when decisions matter for implementation.
 
 Do not treat assumptions as approved decisions. If an open decision blocks a stable project spec, stop with a concise question.
 
-## Endpoint And Data Contracts
+## Optional Contract Sections
 
-Keep API, resources, behaviors, and auth cross-linked.
+When optional endpoint, data, auth, integration, or algorithm sections are included, keep them cross-linked to the behaviors they support.
 
 For each endpoint group, define:
 
@@ -122,6 +130,16 @@ For each core resource, define:
 - Public exposure
 - Versioning or immutability rules
 
+For each core algorithm, define:
+
+- Workflow it supports
+- Inputs and outputs
+- Main query, computation, or processing steps
+- Expected runtime and scaling shape
+- Indexes, caches, data structures, or precomputation it depends on
+- Accuracy, freshness, or consistency tradeoffs
+- Failure modes and verification signals
+
 ## Final Response
 
 After writing the approved project spec, stop with this structure:
@@ -145,8 +163,9 @@ Do not continue past this prompt without explicit user approval.
 ## Quality Bar
 
 - Keep the spec decision-driven, not essay-driven.
-- Use concrete resource names, states, routes, permissions, and verification signals.
+- Use concrete resource names, states, routes, permissions, algorithm names, and verification signals where those surfaces exist.
 - Make scope and non-goals visible enough to prevent later drift.
 - Keep the implementation-plan items ordered and feature-spec sized.
 - Preserve known user decisions even when they remove generalized machinery.
 - Prefer simple stable contracts over premature CMS, workflow, or multi-agent abstractions.
+- Surface important database queries and computations in `Core Algorithms` instead of burying them inside behavior prose.
