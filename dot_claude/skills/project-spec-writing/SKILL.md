@@ -12,7 +12,7 @@ A project spec defines the system, its stable contracts, its non-goals, and the 
 ## Use When
 
 - A user asks to start, draft, write, materialize, or update a project spec.
-- A project idea may need architecture, data structures, API shape, behaviors, algorithms, and scope decisions.
+- A project idea may need architecture, core features, data structures, API shape, behaviors, algorithms, and scope decisions.
 - Requirements are being refined interactively before feature specs are ready.
 - The next useful artifact is a top-level project spec, not a feature spec.
 
@@ -25,7 +25,7 @@ Do not use this when the task is already a bounded feature slice; use `feature-s
 3. Present draft required sections, needed optional sections, behavior decisions, and implementation-plan items to the user before writing files.
 4. Iterate in chat until the user explicitly approves the project spec shape.
 5. Write the approved spec to the user-requested path. If no path is given, choose the project or repo's existing spec location and state the path.
-6. Run the local spec self-review: scan for placeholders, contradictions, vague contracts, missing non-goals, missing decision status, missing needed optional sections, and implementation-plan items that are too broad for future feature specs.
+6. Run the local spec self-review: scan for placeholders, contradictions, vague contracts, missing core features, missing non-goals, missing decision status, missing needed optional sections, and implementation-plan items that are too broad for future feature specs.
 7. Show a final summary of the written spec and ordered implementation items.
 8. Hard stop and ask whether to start `feature-spec-writing` for the first item.
 
@@ -39,6 +39,7 @@ Every project spec must include these sections. Preserve the destination documen
 | --- | --- |
 | Executive Summary | What the project is, why it exists, chosen high-level shape, and main risk. |
 | Project Goals | Concrete outcomes the project should achieve. |
+| Core Features | Key features important to the project, what each feature enables, and why it matters to the project goals. |
 | Users and Actors | Human users, public viewers, admins, agents, systems, and external sources. |
 | Scope | What the project owns. Prefer a table of in-scope capabilities. |
 | Non-Goals | Explicit exclusions, deferred complexity, and behaviors the project must not take on yet. |
@@ -163,6 +164,7 @@ Do not continue past this prompt without explicit user approval.
 ## Quality Bar
 
 - Keep the spec decision-driven, not essay-driven.
+- Make the core feature set explicit before diving into resources, endpoints, algorithms, or implementation items.
 - Use concrete resource names, states, routes, permissions, algorithm names, and verification signals where those surfaces exist.
 - Make scope and non-goals visible enough to prevent later drift.
 - Keep the implementation-plan items ordered and feature-spec sized.
