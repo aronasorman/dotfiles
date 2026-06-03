@@ -1,0 +1,7 @@
+interface:
+  display_name: "Feature Spec Writing"
+  short_description: "Write table-driven feature specs"
+  default_prompt: "Use $feature-spec-writing to write a feature spec with scope, non-goals, architecture decisions, required behavior, and verification."
+
+policy:
+  allow_implicit_invocation: false
