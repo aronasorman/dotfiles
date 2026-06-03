@@ -1,0 +1,7 @@
+interface:
+  display_name: "Project Spec Writing"
+  short_description: "Write iterative project specs"
+  default_prompt: "Use $project-spec-writing to write a project spec with data structures, API endpoints, key behaviors, scope, non-goals, and ordered feature-spec items."
+
+policy:
+  allow_implicit_invocation: true
