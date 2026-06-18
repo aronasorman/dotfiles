@@ -69,10 +69,37 @@ Resolve these before starting:
 - Repo/worktree path.
 - Target base branch for reset, review, push, and draft PR.
 - Mode: `full` or `lite`.
+- Publication boundary: `internal/controlled` or `external/uncontrolled`. Treat
+  any external forge, public PR, customer/vendor repo, fork, or repo Aron does
+  not control as `external/uncontrolled` unless the user explicitly says
+  internal workflow artifacts may be published there.
 - Any repo instructions for Beads, issue tracking, PR body format, tests, or hosted CI.
 - Any repo-local production smoke skill or runbook, target `main` CI/deploy workflow, and noninteractive credential path needed to run it autonomously.
 
 If the repo path or base branch cannot be resolved safely, stop before making changes. If no spec path can be resolved from inputs or Beads, run the spec bootstrap before implementation.
+
+## Publication Boundary
+
+The spec, gate logs, workflow notes, one-off validation scripts, and similar
+agent artifacts are internal working material. In `internal/controlled` repos
+they may be committed only when the repo convention or user request makes them
+part of the intended review surface.
+
+In `external/uncontrolled` repos:
+
+- Do not stage, commit, push, or publish the spec, internal design notes,
+  gate-score artifacts, workflow logs, or generated one-off validation scripts.
+- Keep specs in Beads, Obsidian, `/private/tmp`, or another local/internal
+  location outside the target repo worktree. The builder may read them, but the
+  PR branch must not carry them.
+- Keep one-off validation scripts ephemeral. Prefer existing repo test
+  harnesses; commit only durable tests that belong in the project.
+- The pushed branch should contain only actual implementation code, durable
+  tests, and files that are required by the target repo's normal contribution
+  process.
+- Scrub the PR body of spec paths, internal gate scores, verifier transcript
+  paths, validation-script paths, and internal tracker links unless the user
+  explicitly approves publishing those exact details.
 
 ## Spec Bootstrap
 
@@ -81,7 +108,12 @@ Before choosing full or lite implementation steps, ensure there is a readable fe
 1. Inspect the tracking bead with `bd show <bead-id> --json` when a bead id is available.
 2. Treat an existing `spec-id`, design attachment, or repo spec path as the spec only if it resolves to a readable file.
 3. If no usable spec exists, invoke `feature-spec-writing`.
-4. Save the spec to a repo-local file. Prefer `history/port-specs/<feature-slug>.md` unless repo conventions point somewhere more specific.
+4. Save the spec to a repo-local file only when the publication boundary is
+   `internal/controlled` and repo conventions allow it. Prefer
+   `history/port-specs/<feature-slug>.md` unless repo conventions point
+   somewhere more specific. For `external/uncontrolled` repos, save the spec in
+   Beads, Obsidian, `/private/tmp`, or another local/internal location outside
+   the target repo worktree.
 5. Sync the file to the bead:
 
 ```bash
@@ -92,7 +124,10 @@ bd comment <bead-id> "Spec materialized at <spec-path>; synced to bead design/sp
 6. Continue with `spec-review-gates` and iterate until PASS.
 7. Confirm the final spec path is readable and describes the feature or PR slice at enough detail for the builder to work from it.
 
-If Beads is unavailable, record the spec path in the repo artifact or PR body and continue only when the user provided another tracking source. Do not silently skip the spec materialization step.
+If Beads is unavailable, record the spec path in the repo artifact or PR body
+only for `internal/controlled` repos. For `external/uncontrolled` repos, keep
+the spec path local/internal and continue only when the user provided another
+tracking source. Do not silently skip the spec materialization step.
 
 ## Build-Phase Spec Contract
 
@@ -104,6 +139,9 @@ Before invoking Claude Code Opus or `subagent-driven-development`, the controlle
 - State that the spec is the authoritative feature-level contract.
 - Include architecture model packet path when present.
 - Include any spec review gate findings that materially shape implementation.
+- State the publication boundary, and for `external/uncontrolled` repos tell
+  builders and verifiers that specs, workflow notes, and one-off validation
+  scripts must remain uncommitted.
 - Stop if the only available requirements are chat history, bead title, issue summary, or inferred intent.
 
 The spec should be as detailed as the feature requires. Do not expand it into a whole-project design unless the requested work is project bootstrap.
@@ -175,6 +213,11 @@ The commit stack should:
 - Avoid tiny noise commits that force reviewers to reconstruct intent across many diffs.
 - Preserve authorship and avoid rewriting unrelated user commits.
 
+For `external/uncontrolled` repos, override the normal documentation/spec
+commit guidance: the final commit stack must exclude internal specs, workflow
+notes, generated gate artifacts, and one-off validation scripts. Commit only the
+actual code change, durable tests, and required contribution files.
+
 If the branch has already been pushed or is shared, do not force-push rewritten history unless the user has explicitly approved that for the branch.
 
 ## Draft PR Stage
@@ -183,6 +226,9 @@ After the commit narrative stage and final gates pass:
 
 - Check `git status`.
 - Ensure only intended files are included.
+- For `external/uncontrolled` repos, check `git diff --name-status <base>...HEAD`
+  and remove any internal spec, gate artifact, workflow log, or one-off
+  validation script before final gates, push, or PR creation.
 - Run required repo-local final checks if the gate output says they must be rerun after the last fix.
 - Honor repo instructions for Beads, issue IDs, PR body content, and tracking.
 - If production smoke is required, create or identify the Bead that will track post-merge `main` CI/deploy monitoring and the smoke run before reporting the PR handoff complete.
@@ -199,6 +245,12 @@ The PR body should include:
 - PR review gate result or results.
 - Tracking issue or bead, when required by the repo.
 - Post-merge `main` CI/deploy and production smoke Bead plus expected trigger, when required.
+
+For `external/uncontrolled` repos, replace the internal-heavy PR body with a
+public-safe body containing only the change summary, durable tests/checks run,
+and public-safe issue references. Do not mention internal spec paths, gate
+scores, verifier transcript paths, validation-script paths, Beads links, or
+private workflow details unless the user explicitly approves the exact text.
 
 ## Post-Merge Production Smoke Stage
 
