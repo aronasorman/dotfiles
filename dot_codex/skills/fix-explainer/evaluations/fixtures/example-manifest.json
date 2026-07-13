@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "title": "Why changed-service discovery matters",
+  "problem": {
+    "symptom": "A build job starts without a selected service.",
+    "expected": "Discovery emits a concrete service matrix.",
+    "diagnosis": "The discovery boundary must finish before the matrix can exist."
+  },
+  "context": {
+    "file_role": "This fixture maps changed paths to buildable services.",
+    "flow": ["changed paths", "service discovery", "JSON matrix", "build job"]
+  },
+  "evidence": [
+    {
+      "path": "example.ts",
+      "source_sha256": "1ff14ec82b62fa64aa65e9c07b48757e1b71ae280f43e62a6c47a3ff5b2c645d",
+      "start_line": 1,
+      "end_line": 3,
+      "focus_lines": [2],
+      "situation": "Changed paths have already been collected.",
+      "mechanism": "Line 2 converts those paths into service names.",
+      "implication": "The JSON matrix depends on discovery returning successfully.",
+      "gotcha": "A downstream job cannot reconstruct a missing service name."
+    }
+  ],
+  "proposed_fix": null,
+  "verification": [
+    {
+      "claim": "The checked fixture contains the narrated discovery call.",
+      "source": "example.ts lines 1-3",
+      "result": "The source hash and exact excerpt were validated.",
+      "status": "verified"
+    }
+  ],
+  "takeaway": "Service discovery is the boundary between changed files and build jobs."
+}
