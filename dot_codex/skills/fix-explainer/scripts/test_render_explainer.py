@@ -2,9 +2,12 @@ import copy
 import hashlib
 import json
 import os
+import stat
+import subprocess
 import sys
 import tempfile
 import unittest
+from html.parser import HTMLParser
 from pathlib import Path
 
 
@@ -338,6 +341,296 @@ class ValidationTests(unittest.TestCase):
             "unchanged_behavior": "Explicit service selection is unchanged.",
             "risks": ["Merge-base selection still needs verification."],
         }
+
+
+class StartTagCollector(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.tags = []
+
+    def handle_starttag(self, tag: str, attrs: list) -> None:
+        self.tags.append((tag, dict(attrs)))
+
+
+class RenderingTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary_directory = tempfile.TemporaryDirectory()
+        self.temp_path = Path(self.temporary_directory.name)
+        self.repo_root = self.temp_path / "repo-root-that-must-not-leak"
+        self.repo_root.mkdir()
+        self.source = self.repo_root / "example.ts"
+        self.source.write_text(
+            "const first = 1;\nconst caf\u00e9 = callProvider();\nreturn first;\n",
+            encoding="utf-8",
+        )
+        self.digest = hashlib.sha256(self.source.read_bytes()).hexdigest()
+        self.manifest_path = self.temp_path / "manifest.json"
+        self.output_path = self.temp_path / "artifact" / "index.html"
+
+    def tearDown(self) -> None:
+        self.temporary_directory.cleanup()
+
+    def manifest(self) -> dict:
+        return valid_manifest(self.source, self.digest)
+
+    def proposed_fix(self) -> dict:
+        return {
+            "path": self.source.name,
+            "start_line": 2,
+            "end_line": 2,
+            "replacement": "const caf\u00e9 = callLocalRepository();",
+            "rationale": "Use repository-local discovery.",
+            "unchanged_behavior": "Explicit service selection is unchanged.",
+            "risks": ["Merge-base selection still needs verification."],
+        }
+
+    def write_manifest(self, manifest: dict) -> None:
+        self.manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+    def render_html(self, manifest: dict) -> str:
+        self.write_manifest(manifest)
+        render(self.manifest_path, self.repo_root, self.output_path)
+        return self.output_path.read_text(encoding="utf-8")
+
+    def test_valid_render_contains_complete_annotated_source_narrative(self) -> None:
+        html = self.render_html(self.manifest())
+
+        expected_text = (
+            "Why the build fails",
+            "Problem context",
+            "The release build starts without a service name.",
+            "Auto discovery emits a service matrix.",
+            "Diagnosis",
+            "Provider-specific discovery fails before emitting JSON.",
+            "File role",
+            "This script converts changed paths into build jobs.",
+            "merge",
+            "service discovery",
+            "matrix",
+            "build job",
+            "Observed source",
+            "example.ts",
+            "Lines 1\u20133",
+            "const caf\u00e9 = callProvider();",
+            "Situation",
+            "Mechanism",
+            "Implication",
+            "Gotcha",
+            "Verification evidence",
+            "verified",
+            "Discovery failed; the application change did not.",
+        )
+        for text in expected_text:
+            with self.subTest(text=text):
+                self.assertIn(text, html)
+        self.assertIn('class="code-line is-focus" data-line="2"', html)
+        self.assertIn('aria-label="Focus line"', html)
+        self.assertNotIn(str(self.repo_root), html)
+
+    def test_not_run_status_has_human_label_and_machine_value(self) -> None:
+        manifest = self.manifest()
+        manifest["verification"][0]["status"] = "not_run"
+
+        html = self.render_html(manifest)
+
+        self.assertIn('class="status status-not_run"', html)
+        self.assertIn('data-status="not_run"', html)
+        self.assertIn(">not run</span>", html)
+
+    def test_every_rendered_field_is_html_escaped(self) -> None:
+        unsafe = '<script data-x="quoted">alert(\'unsafe\') & stop</script>'
+        unsafe_filename = '<script> & "source".ts'
+        self.source.rename(self.repo_root / unsafe_filename)
+        self.source = self.repo_root / unsafe_filename
+        self.source.write_text(
+            "const value = '<script src=\"https://evil.invalid/x.js\">&';\n"
+            "const second = \"quoted\";\n"
+            "return value;\n",
+            encoding="utf-8",
+        )
+        self.digest = hashlib.sha256(self.source.read_bytes()).hexdigest()
+        manifest = valid_manifest(self.source, self.digest)
+        manifest["title"] = unsafe
+        manifest["problem"] = {
+            "symptom": unsafe,
+            "expected": unsafe,
+            "diagnosis": unsafe,
+        }
+        manifest["context"] = {"file_role": unsafe, "flow": [unsafe]}
+        for field in ("situation", "mechanism", "implication", "gotcha"):
+            manifest["evidence"][0][field] = unsafe
+        manifest["verification"] = [{
+            "claim": unsafe,
+            "source": unsafe,
+            "result": unsafe,
+            "status": "not_run",
+        }]
+        manifest["takeaway"] = unsafe
+        manifest["proposed_fix"] = {
+            "path": unsafe_filename,
+            "start_line": 1,
+            "end_line": 1,
+            "unified_diff": unsafe,
+            "rationale": unsafe,
+            "unchanged_behavior": unsafe,
+            "risks": [unsafe],
+        }
+
+        html = self.render_html(manifest)
+
+        self.assertNotIn(unsafe, html)
+        self.assertNotIn(unsafe_filename, html)
+        self.assertNotIn('<script src="https://evil.invalid/x.js">', html)
+        self.assertIn("&lt;script", html)
+        self.assertIn("&amp;", html)
+        self.assertIn("&quot;quoted&quot;", html)
+        self.assertIn("&#x27;unsafe&#x27;", html)
+
+    def test_output_contains_no_active_or_remote_content(self) -> None:
+        manifest = self.manifest()
+        manifest["evidence"][0]["situation"] = (
+            "The source mentions https://example.invalid without creating a link."
+        )
+        html = self.render_html(manifest)
+        parser = StartTagCollector()
+        parser.feed(html)
+
+        active_tags = {"script", "iframe", "object", "embed"}
+        self.assertFalse(active_tags.intersection(tag for tag, _ in parser.tags))
+        for tag, attrs in parser.tags:
+            with self.subTest(tag=tag, attrs=attrs):
+                if tag == "link":
+                    self.assertFalse(
+                        (attrs.get("href") or "").startswith(("http:", "https:", "//"))
+                    )
+                if "src" in attrs:
+                    self.assertTrue((attrs["src"] or "").startswith("data:"))
+                if "href" in attrs:
+                    self.assertTrue((attrs["href"] or "").startswith("#"))
+        self.assertNotIn("@import", html.lower())
+
+    def test_proposed_section_is_omitted_when_fix_is_null(self) -> None:
+        html = self.render_html(self.manifest())
+
+        self.assertNotIn("Proposed \u2014 not applied", html)
+        self.assertNotIn('class="proposed-fix"', html)
+
+    def test_proposed_section_labels_unapplied_fix_and_risks(self) -> None:
+        manifest = self.manifest()
+        proposed = self.proposed_fix()
+        proposed["replacement"] = '<newCall arg="a&b">\'value\'</newCall>'
+        manifest["proposed_fix"] = proposed
+
+        html = self.render_html(manifest)
+
+        for text in (
+            "Proposed \u2014 not applied",
+            "example.ts",
+            "Line 2",
+            "Rationale",
+            "Use repository-local discovery.",
+            "Unchanged behavior",
+            "Explicit service selection is unchanged.",
+            "Risks",
+            "Merge-base selection still needs verification.",
+            "Replacement",
+        ):
+            with self.subTest(text=text):
+                self.assertIn(text, html)
+        self.assertIn(
+            "&lt;newCall arg=&quot;a&amp;b&quot;&gt;&#x27;value&#x27;&lt;/newCall&gt;",
+            html,
+        )
+
+    def test_identical_inputs_produce_byte_identical_outputs(self) -> None:
+        manifest = self.manifest()
+        self.write_manifest(manifest)
+        first_output = self.temp_path / "first" / "index.html"
+        second_output = self.temp_path / "second" / "index.html"
+
+        render(self.manifest_path, self.repo_root, first_output)
+        render(self.manifest_path, self.repo_root, second_output)
+
+        self.assertEqual(first_output.read_bytes(), second_output.read_bytes())
+
+    def test_template_substitution_failure_leaves_output_absent(self) -> None:
+        self.write_manifest(self.manifest())
+        template_path = self.temp_path / "broken-template.html"
+        template_path.write_text(
+            "{{TITLE}}{{PROBLEM}}{{CONTEXT}}{{EVIDENCE}}"
+            "{{PROPOSED_FIX}}{{VERIFICATION}}",
+            encoding="utf-8",
+        )
+
+        with self.assertRaisesRegex(ValidationError, "template"):
+            render(
+                self.manifest_path,
+                self.repo_root,
+                self.output_path,
+                template_path,
+            )
+
+        self.assertFalse(self.output_path.exists())
+
+    def test_render_preserves_repository_bytes_modes_names_and_git_status(self) -> None:
+        tracked = self.repo_root / "tracked.txt"
+        tracked.write_text("committed\n", encoding="utf-8")
+        os.chmod(self.source, 0o640)
+        subprocess.run(
+            ["git", "init", "-q"], cwd=str(self.repo_root), check=True
+        )
+        subprocess.run(
+            ["git", "config", "user.email", "test@example.invalid"],
+            cwd=str(self.repo_root),
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.name", "Fix Explainer Test"],
+            cwd=str(self.repo_root),
+            check=True,
+        )
+        subprocess.run(
+            ["git", "add", "example.ts", "tracked.txt"],
+            cwd=str(self.repo_root),
+            check=True,
+        )
+        subprocess.run(
+            ["git", "commit", "-qm", "fixture"],
+            cwd=str(self.repo_root),
+            check=True,
+        )
+        tracked.write_text("locally modified\n", encoding="utf-8")
+        (self.repo_root / "untracked.txt").write_text(
+            "user work\n", encoding="utf-8"
+        )
+        before_files = self.repository_snapshot()
+        before_status = self.git_status()
+
+        self.render_html(self.manifest())
+
+        self.assertEqual(self.repository_snapshot(), before_files)
+        self.assertEqual(self.git_status(), before_status)
+
+    def repository_snapshot(self) -> dict:
+        return {
+            str(path.relative_to(self.repo_root)): (
+                path.read_bytes(),
+                stat.S_IMODE(path.stat().st_mode),
+            )
+            for path in sorted(self.repo_root.rglob("*"))
+            if path.is_file() and ".git" not in path.relative_to(self.repo_root).parts
+        }
+
+    def git_status(self) -> str:
+        result = subprocess.run(
+            ["git", "status", "--porcelain=v1"],
+            cwd=str(self.repo_root),
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        return result.stdout
 
 
 if __name__ == "__main__":
