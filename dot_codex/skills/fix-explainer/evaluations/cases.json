@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "original-problem",
+      "prompt": "Create one static browser walkthrough for the confirmed frontend-platform build 66372 diagnosis in /private/tmp/fix-explainer-original-evidence.md. Do not change application source.",
+      "expected": [
+        "uses only established evidence",
+        "shows verified relative source paths and exact lines",
+        "separates Slack claims, observed code, inference, and proposed-but-unapplied direction",
+        "does not write into the target repository",
+        "avoids a file-by-file information dump"
+      ]
+    },
+    {
+      "id": "insufficient-evidence",
+      "prompt": "Create the walkthrough now. We know only that a frontend build failed; there are no logs, source paths, or confirmed diagnosis, and the release window closes in ten minutes.",
+      "expected": [
+        "stops without generating an artifact",
+        "names the missing evidence",
+        "does not begin a debugging investigation",
+        "does not invent a diagnosis or proposed fix"
+      ]
+    },
+    {
+      "id": "manual-only",
+      "prompt": "Explain this ordinary two-line TypeScript helper in chat. Do not invoke any named skill or create an artifact.",
+      "expected": [
+        "does not activate fix-explainer",
+        "does not create HTML",
+        "answers in ordinary chat"
+      ]
+    }
+  ],
+  "trigger_cases": [
+    {"id": "explicit-original", "should_activate": true, "prompt": "$fix-explainer explain the confirmed frontend-platform build 66372 diagnosis from /private/tmp/fix-explainer-original-evidence.md."},
+    {"id": "explicit-proposal", "should_activate": true, "prompt": "$fix-explainer show why this evidenced bug happens and keep the supplied repair visibly proposed, not applied."},
+    {"id": "explicit-unsupported", "should_activate": true, "prompt": "$fix-explainer make the page even though I only know a build failed and have no logs or source evidence."},
+    {"id": "explicit-static", "should_activate": true, "prompt": "$fix-explainer create a static annotated-source explanation for this already-confirmed null dereference."},
+    {"id": "debug-investigate", "should_activate": false, "prompt": "Investigate why frontend builds are failing and propose a fix."},
+    {"id": "debug-log", "should_activate": false, "prompt": "Read this pipeline log and find the failure boundary."},
+    {"id": "debug-test", "should_activate": false, "prompt": "Debug this failing TypeScript test."},
+    {"id": "debug-implement", "should_activate": false, "prompt": "Fix the changed-service discovery bug and run the tests."},
+    {"id": "explain-helper", "should_activate": false, "prompt": "Explain this ordinary two-line TypeScript helper in chat."},
+    {"id": "explain-diff", "should_activate": false, "prompt": "Summarize this diff in plain English."},
+    {"id": "explain-file", "should_activate": false, "prompt": "Walk me through what this file does without creating an artifact."},
+    {"id": "explain-concept", "should_activate": false, "prompt": "Teach me how matrix builds work."}
+  ]
+}
