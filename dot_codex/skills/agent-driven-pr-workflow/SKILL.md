@@ -145,6 +145,13 @@ In `external/uncontrolled` repos:
   the risky part and stop for revised text or explicit publication approval.
   Never silently rewrite the user's description.
 
+A verifier-owned temporary proving branch is not publication when required
+runtime proof needs a remote branch deployment. Use it only in an
+`internal/controlled` repo, or when the user explicitly authorizes it for the
+target repo. It must not become a PR or carry internal workflow artifacts.
+Proving pushes are implementation activity, not publication. They do not
+trigger PR review gates.
+
 ## Spec Bootstrap
 
 Before choosing full or lite implementation steps, ensure there is a readable feature-scoped spec for the build phase:
@@ -191,6 +198,27 @@ Before invoking Claude Code Opus or `subagent-driven-development`, the controlle
 - Stop if the only available requirements are chat history, bead title, issue summary, or inferred intent.
 
 The spec should be as detailed as the feature requires. Do not expand it into a whole-project design unless the requested work is project bootstrap.
+
+## Prove Before Review
+
+For every verifier run, classify the required acceptance criteria by how they
+can be proven:
+
+- If every criterion can be proven locally, do not create or push a temporary
+  proving branch.
+- If a required criterion needs a controlled remote deployment, the verifier
+  may create and push one temporary proving branch. Reuse that branch across
+  `FAIL` iterations for the same implementation pass. Do not open a PR from it.
+- On `FAIL`, the builder fixes the implementation and a fresh verifier reruns
+  against the same proving branch. Keep the branch for the retry.
+- On `PASS` or `HUMAN DECISION`, the verifier deletes the proving branch. If
+  deletion fails, report the cleanup failure plainly; do not invent another
+  workflow result.
+- Only verifier `PASS` advances to code review. `HUMAN DECISION` remains a stop
+  state.
+
+Never initiate review gates while required verification is incomplete or the
+verifier is returning `FAIL` or `ITERATE`.
 
 ## Full Mode
 
@@ -253,6 +281,10 @@ context fixes the issue, then the same gate is rerun. Lite mode repeats gates
 inside the same implementation pass; it does not trigger the full-mode second
 pass.
 
+If a review finding changes the implementation tree, rerun `verifier` before
+rerunning review. A history-only rewrite with an unchanged tree does not
+invalidate verifier evidence.
+
 `HUMAN DECISION` means stop and surface the decision needed. Do not reinterpret or override it.
 
 For Fable decision gates, `FAIL` or `ITERATE` means the planner or judge found a
@@ -264,7 +296,7 @@ For `verifier`, preserve the existing verifier contract: infer missing `success 
 
 When a spec includes an architecture model packet, pass the packet to every verifier run. The verifier must check implementation shape against the modeled states, transitions, invariants, assumptions, and verifier obligations without requiring the code to mirror Quint syntax.
 
-For `pr-review-gates`, use the opposite family reviewer from the implementation writer whenever possible. In full mode, the implementation writer is Claude Opus, so the code reviewer must be a Codex subagent. Do not run Claude Opus as the hard reviewer for code it authored. Do not push or create the draft PR until the required review gates have passed for the selected mode.
+For `pr-review-gates`, use the opposite family reviewer from the implementation writer whenever possible. In full mode, the implementation writer is Claude Opus, so the code reviewer must be a Codex subagent. Do not run Claude Opus as the hard reviewer for code it authored. Except for a verifier-owned proving branch, do not push or create the draft PR until the required review gates have passed for the selected mode.
 
 ## Commit Narrative Stage
 
@@ -297,8 +329,9 @@ After the final `pr-review-gates` pass and before any push or draft PR creation:
 2. Explain the net diff briefly and emit tight `::code-comment` annotations for
    the important blocks.
 3. Ask the user to approve the annotated diff before push.
-4. Do not push, force-push, or create the draft PR until the user explicitly
-   approves.
+4. Do not push or force-push the final PR branch, or create the draft PR, until
+   the user explicitly approves. This does not apply to an earlier
+   verifier-owned proving branch.
 5. If the user asks for changes, treat that as a build iteration:
    - full mode returns to the current full-mode builder stage, normally the
      second build after the second pass has begun;
@@ -421,6 +454,8 @@ Build passes:
 - <summary>
 Verifier:
 - <result summary>
+Proving branch:
+<not needed | <branch>, deleted | <branch>, cleanup failed>
 PR review gates:
 - <result summary>
 Commit narrative:

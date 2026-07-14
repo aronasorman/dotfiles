@@ -41,6 +41,33 @@ review. Do not require Claude-vs-Codex model switching for this gate.
 If no subagent facility is available, stop and report that `/verifier` requires
 a fresh verifier subagent. Do not self-verify in the implementation context.
 
+## Controlled Live Proof
+
+Classify each required success criterion as locally provable or requiring
+controlled live proof.
+
+If every criterion is locally provable, do not create or push a temporary
+branch.
+
+When a required criterion can only be proven through a remote deployment that
+is triggered by a branch:
+
+- Use a temporary proving branch only when the workflow or user has authorized
+  it for that controlled repo and remote.
+- Never use a protected or production branch, and never open a PR from the
+  proving branch.
+- Proving pushes are implementation activity, not publication. They do not
+  trigger hard review gates.
+- Reuse the same proving branch across `FAIL` iterations for the implementation
+  pass. Keep it while the builder fixes the implementation and a fresh verifier
+  reruns.
+- Delete the proving branch when verification reaches `PASS` or
+  `HUMAN DECISION`. Report a deletion failure plainly in the packet without
+  inventing another result.
+
+The verifier owns the proving branch lifecycle. Pass its branch name to each
+fresh verifier iteration.
+
 ## Usage
 
 ```text
@@ -131,15 +158,16 @@ When invoked:
 3. Read applicable repo instructions before running commands.
 4. Infer success criteria from the spec, task context, diff, changed behavior, or implementation just written.
 5. If an architecture model packet is present, derive model-conformance checks from its states, transitions, invariants, assumptions, and verifier obligations.
-6. Identify required gates: build, compile, lint, typecheck, unit, integration, e2e, contract, coverage, smoke, API, CLI, or docs commands.
-7. Run checks already reported when needed to confirm evidence.
-8. Run checks that were missed but should have been run.
-9. Perform focused smoke QA for the changed behavior when the target surface supports it. If a repo-local smoke skill or smoke runbook matches the target surface, use it as the smoke command source unless credentials, production access, or destructive side effects make it blocked.
-10. Capture browser console/network evidence if available and useful.
-11. Assess whether tests cover the changed behavior and risk.
-12. Assess whether implementation shape matches any architecture model packet without requiring textual or syntactic similarity to Quint.
-13. Record exact commands, pass/fail status, relevant output summary, and residual risk.
-14. Produce a compact verification packet with PASS, FAIL, or HUMAN DECISION.
+6. Classify the criteria as locally provable or requiring controlled live proof. Use a proving branch only when a required criterion needs it.
+7. Identify required gates: build, compile, lint, typecheck, unit, integration, e2e, contract, coverage, smoke, API, CLI, or docs commands.
+8. Run checks already reported when needed to confirm evidence.
+9. Run checks that were missed but should have been run.
+10. Perform focused smoke QA for the changed behavior when the target surface supports it. If a repo-local smoke skill or smoke runbook matches the target surface, use it as the smoke command source unless credentials, production access, or destructive side effects make it blocked.
+11. Capture browser console/network evidence if available and useful.
+12. Assess whether tests cover the changed behavior and risk.
+13. Assess whether implementation shape matches any architecture model packet without requiring textual or syntactic similarity to Quint.
+14. Record exact commands, pass/fail status, relevant output summary, and residual risk.
+15. Clean up any proving branch on a terminal result, then produce a compact verification packet with PASS, FAIL, or HUMAN DECISION.
 
 ## Command Selection
 
@@ -156,11 +184,15 @@ Choose commands from the strongest available source:
 
 Prefer the smallest command set that gives real confidence, but do not skip broad gates when the change has broad blast radius.
 
-If a command needs network, credentials, production access, destructive mutation, or external side effects, do not run it without explicit approval. Record it as blocked or requiring human decision.
+The workflow or user may preauthorize the proving-branch push, deployment, and
+cleanup as one controlled verification operation. Other commands that need
+network, credentials, production access, destructive mutation, or external side
+effects still require explicit approval. Record them as blocked or requiring
+human decision.
 
 ## Result
 
-Use `PASS` only when required gates passed, focused smoke QA supports the changed behavior when applicable, test coverage is adequate for the risk, and no blocking verification gaps remain.
+Use `PASS` only when required gates passed, every required local or controlled-live criterion has fresh evidence, focused smoke QA supports the changed behavior when applicable, test coverage is adequate for the risk, and no blocking verification gaps remain.
 
 Use `FAIL` when a required gate fails, the feature behavior fails, the implementation cannot run, required test coverage is missing for high-risk behavior, or evidence contradicts the implementation claim.
 
@@ -200,6 +232,13 @@ Additional checks:
 - <check verifier added>
 Smoke QA:
 - <focused QA path, or none>
+## Proving Branch
+Required:
+yes | no
+Branch:
+<branch name, or "not used">
+State:
+not used | retained for verifier retry | deleted | cleanup failed
 ## Commands Run
 | Command | Purpose | Result | Notes |
 |---|---|---|---|
@@ -248,6 +287,9 @@ Do not rewrite the PER spec.
 Do not create follow-up beads.
 
 Do not modify product code, docs, tests, or configuration.
+
+Do not initiate hard review while required verification is incomplete or the
+result is `FAIL`.
 
 Do not hide failed tests, weaken checks, or suppress errors to make work appear done.
 
