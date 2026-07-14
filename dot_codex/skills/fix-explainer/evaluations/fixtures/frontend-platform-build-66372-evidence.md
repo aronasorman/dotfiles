@@ -5,6 +5,14 @@
 - Expected behavior: `$(service)` is replaced with a concrete service such as `video`, producing `apps/video/deployment.azure.yaml`.
 - Confirmed diagnosis: automatic changed-service discovery queried Azure Repos after the repository moved to GitHub. `getPullRequests` returned `null`; calling `.at(0)` on that null result threw before the script emitted its final `#JSON` matrix. The wrapper published an empty matrix value, and the downstream job retained the literal `$(service)` token.
 
+## Required problem bridges
+
+Place these three cards between Expected behavior and Diagnosis:
+
+1. `What the literal token tells us`: `$(service)` was never replaced, so the Docker task received a placeholder instead of a real service name.
+2. `Where the service name comes from`: the prepare job should emit a service matrix, and `strategy.matrix` supplies one concrete `service` value to each build job.
+3. `Where that process failed`: automatic discovery threw before its final `#JSON` line, and the wrapper published an empty matrix value instead of failing the prepare job.
+
 ## Main causal source anchors, ordered backward from the symptom
 
 1. `deployment/deployment.pipeline.yml`, lines 129-137, SHA-256 `ab52f4d2b3b106f228e4049d08c308f077e0134ca94395639251d6922302d5d3`: the build job consumes the matrix and can run without a matrix-provided service variable.

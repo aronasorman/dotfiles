@@ -45,6 +45,16 @@ class SkillContractTests(unittest.TestCase):
             skill,
         )
 
+    def test_problem_context_allows_up_to_three_bridge_cards(self) -> None:
+        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "`problem.bridges` may add 1-3 `{label, body}` cards between "
+            "expected and diagnosis when intermediate reasoning is needed; "
+            "omit it otherwise. This keeps problem context at 3-6 cards.",
+            skill,
+        )
+
     def test_original_problem_behavior_case_uses_packaged_evidence(self) -> None:
         cases_path = SKILL_ROOT / "evaluations" / "cases.json"
         cases = json.loads(cases_path.read_text(encoding="utf-8"))
@@ -77,6 +87,7 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("Inference:", evidence)
         for expected in (
             "starts problem.symptom with the exact user-visible build error",
+            "uses three bridge cards to connect expected behavior to diagnosis",
             "orders the main causal context.flow and evidence backward from "
             "that symptom through mechanism to root cause",
             "places supporting scope evidence after the causal chain and "
@@ -181,6 +192,44 @@ class ValidationTests(unittest.TestCase):
 
     def manifest(self) -> dict:
         return valid_manifest(self.source, self.digest)
+
+    def test_problem_supports_up_to_three_ordered_bridge_cards(self) -> None:
+        for count in (1, 3):
+            with self.subTest(count=count):
+                manifest = self.manifest()
+                manifest["problem"]["bridges"] = [
+                    {
+                        "label": f"Bridge {index}",
+                        "body": f"Explanation {index}",
+                    }
+                    for index in range(1, count + 1)
+                ]
+
+                collected = validate_and_collect(manifest, self.repo_root)
+
+                self.assertEqual(
+                    collected["problem"]["bridges"],
+                    manifest["problem"]["bridges"],
+                )
+
+    def test_problem_rejects_invalid_bridge_cards(self) -> None:
+        valid = {"label": "Bridge", "body": "Explanation"}
+        invalid_values = (
+            [],
+            [copy.deepcopy(valid) for _ in range(4)],
+            [{"label": "Bridge"}],
+            [{"label": "Bridge", "body": "Explanation", "extra": True}],
+            [{"label": " ", "body": "Explanation"}],
+            [{"label": "Bridge", "body": 2}],
+            "not-an-array",
+        )
+
+        for bridges in invalid_values:
+            with self.subTest(bridges=bridges):
+                manifest = self.manifest()
+                manifest["problem"]["bridges"] = bridges
+                with self.assertRaises(ValidationError):
+                    validate_and_collect(manifest, self.repo_root)
 
     def test_valid_evidence_returns_exact_source_line_tuples(self) -> None:
         manifest = self.manifest()
@@ -385,6 +434,15 @@ class ValidationTests(unittest.TestCase):
             "https://json-schema.org/draft/2020-12/schema",
         )
         self.assertEqual(set(schema["required"]), set(ROOT_REQUIRED_FIELDS))
+        problem_schema = schema["properties"]["problem"]
+        self.assertIn("bridges", problem_schema["properties"])
+        bridge_schema = problem_schema["properties"]["bridges"]
+        self.assertEqual(bridge_schema["minItems"], 1)
+        self.assertEqual(bridge_schema["maxItems"], 3)
+        self.assertEqual(
+            set(bridge_schema["items"]["required"]),
+            {"label", "body"},
+        )
         evidence_schema = schema["properties"]["evidence"]
         self.assertEqual(evidence_schema["minItems"], MIN_EVIDENCE_ITEMS)
         self.assertEqual(evidence_schema["maxItems"], MAX_EVIDENCE_ITEMS)
@@ -617,6 +675,49 @@ class RenderingTests(unittest.TestCase):
         ):
             with self.subTest(pattern=pattern):
                 self.assertRegex(template, pattern)
+
+    def test_problem_bridge_cards_render_between_expected_and_diagnosis(self) -> None:
+        manifest = self.manifest()
+        manifest["problem"]["bridges"] = [
+            {"label": "What the token means", "body": "It stayed literal."},
+            {"label": "Where it comes from", "body": "The matrix supplies it."},
+            {"label": "Where it broke", "body": "Discovery emitted no matrix."},
+        ]
+
+        html = self.render_html(manifest)
+
+        problem_start = html.index('<section class="section-card problem-context"')
+        problem_end = html.index("</section>", problem_start)
+        problem_html = html[problem_start:problem_end]
+        ordered_text = (
+            "Observed symptom",
+            "Expected behavior",
+            "What the token means",
+            "Where it comes from",
+            "Where it broke",
+            "Diagnosis",
+        )
+        positions = [problem_html.index(text) for text in ordered_text]
+        self.assertEqual(positions, sorted(positions))
+        self.assertEqual(problem_html.count("<dt>"), 6)
+
+    def test_problem_bridge_cards_are_html_escaped(self) -> None:
+        manifest = self.manifest()
+        manifest["problem"]["bridges"] = [{
+            "label": "<Bridge>",
+            "body": '<script data-x="quoted">unsafe & stop</script>',
+        }]
+
+        html = self.render_html(manifest)
+
+        self.assertIn("&lt;Bridge&gt;", html)
+        self.assertIn(
+            "&lt;script data-x=&quot;quoted&quot;&gt;unsafe &amp; "
+            "stop&lt;/script&gt;",
+            html,
+        )
+        self.assertNotIn("<Bridge>", html)
+        self.assertNotIn('<script data-x="quoted">', html)
 
     def custom_template(
         self,

@@ -11,11 +11,11 @@ Create one temporary static annotated-source page. Do not diagnose, debug, imple
 
 ## Evidence gate
 
-Proceed only when supplied evidence establishes the diagnosis, repository root, and source paths/ranges. Put external claims (Slack, logs) in `verification`; reserve evidence cards for observed source; label reasoning `Inference:`. If anchors or a diagnosis are missing, stop, name the gaps, and create nothing. Require logs only for log-dependent claims. Do not investigate.
+Require a diagnosis, repository root, and source paths/ranges. Put external claims (Slack, logs) in `verification`, observed source in evidence cards, and prefix reasoning `Inference:`. If anything is missing, name the gaps and create nothing. Require logs for log-dependent claims. Do not investigate.
 
 ## Workflow
 
-1. Create a session directory outside the repository and snapshot its exact state:
+1. Create an external session directory and snapshot repository state:
 
    ```bash
    SKILL_DIR="${CODEX_HOME:-$HOME/.codex}/skills/fix-explainer"
@@ -29,7 +29,7 @@ Proceed only when supplied evidence establishes the diagnosis, repository root, 
    python3 -c 'import hashlib,sys; print(hashlib.sha256(open(sys.argv[1],"rb").read()).hexdigest())' "$REPO_ROOT/$REL_PATH"
    ```
 
-3. Keep the section order: problem -> context -> evidence -> proposed change -> verification -> takeaway. For a bug or bug fix, write `problem.symptom` as the user-visible failure (the exact error when supplied), then order the main causal `context.flow` and evidence backward from that symptom through mechanism to root cause. Place labeled supporting evidence after the chain. Use 1-5 evidence blocks. Target 8-24 source lines per block; never exceed 24. Keep each combined Situation-Mechanism-Implication-Gotcha callout at 90 words or fewer. Use `proposed_fix: null` when none exists. Otherwise show only supplied candidate code and keep the rendered `Proposed — not applied` label. Verification status is exactly `verified`, `not_run`, or `unsupported`.
+3. Keep order: problem -> context -> evidence -> proposed change -> verification -> takeaway. For a bug or bug fix, write `problem.symptom` as the user-visible failure (the exact error when supplied), then order the main causal `context.flow` and evidence backward from that symptom through mechanism to root cause. `problem.bridges` may add 1-3 `{label, body}` cards between expected and diagnosis when intermediate reasoning is needed; omit it otherwise. This keeps problem context at 3-6 cards. Place labeled supporting evidence after the chain. Use 1-5 evidence blocks of ideally 8-24 lines; never exceed 24. Keep each combined Situation-Mechanism-Implication-Gotcha callout at 90 words or fewer. Use `proposed_fix: null` when none exists. Otherwise show only supplied candidate code and keep the rendered `Proposed — not applied` label. Verification status is exactly `verified`, `not_run`, or `unsupported`.
 
 4. Render with the bundled validator:
 
@@ -37,9 +37,9 @@ Proceed only when supplied evidence establishes the diagnosis, repository root, 
    python3 "$SKILL_DIR/scripts/render_explainer.py" --manifest "$ARTIFACT_DIR/manifest.json" --repo-root "$REPO_ROOT" --output "$ARTIFACT_DIR/index.html"
    ```
 
-   A validation error is a stop, not permission to weaken evidence.
+   Validation errors do not permit weaker evidence.
 
-5. The output is static HTML. Open it directly in the system browser by default with `open "$ARTIFACT_DIR/index.html"`; no server is needed. Only when the user explicitly requests the in-app browser, serve `$ARTIFACT_DIR` on temporary `127.0.0.1`; never use `file://`. Keep the server and `$ARTIFACT_DIR` alive while the tab is a user-facing deliverable. If that tab is blank or cannot attach, use the direct system-browser path. If both paths fail, return the active local path.
+5. Open it directly in the system browser by default with `open "$ARTIFACT_DIR/index.html"`; no server is needed. Only when the user explicitly requests the in-app browser, serve `$ARTIFACT_DIR` on temporary `127.0.0.1`; never use `file://`. Keep the server and `$ARTIFACT_DIR` alive while the tab is a user-facing deliverable. If that tab is blank or cannot attach, use the direct system-browser path. If both paths fail, return the active local path.
 
 6. Prove the repository stayed unchanged. The snapshot covers HEAD/ref, status, tracked and index binary-diff hashes, and untracked/ignored path, mode, and content hashes:
 

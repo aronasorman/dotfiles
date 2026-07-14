@@ -4,6 +4,20 @@
   "problem": {
     "symptom": "A build job starts without a selected service.",
     "expected": "Discovery emits a concrete service matrix.",
+    "bridges": [
+      {
+        "label": "What the missing value means",
+        "body": "The build job received no concrete service name."
+      },
+      {
+        "label": "Where the value comes from",
+        "body": "The preparation step supplies each service through the matrix."
+      },
+      {
+        "label": "Where the chain broke",
+        "body": "Discovery stopped before it produced that matrix."
+      }
+    ],
     "diagnosis": "The discovery boundary must finish before the matrix can exist."
   },
   "context": {

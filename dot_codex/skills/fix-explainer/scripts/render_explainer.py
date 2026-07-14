@@ -32,6 +32,9 @@ MAX_EXCERPT_LINES = 24
 MAX_SMIG_WORDS = 90
 
 PROBLEM_FIELDS = ("symptom", "expected", "diagnosis")
+PROBLEM_OPTIONAL_FIELDS = ("bridges",)
+PROBLEM_BRIDGE_FIELDS = ("label", "body")
+MAX_PROBLEM_BRIDGES = 3
 CONTEXT_FIELDS = ("file_role", "flow")
 EVIDENCE_FIELDS = (
     "path",
@@ -317,9 +320,38 @@ def _validate_evidence_item(
 
 
 def _validate_problem(problem: Any) -> None:
-    value = _require_exact_keys(problem, PROBLEM_FIELDS, "problem")
+    value = _require_exact_keys(
+        problem,
+        PROBLEM_FIELDS,
+        "problem",
+        optional=PROBLEM_OPTIONAL_FIELDS,
+    )
     for field in PROBLEM_FIELDS:
         _require_nonempty_string(value[field], f"problem.{field}")
+    if "bridges" not in value:
+        return
+    bridges = value["bridges"]
+    if not isinstance(bridges, list):
+        raise ValidationError("problem.bridges: expected an array")
+    if not bridges:
+        raise ValidationError("problem.bridges: must contain at least one item")
+    if len(bridges) > MAX_PROBLEM_BRIDGES:
+        raise ValidationError(
+            "problem.bridges: expected at most "
+            f"{MAX_PROBLEM_BRIDGES} items"
+        )
+    for index, bridge in enumerate(bridges):
+        field = f"problem.bridges[{index}]"
+        bridge_value = _require_exact_keys(
+            bridge,
+            PROBLEM_BRIDGE_FIELDS,
+            field,
+        )
+        for bridge_field in PROBLEM_BRIDGE_FIELDS:
+            _require_nonempty_string(
+                bridge_value[bridge_field],
+                f"{field}.{bridge_field}",
+            )
 
 
 def _validate_context(context: Any) -> None:
@@ -437,7 +469,13 @@ def _line_range(start_line: int, end_line: int) -> str:
     return f"Lines {start_line}\u2013{end_line}"
 
 
-def _render_problem(problem: Dict[str, str]) -> str:
+def _render_problem(problem: Dict[str, Any]) -> str:
+    bridge_facts = "".join(
+        "    <div><dt>"
+        f'{_escape(bridge["label"])}</dt><dd>'
+        f'{_escape(bridge["body"])}</dd></div>\n'
+        for bridge in problem.get("bridges", [])
+    )
     return (
         '<section class="section-card problem-context" '
         'aria-labelledby="problem-heading">\n'
@@ -448,6 +486,7 @@ def _render_problem(problem: Dict[str, str]) -> str:
         f'{_escape(problem["symptom"])}</dd></div>\n'
         '    <div><dt>Expected behavior</dt><dd>'
         f'{_escape(problem["expected"])}</dd></div>\n'
+        f'{bridge_facts}'
         '    <div><dt>Diagnosis</dt><dd>'
         f'{_escape(problem["diagnosis"])}</dd></div>\n'
         '  </dl>\n'
