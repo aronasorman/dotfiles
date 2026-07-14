@@ -7,11 +7,11 @@ user-invocable: true
 
 # Fix Explainer
 
-Create one temporary, static annotated-source page. This is read-only: do not diagnose, debug, implement, or write inside the target repository.
+Create one temporary static annotated-source page. Do not diagnose, debug, implement, or write in the target repository.
 
 ## Evidence gate
 
-Proceed only when supplied evidence establishes the diagnosis and provides the repository root plus real source paths and ranges. Attribute external claims (for example, Slack or logs) in `verification`; reserve evidence cards for observed source; label reasoning as `Inference:`. If source anchors, a confirmed diagnosis, or evidence supporting it are missing, stop, name what is missing, and create nothing. Logs are required only for claims that depend on them. Do not investigate to fill gaps.
+Proceed only when supplied evidence establishes the diagnosis, repository root, and source paths/ranges. Put external claims (Slack, logs) in `verification`; reserve evidence cards for observed source; label reasoning `Inference:`. If anchors or a diagnosis are missing, stop, name the gaps, and create nothing. Require logs only for log-dependent claims. Do not investigate.
 
 ## Workflow
 
@@ -23,13 +23,13 @@ Proceed only when supplied evidence establishes the diagnosis and provides the r
    python3 "$SKILL_DIR/scripts/snapshot_repo.py" --repo-root "$REPO_ROOT" --output "$ARTIFACT_DIR/repo-before.json"
    ```
 
-2. Read `references/explainer-schema.json` and the fixture in `evaluations/fixtures/`. Write `$ARTIFACT_DIR/manifest.json`; never copy unverified prose into it. Calculate every source hash from exact bytes:
+2. Read `references/explainer-schema.json` and `evaluations/fixtures/example-manifest.json`. Write `$ARTIFACT_DIR/manifest.json` from verified prose. Hash exact source bytes:
 
    ```bash
    python3 -c 'import hashlib,sys; print(hashlib.sha256(open(sys.argv[1],"rb").read()).hexdigest())' "$REPO_ROOT/$REL_PATH"
    ```
 
-3. Arrange the narrative as problem -> file role and flow -> observed source in causal order -> proposed change -> verification -> takeaway. Use 1-5 evidence blocks. For each block, target 8-24 source lines; never exceed 24. Keep its combined Situation-Mechanism-Implication-Gotcha callout at 90 words or fewer. Use `proposed_fix: null` when none exists. Otherwise show only supplied candidate code and keep the rendered `Proposed — not applied` label. Verification status is exactly `verified`, `not_run`, or `unsupported`.
+3. Keep the section order: problem -> context -> evidence -> proposed change -> verification -> takeaway. For a bug or bug fix, write `problem.symptom` as the user-visible failure (the exact error when supplied), then order the main causal `context.flow` and evidence backward from that symptom through mechanism to root cause. Place labeled supporting evidence after the chain. Use 1-5 evidence blocks. Target 8-24 source lines per block; never exceed 24. Keep each combined Situation-Mechanism-Implication-Gotcha callout at 90 words or fewer. Use `proposed_fix: null` when none exists. Otherwise show only supplied candidate code and keep the rendered `Proposed — not applied` label. Verification status is exactly `verified`, `not_run`, or `unsupported`.
 
 4. Render with the bundled validator:
 

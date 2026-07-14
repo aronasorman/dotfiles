@@ -3,9 +3,12 @@
   "cases": [
     {
       "id": "original-problem",
-      "prompt": "Create one static browser walkthrough for the confirmed frontend-platform build 66372 diagnosis in /private/tmp/fix-explainer-original-evidence.md. Do not change application source.",
+      "prompt": "$fix-explainer Create one static browser walkthrough for the confirmed frontend-platform build 66372 diagnosis in dot_codex/skills/fix-explainer/evaluations/fixtures/frontend-platform-build-66372-evidence.md. Do not change application source.",
       "expected": [
         "uses only established evidence",
+        "starts problem.symptom with the exact user-visible build error",
+        "orders the main causal context.flow and evidence backward from that symptom through mechanism to root cause",
+        "places supporting scope evidence after the causal chain and labels its inference",
         "shows verified relative source paths and exact lines",
         "separates reported context, observed code, and inference without inventing candidate code",
         "does not write into the target repository",

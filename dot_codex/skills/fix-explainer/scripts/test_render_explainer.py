@@ -34,6 +34,57 @@ EXPECTED_CSP = (
 
 
 class SkillContractTests(unittest.TestCase):
+    def test_bug_explanations_start_with_user_visible_symptom(self) -> None:
+        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "For a bug or bug fix, write `problem.symptom` as the user-visible "
+            "failure (the exact error when supplied), then order "
+            "the main causal `context.flow` and evidence backward from that "
+            "symptom through mechanism to root cause.",
+            skill,
+        )
+
+    def test_original_problem_behavior_case_uses_packaged_evidence(self) -> None:
+        cases_path = SKILL_ROOT / "evaluations" / "cases.json"
+        cases = json.loads(cases_path.read_text(encoding="utf-8"))
+        original = next(
+            case for case in cases["cases"] if case["id"] == "original-problem"
+        )
+        evidence_path = (
+            SKILL_ROOT
+            / "evaluations"
+            / "fixtures"
+            / "frontend-platform-build-66372-evidence.md"
+        )
+
+        self.assertIn(
+            "evaluations/fixtures/frontend-platform-build-66372-evidence.md",
+            original["prompt"],
+        )
+        self.assertTrue(evidence_path.is_file())
+        evidence = evidence_path.read_text(encoding="utf-8")
+        self.assertIn(
+            "Path does not exist: "
+            "/home/vsts/work/1/s/apps/$(service)/deployment.azure.yaml",
+            evidence,
+        )
+        self.assertIn(
+            "`getPullRequests` returned `null`; calling `.at(0)` on that null "
+            "result threw",
+            evidence,
+        )
+        self.assertIn("Inference:", evidence)
+        for expected in (
+            "starts problem.symptom with the exact user-visible build error",
+            "orders the main causal context.flow and evidence backward from "
+            "that symptom through mechanism to root cause",
+            "places supporting scope evidence after the causal chain and "
+            "labels its inference",
+        ):
+            with self.subTest(expected=expected):
+                self.assertIn(expected, original["expected"])
+
     def test_static_html_defaults_to_direct_system_browser_delivery(self) -> None:
         skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
 
