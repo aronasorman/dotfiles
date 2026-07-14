@@ -8,6 +8,7 @@ import json
 import os
 import re
 import tempfile
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
@@ -64,6 +65,11 @@ TEMPLATE_PLACEHOLDERS = (
     "TAKEAWAY",
 )
 TEMPLATE_TOKEN_PATTERN = re.compile(r"{{([^{}\r\n]+)}}")
+EXPECTED_CSP = (
+    "default-src 'none'; style-src 'unsafe-inline'; img-src data:; "
+    "base-uri 'none'; form-action 'none'"
+)
+PROHIBITED_TEMPLATE_TAGS = {"script", "iframe", "object", "embed", "link"}
 STATUS_LABELS = {
     "verified": "verified",
     "not_run": "not run",
@@ -73,6 +79,46 @@ STATUS_LABELS = {
 
 class ValidationError(ValueError):
     """Raised when a manifest cannot be tied safely to observed source."""
+
+
+class _TemplateSafetyParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.csp_values: List[Optional[str]] = []
+
+    def _validate_start_tag(
+        self, tag: str, attrs: List[Tuple[str, Optional[str]]]
+    ) -> None:
+        if tag in PROHIBITED_TEMPLATE_TAGS:
+            raise ValidationError(f"template: {tag} elements are not allowed")
+
+        attributes = dict(attrs)
+        for name, value in attrs:
+            if name.startswith("on"):
+                raise ValidationError(
+                    f"template: event-handler attribute {name} is not allowed"
+                )
+            if name == "src" and not (value or "").lower().startswith("data:"):
+                raise ValidationError("template: src attributes must use data: URLs")
+            if name == "href" and not (value or "").startswith("#"):
+                raise ValidationError(
+                    "template: href attributes must be fragment-only"
+                )
+
+        if (attributes.get("http-equiv") or "").lower() == (
+            "content-security-policy"
+        ):
+            self.csp_values.append(attributes.get("content"))
+
+    def handle_starttag(
+        self, tag: str, attrs: List[Tuple[str, Optional[str]]]
+    ) -> None:
+        self._validate_start_tag(tag, attrs)
+
+    def handle_startendtag(
+        self, tag: str, attrs: List[Tuple[str, Optional[str]]]
+    ) -> None:
+        self._validate_start_tag(tag, attrs)
 
 
 def _require_mapping(value: Any, field: str) -> Dict[str, Any]:
@@ -563,6 +609,25 @@ def _read_template(template_path: Path) -> str:
         ) from exc
 
 
+def _validate_custom_template(template: str) -> None:
+    template_tokens = TEMPLATE_TOKEN_PATTERN.findall(template)
+    if template_tokens != list(TEMPLATE_PLACEHOLDERS):
+        raise ValidationError(
+            "template: placeholders must each occur once in required order: "
+            + ", ".join(TEMPLATE_PLACEHOLDERS)
+        )
+    if re.search(r"@\s*import\b", template, re.IGNORECASE):
+        raise ValidationError("template: CSS @import is not allowed")
+
+    parser = _TemplateSafetyParser()
+    parser.feed(template)
+    parser.close()
+    if parser.csp_values != [EXPECTED_CSP]:
+        raise ValidationError(
+            "template: exactly one required Content-Security-Policy is required"
+        )
+
+
 def _substitute_template(template: str, fragments: Dict[str, str]) -> str:
     template_tokens = TEMPLATE_TOKEN_PATTERN.findall(template)
     expected_tokens = set(TEMPLATE_PLACEHOLDERS)
@@ -581,6 +646,29 @@ def _substitute_template(template: str, fragments: Dict[str, str]) -> str:
     return TEMPLATE_TOKEN_PATTERN.sub(
         lambda match: fragments[match.group(1)], template
     )
+
+
+def _is_within(candidate: Path, root: Path) -> bool:
+    try:
+        candidate.relative_to(root)
+    except ValueError:
+        return False
+    return True
+
+
+def _validate_output_path(repo_root: Path, output_path: Path) -> None:
+    lexical_root = Path(os.path.abspath(str(repo_root)))
+    lexical_output = Path(os.path.abspath(str(output_path)))
+    if _is_within(lexical_output, lexical_root):
+        raise ValidationError("output: path must be outside repository root")
+
+    try:
+        resolved_root = Path(repo_root).resolve(strict=True)
+        resolved_output = Path(output_path).resolve(strict=False)
+    except (OSError, RuntimeError, ValueError) as exc:
+        raise ValidationError("output: cannot resolve path safely") from exc
+    if _is_within(resolved_output, resolved_root):
+        raise ValidationError("output: resolved path must be outside repository root")
 
 
 def _atomic_write(output_path: Path, rendered_html: str) -> None:
@@ -625,6 +713,8 @@ def render(
 ) -> None:
     """Validate evidence and atomically render a deterministic static page."""
 
+    output_path = Path(output_path)
+    _validate_output_path(Path(repo_root), output_path)
     try:
         with Path(manifest_path).open("r", encoding="utf-8") as manifest_file:
             manifest = json.load(manifest_file)
@@ -632,9 +722,12 @@ def render(
         raise ValidationError(f"manifest: cannot read valid UTF-8 JSON: {manifest_path}") from exc
     collected = validate_and_collect(manifest, repo_root)
 
-    if template_path is None:
+    custom_template = template_path is not None
+    if not custom_template:
         template_path = Path(__file__).resolve().parents[1] / "assets" / "explainer-template.html"
     template = _read_template(Path(template_path))
+    if custom_template:
+        _validate_custom_template(template)
     fragments = {
         "TITLE": _escape(collected["title"]),
         "PROBLEM": _render_problem(collected["problem"]),
@@ -645,7 +738,7 @@ def render(
         "TAKEAWAY": _render_takeaway(collected["takeaway"]),
     }
     rendered_html = _substitute_template(template, fragments)
-    _atomic_write(Path(output_path), rendered_html)
+    _atomic_write(output_path, rendered_html)
 
 
 def _argument_parser() -> argparse.ArgumentParser:

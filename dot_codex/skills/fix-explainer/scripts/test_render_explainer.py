@@ -26,6 +26,10 @@ from render_explainer import (
 
 
 SKILL_ROOT = Path(__file__).resolve().parents[1]
+EXPECTED_CSP = (
+    "default-src 'none'; style-src 'unsafe-inline'; img-src data:; "
+    "base-uri 'none'; form-action 'none'"
+)
 
 
 def valid_manifest(path: Path, digest: str) -> dict:
@@ -392,6 +396,74 @@ class RenderingTests(unittest.TestCase):
         render(self.manifest_path, self.repo_root, self.output_path)
         return self.output_path.read_text(encoding="utf-8")
 
+    def custom_template(
+        self,
+        placeholders: list = None,
+        *,
+        csp: str = EXPECTED_CSP,
+        extra_head: str = "",
+        body_attributes: str = "",
+        extra_body: str = "",
+    ) -> str:
+        if placeholders is None:
+            placeholders = [
+                "TITLE",
+                "PROBLEM",
+                "CONTEXT",
+                "EVIDENCE",
+                "PROPOSED_FIX",
+                "VERIFICATION",
+                "TAKEAWAY",
+            ]
+        bindings = "\n".join(
+            "{{" + placeholder + "}}" for placeholder in placeholders
+        )
+        return (
+            "<!doctype html>\n"
+            "<html lang=\"en\">\n"
+            "<head>\n"
+            f"  <meta http-equiv=\"Content-Security-Policy\" content=\"{csp}\">\n"
+            f"  {extra_head}\n"
+            "</head>\n"
+            f"<body{body_attributes}>\n"
+            f"{extra_body}\n"
+            f"{bindings}\n"
+            "</body>\n"
+            "</html>\n"
+        )
+
+    def initialize_git_fixture(self) -> None:
+        tracked = self.repo_root / "tracked.txt"
+        tracked.write_text("committed\n", encoding="utf-8")
+        os.chmod(self.source, 0o640)
+        subprocess.run(
+            ["git", "init", "-q"], cwd=str(self.repo_root), check=True
+        )
+        subprocess.run(
+            ["git", "config", "user.email", "test@example.invalid"],
+            cwd=str(self.repo_root),
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.name", "Fix Explainer Test"],
+            cwd=str(self.repo_root),
+            check=True,
+        )
+        subprocess.run(
+            ["git", "add", "example.ts", "tracked.txt"],
+            cwd=str(self.repo_root),
+            check=True,
+        )
+        subprocess.run(
+            ["git", "commit", "-qm", "fixture"],
+            cwd=str(self.repo_root),
+            check=True,
+        )
+        tracked.write_text("locally modified\n", encoding="utf-8")
+        (self.repo_root / "untracked.txt").write_text(
+            "user work\n", encoding="utf-8"
+        )
+
     def test_valid_render_contains_complete_annotated_source_narrative(self) -> None:
         html = self.render_html(self.manifest())
 
@@ -572,37 +644,182 @@ class RenderingTests(unittest.TestCase):
 
         self.assertFalse(self.output_path.exists())
 
+    def test_custom_template_requires_each_binding_once_in_order(self) -> None:
+        cases = {
+            "missing": [
+                "TITLE",
+                "PROBLEM",
+                "CONTEXT",
+                "EVIDENCE",
+                "PROPOSED_FIX",
+                "VERIFICATION",
+            ],
+            "reordered": [
+                "TITLE",
+                "CONTEXT",
+                "PROBLEM",
+                "EVIDENCE",
+                "PROPOSED_FIX",
+                "VERIFICATION",
+                "TAKEAWAY",
+            ],
+            "duplicated": [
+                "TITLE",
+                "TITLE",
+                "PROBLEM",
+                "CONTEXT",
+                "EVIDENCE",
+                "PROPOSED_FIX",
+                "VERIFICATION",
+                "TAKEAWAY",
+            ],
+        }
+        self.write_manifest(self.manifest())
+
+        for name, placeholders in cases.items():
+            with self.subTest(name=name):
+                template_path = self.temp_path / f"{name}-template.html"
+                output_path = self.temp_path / f"{name}-output.html"
+                template_path.write_text(
+                    self.custom_template(placeholders), encoding="utf-8"
+                )
+
+                with self.assertRaisesRegex(ValidationError, "template"):
+                    render(
+                        self.manifest_path,
+                        self.repo_root,
+                        output_path,
+                        template_path,
+                    )
+
+                self.assertFalse(output_path.exists())
+
+    def test_custom_template_requires_exact_csp(self) -> None:
+        self.write_manifest(self.manifest())
+        template_path = self.temp_path / "wrong-csp-template.html"
+        template_path.write_text(
+            self.custom_template(csp="default-src 'self'"), encoding="utf-8"
+        )
+
+        with self.assertRaisesRegex(ValidationError, "template"):
+            render(
+                self.manifest_path,
+                self.repo_root,
+                self.output_path,
+                template_path,
+            )
+
+        self.assertFalse(self.output_path.exists())
+
+    def test_custom_template_rejects_active_or_remote_content(self) -> None:
+        cases = {
+            "script": {"extra_body": "<script>run()</script>"},
+            "iframe": {"extra_body": "<iframe></iframe>"},
+            "object": {"extra_body": "<object></object>"},
+            "embed": {"extra_body": "<embed>"},
+            "external-link": {
+                "extra_head": '<link rel="stylesheet" href="https://evil.invalid/x.css">'
+            },
+            "event-handler": {"body_attributes": ' onclick="run()"'},
+            "remote-src": {
+                "extra_body": '<img src="https://evil.invalid/x.png">'
+            },
+            "external-href": {
+                "extra_body": '<a href="https://evil.invalid/">leave</a>'
+            },
+            "css-import": {
+                "extra_head": '<style>@import "https://evil.invalid/x.css";</style>'
+            },
+        }
+        self.write_manifest(self.manifest())
+
+        for name, additions in cases.items():
+            with self.subTest(name=name):
+                template_path = self.temp_path / f"unsafe-{name}.html"
+                output_path = self.temp_path / f"unsafe-{name}-output.html"
+                template_path.write_text(
+                    self.custom_template(**additions), encoding="utf-8"
+                )
+
+                with self.assertRaisesRegex(ValidationError, "template"):
+                    render(
+                        self.manifest_path,
+                        self.repo_root,
+                        output_path,
+                        template_path,
+                    )
+
+                self.assertFalse(output_path.exists())
+
+    def test_safe_custom_template_remains_supported(self) -> None:
+        self.write_manifest(self.manifest())
+        template_path = self.temp_path / "safe-custom-template.html"
+        template_path.write_text(
+            self.custom_template(
+                extra_body=(
+                    '<img alt="pixel" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">'
+                    '<a href="#evidence">Evidence</a>'
+                )
+            ),
+            encoding="utf-8",
+        )
+
+        render(
+            self.manifest_path,
+            self.repo_root,
+            self.output_path,
+            template_path,
+        )
+
+        self.assertTrue(self.output_path.exists())
+        self.assertIn("Why the build fails", self.output_path.read_text("utf-8"))
+
+    def test_existing_repository_file_cannot_be_used_as_output(self) -> None:
+        self.initialize_git_fixture()
+        self.write_manifest(self.manifest())
+        before_files = self.repository_snapshot()
+        before_status = self.git_status()
+
+        with self.assertRaisesRegex(ValidationError, "output"):
+            render(self.manifest_path, self.repo_root, self.source)
+
+        self.assertEqual(self.repository_snapshot(), before_files)
+        self.assertEqual(self.git_status(), before_status)
+
+    def test_new_repository_path_cannot_be_used_as_output(self) -> None:
+        self.initialize_git_fixture()
+        self.write_manifest(self.manifest())
+        output_path = self.repo_root / "generated" / "index.html"
+        before_files = self.repository_snapshot()
+        before_status = self.git_status()
+
+        with self.assertRaisesRegex(ValidationError, "output"):
+            render(self.manifest_path, self.repo_root, output_path)
+
+        self.assertFalse(output_path.exists())
+        self.assertFalse(output_path.parent.exists())
+        self.assertEqual(self.repository_snapshot(), before_files)
+        self.assertEqual(self.git_status(), before_status)
+
+    def test_symlinked_output_parent_cannot_resolve_into_repository(self) -> None:
+        self.initialize_git_fixture()
+        self.write_manifest(self.manifest())
+        symlinked_parent = self.temp_path / "outside-link"
+        os.symlink(str(self.repo_root), str(symlinked_parent))
+        output_path = symlinked_parent / "generated.html"
+        repository_target = self.repo_root / "generated.html"
+        before_files = self.repository_snapshot()
+        before_status = self.git_status()
+
+        with self.assertRaisesRegex(ValidationError, "output"):
+            render(self.manifest_path, self.repo_root, output_path)
+
+        self.assertFalse(repository_target.exists())
+        self.assertEqual(self.repository_snapshot(), before_files)
+        self.assertEqual(self.git_status(), before_status)
+
     def test_render_preserves_repository_bytes_modes_names_and_git_status(self) -> None:
-        tracked = self.repo_root / "tracked.txt"
-        tracked.write_text("committed\n", encoding="utf-8")
-        os.chmod(self.source, 0o640)
-        subprocess.run(
-            ["git", "init", "-q"], cwd=str(self.repo_root), check=True
-        )
-        subprocess.run(
-            ["git", "config", "user.email", "test@example.invalid"],
-            cwd=str(self.repo_root),
-            check=True,
-        )
-        subprocess.run(
-            ["git", "config", "user.name", "Fix Explainer Test"],
-            cwd=str(self.repo_root),
-            check=True,
-        )
-        subprocess.run(
-            ["git", "add", "example.ts", "tracked.txt"],
-            cwd=str(self.repo_root),
-            check=True,
-        )
-        subprocess.run(
-            ["git", "commit", "-qm", "fixture"],
-            cwd=str(self.repo_root),
-            check=True,
-        )
-        tracked.write_text("locally modified\n", encoding="utf-8")
-        (self.repo_root / "untracked.txt").write_text(
-            "user work\n", encoding="utf-8"
-        )
+        self.initialize_git_fixture()
         before_files = self.repository_snapshot()
         before_status = self.git_status()
 
