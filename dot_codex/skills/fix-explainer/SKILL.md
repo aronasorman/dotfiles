@@ -39,7 +39,7 @@ Proceed only when supplied evidence establishes the diagnosis and provides the r
 
    A validation error is a stop, not permission to weaken evidence.
 
-5. In Codex Desktop, serve the artifact on a temporary `127.0.0.1` HTTP port and open that URL with the in-app browser; never navigate that browser to `file://`. If in-app control fails, use the system browser with `open "$URL"`. If the loopback server cannot start, open the local HTML directly in the system browser. If neither browser works, return the still-active local path. After a page loads, stop the server.
+5. The output is a static HTML file. In Codex Desktop, serve it on a temporary `127.0.0.1` HTTP port and open that URL in the in-app browser; never use `file://` there. Keep the server and `$ARTIFACT_DIR` alive while the tab is a user-facing deliverable. If in-app delivery fails, open `$ARTIFACT_DIR/index.html` directly in the system browser; this needs no server. If neither browser works, return the active local path.
 
 6. Prove the repository stayed unchanged. The snapshot covers HEAD/ref, status, tracked and index binary-diff hashes, and untracked/ignored path, mode, and content hashes:
 
@@ -48,7 +48,7 @@ Proceed only when supplied evidence establishes the diagnosis and provides the r
    cmp -s "$ARTIFACT_DIR/repo-before.json" "$ARTIFACT_DIR/repo-after.json"
    ```
 
-   After the comparison succeeds and the page has loaded, remove `$ARTIFACT_DIR`. Keep it only when returning the active local path fallback.
+   Clean up only after the user finishes viewing or the delivery session ends. Then stop the server, if any, and remove `$ARTIFACT_DIR`.
 
 ## Quick reference
 

@@ -33,6 +33,32 @@ EXPECTED_CSP = (
 )
 
 
+class SkillContractTests(unittest.TestCase):
+    def test_in_app_delivery_remains_available_while_user_is_viewing(self) -> None:
+        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "Keep the server and `$ARTIFACT_DIR` alive while the tab is a "
+            "user-facing deliverable.",
+            skill,
+        )
+        self.assertIn(
+            "open `$ARTIFACT_DIR/index.html` directly in the system browser",
+            skill,
+        )
+        self.assertIn(
+            "Clean up only after the user finishes viewing or the delivery "
+            "session ends.",
+            skill,
+        )
+        self.assertNotIn("After a page loads, stop the server.", skill)
+        self.assertNotIn(
+            "After the comparison succeeds and the page has loaded, remove "
+            "`$ARTIFACT_DIR`.",
+            skill,
+        )
+
+
 def valid_manifest(path: Path, digest: str) -> dict:
     return {
         "version": 1,
