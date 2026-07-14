@@ -2,23 +2,18 @@
   "version": 1,
   "title": "Why changed-service discovery matters",
   "problem": {
-    "symptom": "A build job starts without a selected service.",
-    "expected": "Discovery emits a concrete service matrix.",
-    "bridges": [
-      {
-        "label": "What the missing value means",
-        "body": "The build job received no concrete service name."
-      },
-      {
-        "label": "Where the value comes from",
-        "body": "The preparation step supplies each service through the matrix."
-      },
-      {
-        "label": "Where the chain broke",
-        "body": "Discovery stopped before it produced that matrix."
-      }
+    "symptom": [
+      "A build job starts without a selected service.",
+      "The unresolved placeholder means the build job received no concrete service name."
     ],
-    "diagnosis": "The discovery boundary must finish before the matrix can exist."
+    "expected": [
+      "Discovery emits a concrete service matrix.",
+      "The preparation step supplies each build job with one service through that matrix."
+    ],
+    "diagnosis": [
+      "Discovery stopped before it produced the matrix.",
+      "The discovery boundary must finish before any downstream service value can exist."
+    ]
   },
   "context": {
     "file_role": "This fixture maps changed paths to buildable services.",

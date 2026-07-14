@@ -7,11 +7,11 @@ user-invocable: true
 
 # Fix Explainer
 
-Create one temporary static annotated-source page. Do not diagnose, debug, implement, or write in the target repository.
+Create one temporary static annotated-source page. Do not diagnose, implement, or write in the target repository.
 
 ## Evidence gate
 
-Require a diagnosis, repository root, and source paths/ranges. Put external claims (Slack, logs) in `verification`, observed source in evidence cards, and prefix reasoning `Inference:`. If anything is missing, name the gaps and create nothing. Require logs for log-dependent claims. Do not investigate.
+Require diagnosis, repository root, and source paths/ranges. Put external claims (Slack, logs) in `verification`, observed source in evidence cards, and prefix reasoning `Inference:`. If anything is missing, name the gaps and create nothing. Require logs for log-dependent claims. Do not investigate.
 
 ## Workflow
 
@@ -23,13 +23,13 @@ Require a diagnosis, repository root, and source paths/ranges. Put external clai
    python3 "$SKILL_DIR/scripts/snapshot_repo.py" --repo-root "$REPO_ROOT" --output "$ARTIFACT_DIR/repo-before.json"
    ```
 
-2. Read `references/explainer-schema.json` and `evaluations/fixtures/example-manifest.json`. Write `$ARTIFACT_DIR/manifest.json` from verified prose. Hash exact source bytes:
+2. Read `references/explainer-schema.json` and `evaluations/fixtures/example-manifest.json`. Write `$ARTIFACT_DIR/manifest.json` from verified prose. Hash source bytes:
 
    ```bash
    python3 -c 'import hashlib,sys; print(hashlib.sha256(open(sys.argv[1],"rb").read()).hexdigest())' "$REPO_ROOT/$REL_PATH"
    ```
 
-3. Keep order: problem -> context -> evidence -> proposed change -> verification -> takeaway. For a bug or bug fix, write `problem.symptom` as the user-visible failure (the exact error when supplied), then order the main causal `context.flow` and evidence backward from that symptom through mechanism to root cause. `problem.bridges` may add 1-3 `{label, body}` cards between expected and diagnosis when intermediate reasoning is needed; omit it otherwise. This keeps problem context at 3-6 cards. Place labeled supporting evidence after the chain. Use 1-5 evidence blocks of ideally 8-24 lines; never exceed 24. Keep each combined Situation-Mechanism-Implication-Gotcha callout at 90 words or fewer. Use `proposed_fix: null` when none exists. Otherwise show only supplied candidate code and keep the rendered `Proposed — not applied` label. Verification status is exactly `verified`, `not_run`, or `unsupported`.
+3. Keep order: problem -> context -> evidence -> proposed change -> verification -> takeaway. For a bug or bug fix, start the first `problem.symptom` paragraph with the user-visible failure (the exact error when supplied), then order the main causal `context.flow` and evidence backward from that symptom through mechanism to root cause. `problem.symptom`, `problem.expected`, and `problem.diagnosis` each contain at least two paragraph strings. Render exactly three cards; paragraph one states the fact and later paragraphs explain its meaning and transition. Place labeled supporting evidence after the chain. Use 1-5 evidence blocks of ideally 8-24 lines; never exceed 24. Keep each combined Situation-Mechanism-Implication-Gotcha callout at 90 words or fewer. Use `proposed_fix: null` when none exists. Otherwise show only supplied candidate code and keep the rendered `Proposed — not applied` label. Verification status is exactly `verified`, `not_run`, or `unsupported`.
 
 4. Render with the bundled validator:
 

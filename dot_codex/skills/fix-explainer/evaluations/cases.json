@@ -7,7 +7,7 @@
       "expected": [
         "uses only established evidence",
         "starts problem.symptom with the exact user-visible build error",
-        "uses three bridge cards to connect expected behavior to diagnosis",
+        "uses exactly three problem cards with at least two paragraphs each",
         "orders the main causal context.flow and evidence backward from that symptom through mechanism to root cause",
         "places supporting scope evidence after the causal chain and labels its inference",
         "shows verified relative source paths and exact lines",

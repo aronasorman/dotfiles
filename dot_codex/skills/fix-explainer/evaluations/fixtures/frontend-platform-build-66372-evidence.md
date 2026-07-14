@@ -5,13 +5,13 @@
 - Expected behavior: `$(service)` is replaced with a concrete service such as `video`, producing `apps/video/deployment.azure.yaml`.
 - Confirmed diagnosis: automatic changed-service discovery queried Azure Repos after the repository moved to GitHub. `getPullRequests` returned `null`; calling `.at(0)` on that null result threw before the script emitted its final `#JSON` matrix. The wrapper published an empty matrix value, and the downstream job retained the literal `$(service)` token.
 
-## Required problem bridges
+## Required problem-card paragraphs
 
-Place these three cards between Expected behavior and Diagnosis:
+Use exactly three cards, with at least two paragraphs in each:
 
-1. `What the literal token tells us`: `$(service)` was never replaced, so the Docker task received a placeholder instead of a real service name.
-2. `Where the service name comes from`: the prepare job should emit a service matrix, and `strategy.matrix` supplies one concrete `service` value to each build job.
-3. `Where that process failed`: automatic discovery threw before its final `#JSON` line, and the wrapper published an empty matrix value instead of failing the prepare job.
+1. `Observed symptom`: first state the exact path error. Then explain that the literal `$(service)` token proves substitution never happened.
+2. `Expected behavior`: first show the concrete path that should exist. Then explain that the prepare job emits a matrix and `strategy.matrix` supplies one concrete `service` value to each build job.
+3. `Diagnosis`: first state that discovery still queried Azure Repos after the repository moved to GitHub. Then explain that the null result caused `.at(0)` to throw before `#JSON`, leaving the wrapper to publish an empty matrix and the downstream token unresolved.
 
 ## Main causal source anchors, ordered backward from the symptom
 

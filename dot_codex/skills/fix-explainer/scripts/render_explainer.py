@@ -32,9 +32,7 @@ MAX_EXCERPT_LINES = 24
 MAX_SMIG_WORDS = 90
 
 PROBLEM_FIELDS = ("symptom", "expected", "diagnosis")
-PROBLEM_OPTIONAL_FIELDS = ("bridges",)
-PROBLEM_BRIDGE_FIELDS = ("label", "body")
-MAX_PROBLEM_BRIDGES = 3
+MIN_PROBLEM_PARAGRAPHS = 2
 CONTEXT_FIELDS = ("file_role", "flow")
 EVIDENCE_FIELDS = (
     "path",
@@ -320,37 +318,17 @@ def _validate_evidence_item(
 
 
 def _validate_problem(problem: Any) -> None:
-    value = _require_exact_keys(
-        problem,
-        PROBLEM_FIELDS,
-        "problem",
-        optional=PROBLEM_OPTIONAL_FIELDS,
-    )
+    value = _require_exact_keys(problem, PROBLEM_FIELDS, "problem")
     for field in PROBLEM_FIELDS:
-        _require_nonempty_string(value[field], f"problem.{field}")
-    if "bridges" not in value:
-        return
-    bridges = value["bridges"]
-    if not isinstance(bridges, list):
-        raise ValidationError("problem.bridges: expected an array")
-    if not bridges:
-        raise ValidationError("problem.bridges: must contain at least one item")
-    if len(bridges) > MAX_PROBLEM_BRIDGES:
-        raise ValidationError(
-            "problem.bridges: expected at most "
-            f"{MAX_PROBLEM_BRIDGES} items"
+        paragraphs = _require_string_list(
+            value[field],
+            f"problem.{field}",
+            require_nonempty=True,
         )
-    for index, bridge in enumerate(bridges):
-        field = f"problem.bridges[{index}]"
-        bridge_value = _require_exact_keys(
-            bridge,
-            PROBLEM_BRIDGE_FIELDS,
-            field,
-        )
-        for bridge_field in PROBLEM_BRIDGE_FIELDS:
-            _require_nonempty_string(
-                bridge_value[bridge_field],
-                f"{field}.{bridge_field}",
+        if len(paragraphs) < MIN_PROBLEM_PARAGRAPHS:
+            raise ValidationError(
+                f"problem.{field}: must contain at least "
+                f"{MIN_PROBLEM_PARAGRAPHS} items"
             )
 
 
@@ -470,12 +448,11 @@ def _line_range(start_line: int, end_line: int) -> str:
 
 
 def _render_problem(problem: Dict[str, Any]) -> str:
-    bridge_facts = "".join(
-        "    <div><dt>"
-        f'{_escape(bridge["label"])}</dt><dd>'
-        f'{_escape(bridge["body"])}</dd></div>\n'
-        for bridge in problem.get("bridges", [])
-    )
+    def paragraphs(field: str) -> str:
+        return "".join(
+            f"<p>{_escape(paragraph)}</p>" for paragraph in problem[field]
+        )
+
     return (
         '<section class="section-card problem-context" '
         'aria-labelledby="problem-heading">\n'
@@ -483,12 +460,11 @@ def _render_problem(problem: Dict[str, Any]) -> str:
         '  <h2 id="problem-heading">What is failing</h2>\n'
         '  <dl class="problem-facts">\n'
         '    <div><dt>Observed symptom</dt><dd>'
-        f'{_escape(problem["symptom"])}</dd></div>\n'
+        f'{paragraphs("symptom")}</dd></div>\n'
         '    <div><dt>Expected behavior</dt><dd>'
-        f'{_escape(problem["expected"])}</dd></div>\n'
-        f'{bridge_facts}'
+        f'{paragraphs("expected")}</dd></div>\n'
         '    <div><dt>Diagnosis</dt><dd>'
-        f'{_escape(problem["diagnosis"])}</dd></div>\n'
+        f'{paragraphs("diagnosis")}</dd></div>\n'
         '  </dl>\n'
         '</section>'
     )
