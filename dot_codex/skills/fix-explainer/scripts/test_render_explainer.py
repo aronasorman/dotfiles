@@ -57,6 +57,17 @@ class SkillContractTests(unittest.TestCase):
             skill,
         )
 
+    def test_existing_code_edits_use_annotated_unified_diffs(self) -> None:
+        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "`unified_diff` renders as a GitHub-style annotated diff with "
+            "old/new line numbers and added/removed rows; use it for edits "
+            "to existing code. Use `replacement` only for whole-file "
+            "replacement.",
+            skill,
+        )
+
     def test_original_problem_behavior_case_uses_packaged_evidence(self) -> None:
         cases_path = SKILL_ROOT / "evaluations" / "cases.json"
         cases = json.loads(cases_path.read_text(encoding="utf-8"))
@@ -681,6 +692,12 @@ class RenderingTests(unittest.TestCase):
             r"(?s)\.verification-item h3,\s*\.verification-item p\s*\{[^}]*overflow-wrap:\s*anywhere;",
             r"(?s)\.problem-facts dd p\s*\{[^}]*margin:\s*0;",
             r"(?s)\.problem-facts dd p \+ p\s*\{[^}]*margin-top:\s*0\.75rem;",
+            r"(?s)\.proposed-diff\s*\{[^}]*overflow-x:\s*auto;",
+            r"(?s)\.diff-row\s*\{[^}]*grid-template-columns:",
+            r"(?s)\.diff-line-number\s*\{[^}]*text-align:\s*right;",
+            r"(?s)\.diff-row-add\s*\{[^}]*background:",
+            r"(?s)\.diff-row-remove\s*\{[^}]*background:",
+            r"(?s)\.diff-row-hunk\s*\{[^}]*background:",
         ):
             with self.subTest(pattern=pattern):
                 self.assertRegex(template, pattern)
@@ -950,6 +967,106 @@ class RenderingTests(unittest.TestCase):
             "&lt;newCall arg=&quot;a&amp;b&quot;&gt;&#x27;value&#x27;&lt;/newCall&gt;",
             html,
         )
+        self.assertIn('<pre class="proposed-code">', html)
+        self.assertNotIn('class="proposed-diff"', html)
+
+    def test_unified_diff_renders_annotated_rows_and_line_numbers(self) -> None:
+        manifest = self.manifest()
+        proposed = self.proposed_fix()
+        proposed.pop("replacement")
+        proposed["unified_diff"] = (
+            "diff --git a/example.ts b/example.ts\n"
+            "index 1111111..2222222 100644\n"
+            "--- a/example.ts\n"
+            "+++ b/example.ts\n"
+            "@@ -1,3 +1,4 @@\n"
+            " const first = 1;\n"
+            "-const café = callProvider();\n"
+            "+const café = callLocalRepository();\n"
+            "+const traced = true;\n"
+            " return first;\n"
+            "\\ No newline at end of file"
+        )
+        manifest["proposed_fix"] = proposed
+
+        html = self.render_html(manifest)
+
+        self.assertIn(
+            '<div class="proposed-diff" role="table" '
+            'aria-label="Unified diff">',
+            html,
+        )
+        for kind in ("meta", "hunk", "context", "remove", "add", "note"):
+            with self.subTest(kind=kind):
+                self.assertIn(f'data-diff-kind="{kind}"', html)
+        expected_rows = (
+            ('data-old-line="1" data-new-line="1"', " const first = 1;"),
+            ('data-old-line="2" data-new-line=""', "-const café = callProvider();"),
+            ('data-old-line="" data-new-line="2"', "+const café = callLocalRepository();"),
+            ('data-old-line="" data-new-line="3"', "+const traced = true;"),
+            ('data-old-line="3" data-new-line="4"', " return first;"),
+        )
+        for attributes, source in expected_rows:
+            with self.subTest(source=source):
+                self.assertIn(attributes, html)
+                self.assertIn(source, html)
+        self.assertIn(
+            '<span class="diff-line-number diff-old-line" '
+            'aria-label="Old line 2">2</span>',
+            html,
+        )
+        self.assertIn(
+            '<span class="diff-line-number diff-new-line" '
+            'aria-label="New line 2">2</span>',
+            html,
+        )
+
+    def test_unified_diff_resets_counters_at_each_hunk(self) -> None:
+        manifest = self.manifest()
+        proposed = self.proposed_fix()
+        proposed.pop("replacement")
+        proposed["unified_diff"] = (
+            "@@ -10,2 +20,2 @@\n"
+            "-old ten\n"
+            "+new twenty\n"
+            " context\n"
+            "@@ -40 +50 @@\n"
+            "-old forty\n"
+            "+new fifty"
+        )
+        manifest["proposed_fix"] = proposed
+
+        html = self.render_html(manifest)
+
+        for attributes in (
+            'data-old-line="10" data-new-line=""',
+            'data-old-line="" data-new-line="20"',
+            'data-old-line="11" data-new-line="21"',
+            'data-old-line="40" data-new-line=""',
+            'data-old-line="" data-new-line="50"',
+        ):
+            with self.subTest(attributes=attributes):
+                self.assertIn(attributes, html)
+
+    def test_unified_diff_source_lines_are_html_escaped(self) -> None:
+        manifest = self.manifest()
+        proposed = self.proposed_fix()
+        proposed.pop("replacement")
+        proposed["unified_diff"] = (
+            "@@ -1 +1 @@\n"
+            "-const oldValue = '&';\n"
+            "+const html = '<script data-x=\"quoted\">&</script>';"
+        )
+        manifest["proposed_fix"] = proposed
+
+        html = self.render_html(manifest)
+
+        self.assertIn(
+            "+const html = &#x27;&lt;script data-x=&quot;quoted&quot;&gt;"
+            "&amp;&lt;/script&gt;&#x27;;",
+            html,
+        )
+        self.assertNotIn('<script data-x="quoted">', html)
 
     def test_identical_inputs_produce_byte_identical_outputs(self) -> None:
         manifest = self.manifest()

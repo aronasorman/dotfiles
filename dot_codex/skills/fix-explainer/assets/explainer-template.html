@@ -342,6 +342,70 @@
       white-space: pre;
     }
 
+    .proposed-diff {
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+      color: #e6edf3;
+      background: #0d1117;
+      font: 0.88rem/1.65 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .diff-row {
+      display: grid;
+      grid-template-columns: minmax(3rem, auto) minmax(3rem, auto) minmax(max-content, 1fr);
+      min-width: max-content;
+    }
+
+    .diff-line-number {
+      min-width: 3rem;
+      padding: 0 0.75rem;
+      color: #7d8590;
+      background: rgb(22 27 34 / 80%);
+      border-right: 1px solid #30363d;
+      text-align: right;
+      user-select: none;
+    }
+
+    .diff-code {
+      display: block;
+      min-width: 0;
+      padding: 0 1rem;
+      color: inherit;
+      white-space: pre;
+    }
+
+    .diff-row-add {
+      background: rgb(46 160 67 / 18%);
+    }
+
+    .diff-row-add .diff-line-number {
+      color: #aff5b4;
+      background: rgb(46 160 67 / 28%);
+    }
+
+    .diff-row-remove {
+      background: rgb(248 81 73 / 18%);
+    }
+
+    .diff-row-remove .diff-line-number {
+      color: #ffdcd7;
+      background: rgb(248 81 73 / 28%);
+    }
+
+    .diff-row-hunk {
+      color: #a5d6ff;
+      background: rgb(56 139 253 / 18%);
+    }
+
+    .diff-row-hunk .diff-line-number {
+      background: rgb(56 139 253 / 24%);
+    }
+
+    .diff-row-meta,
+    .diff-row-note {
+      color: #8b949e;
+    }
+
     .code-label {
       display: block;
       padding: 0.65rem 1.25rem;
@@ -469,8 +533,14 @@
       }
 
       .code-window,
-      .proposed-code {
+      .proposed-code,
+      .proposed-diff {
         overflow: visible;
+      }
+
+      .code-window,
+      .proposed-code,
+      .diff-code {
         white-space: pre-wrap;
       }
 

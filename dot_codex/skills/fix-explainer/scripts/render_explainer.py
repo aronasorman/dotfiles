@@ -56,6 +56,9 @@ PROPOSED_FIX_BASE_FIELDS = (
 )
 PROPOSED_FIX_CODE_FIELDS = ("replacement", "unified_diff")
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
+UNIFIED_DIFF_HUNK_PATTERN = re.compile(
+    r"^@@ -(?P<old>\d+)(?:,\d+)? \+(?P<new>\d+)(?:,\d+)? @@"
+)
 TEMPLATE_PLACEHOLDERS = (
     "TITLE",
     "PROBLEM",
@@ -559,6 +562,78 @@ def _render_evidence(evidence: List[Dict[str, Any]]) -> str:
     )
 
 
+def _render_diff_line_number(value: Optional[int], side: str) -> str:
+    class_name = f"diff-line-number diff-{side}-line"
+    if value is None:
+        return f'<span class="{class_name}" aria-hidden="true"></span>'
+
+    label = "Old" if side == "old" else "New"
+    return (
+        f'<span class="{class_name}" aria-label="{label} line {value}">'
+        f"{value}</span>"
+    )
+
+
+def _render_unified_diff(unified_diff: str) -> str:
+    rows = []
+    old_line: Optional[int] = None
+    new_line: Optional[int] = None
+
+    for source_line in unified_diff.splitlines():
+        row_old: Optional[int] = None
+        row_new: Optional[int] = None
+        hunk_match = UNIFIED_DIFF_HUNK_PATTERN.match(source_line)
+
+        if hunk_match:
+            kind = "hunk"
+            old_line = int(hunk_match.group("old"))
+            new_line = int(hunk_match.group("new"))
+        elif source_line.startswith(
+            ("diff --git ", "index ", "--- ", "+++ ")
+        ):
+            kind = "meta"
+        elif source_line.startswith("\\ No newline at end of file"):
+            kind = "note"
+        elif old_line is not None and new_line is not None:
+            if source_line.startswith("-"):
+                kind = "remove"
+                row_old = old_line
+                old_line += 1
+            elif source_line.startswith("+"):
+                kind = "add"
+                row_new = new_line
+                new_line += 1
+            elif source_line.startswith(" "):
+                kind = "context"
+                row_old = old_line
+                row_new = new_line
+                old_line += 1
+                new_line += 1
+            else:
+                kind = "meta"
+        else:
+            kind = "meta"
+
+        old_value = "" if row_old is None else str(row_old)
+        new_value = "" if row_new is None else str(row_new)
+        rows.append(
+            f'  <div class="diff-row diff-row-{kind}" '
+            f'data-diff-kind="{kind}" data-old-line="{old_value}" '
+            f'data-new-line="{new_value}" role="row">\n'
+            f"    {_render_diff_line_number(row_old, 'old')}\n"
+            f"    {_render_diff_line_number(row_new, 'new')}\n"
+            f'    <code class="diff-code" role="cell">'
+            f"{_escape(source_line)}</code>\n"
+            "  </div>"
+        )
+
+    return (
+        '<div class="proposed-diff" role="table" aria-label="Unified diff">\n'
+        + "\n".join(rows)
+        + "\n</div>"
+    )
+
+
 def _render_proposed_fix(proposed_fix: Optional[Dict[str, Any]]) -> str:
     if proposed_fix is None:
         return ""
@@ -567,6 +642,12 @@ def _render_proposed_fix(proposed_fix: Optional[Dict[str, Any]]) -> str:
         "replacement" if "replacement" in proposed_fix else "unified_diff"
     )
     code_label = "Replacement" if code_field == "replacement" else "Unified diff"
+    code_markup = (
+        f'<pre class="proposed-code"><code>'
+        f'{_escape(proposed_fix["replacement"])}</code></pre>'
+        if code_field == "replacement"
+        else _render_unified_diff(proposed_fix["unified_diff"])
+    )
     risks = "\n".join(
         f"          <li>{_escape(risk)}</li>" for risk in proposed_fix["risks"]
     )
@@ -593,7 +674,7 @@ def _render_proposed_fix(proposed_fix: Optional[Dict[str, Any]]) -> str:
         '    </div>\n'
         '    <div>\n'
         f'      <span class="code-label">{code_label}</span>\n'
-        f'      <pre class="proposed-code"><code>{_escape(proposed_fix[code_field])}</code></pre>\n'
+        f'      {code_markup}\n'
         '    </div>\n'
         '  </div>\n'
         '</section>'
