@@ -41,7 +41,7 @@ Proceed only when supplied evidence establishes the diagnosis and provides the r
 
 5. In Codex Desktop, serve the artifact on a temporary `127.0.0.1` HTTP port and open that URL with the in-app browser; never navigate that browser to `file://`. If in-app control fails, use the system browser with `open "$URL"`. If the loopback server cannot start, open the local HTML directly in the system browser. If neither browser works, return the still-active local path. After a page loads, stop the server.
 
-6. Prove the repository stayed unchanged. The snapshot covers HEAD/ref, status, tracked and index binary-diff hashes, and untracked path/mode/content hashes:
+6. Prove the repository stayed unchanged. The snapshot covers HEAD/ref, status, tracked and index binary-diff hashes, and untracked/ignored path, mode, and content hashes:
 
    ```bash
    python3 "$SKILL_DIR/scripts/snapshot_repo.py" --repo-root "$REPO_ROOT" --output "$ARTIFACT_DIR/repo-after.json"

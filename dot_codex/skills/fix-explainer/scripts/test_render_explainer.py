@@ -386,8 +386,13 @@ class RepositorySnapshotTests(unittest.TestCase):
         )
         self.tracked = self.repo_root / "tracked.txt"
         self.tracked.write_text("committed\n", encoding="utf-8")
+        (self.repo_root / ".gitignore").write_text(
+            "ignored.txt\n", encoding="utf-8"
+        )
         subprocess.run(
-            ["git", "add", "tracked.txt"], cwd=str(self.repo_root), check=True
+            ["git", "add", "tracked.txt", ".gitignore"],
+            cwd=str(self.repo_root),
+            check=True,
         )
         subprocess.run(
             ["git", "commit", "-qm", "fixture"],
@@ -434,6 +439,32 @@ class RepositorySnapshotTests(unittest.TestCase):
             write_snapshot(self.repo_root, output)
 
         self.assertFalse(output.exists())
+
+    def test_snapshot_detects_edits_to_ignored_file(self) -> None:
+        ignored = self.repo_root / "ignored.txt"
+        ignored.write_text("ignored before\n", encoding="utf-8")
+        before = snapshot_repository(self.repo_root)
+
+        ignored.write_text("ignored after\n", encoding="utf-8")
+        after = snapshot_repository(self.repo_root)
+
+        self.assertEqual(before["status_sha256"], after["status_sha256"])
+        self.assertNotEqual(
+            before["ignored"][0]["content_sha256"],
+            after["ignored"][0]["content_sha256"],
+        )
+
+    def test_snapshot_cannot_replace_in_repo_symlink_to_outside(self) -> None:
+        outside = self.repo_root.parent / "outside.json"
+        outside.write_text("user content\n", encoding="utf-8")
+        output = self.repo_root / "snapshot.json"
+        output.symlink_to(outside)
+
+        with self.assertRaises(SnapshotError):
+            write_snapshot(self.repo_root, output)
+
+        self.assertTrue(output.is_symlink())
+        self.assertEqual(outside.read_text(encoding="utf-8"), "user content\n")
 
 
 class RenderingTests(unittest.TestCase):

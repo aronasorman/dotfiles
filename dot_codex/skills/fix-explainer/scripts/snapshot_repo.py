@@ -59,11 +59,11 @@ def _file_kind(mode: int) -> str:
     return "other"
 
 
-def _untracked_entries(repo_root: Path) -> List[Dict[str, Any]]:
-    raw_paths = _git(
-        repo_root,
-        ["ls-files", "--others", "--exclude-standard", "-z"],
-    ).stdout
+def _path_entries(
+    repo_root: Path,
+    git_arguments: Sequence[str],
+) -> List[Dict[str, Any]]:
+    raw_paths = _git(repo_root, git_arguments).stdout
     entries = []
     for path_bytes in sorted(path for path in raw_paths.split(b"\0") if path):
         relative_path = os.fsdecode(path_bytes)
@@ -84,6 +84,20 @@ def _untracked_entries(repo_root: Path) -> List[Dict[str, Any]]:
             "content_sha256": content_digest,
         })
     return entries
+
+
+def _untracked_entries(repo_root: Path) -> List[Dict[str, Any]]:
+    return _path_entries(
+        repo_root,
+        ["ls-files", "--others", "--exclude-standard", "-z"],
+    )
+
+
+def _ignored_entries(repo_root: Path) -> List[Dict[str, Any]]:
+    return _path_entries(
+        repo_root,
+        ["ls-files", "--others", "--ignored", "--exclude-standard", "-z"],
+    )
 
 
 def _repository_root(repo_root: Path) -> Path:
@@ -137,6 +151,7 @@ def snapshot_repository(repo_root: Path) -> Dict[str, Any]:
         "tracked_worktree_diff_sha256": _sha256_bytes(tracked_worktree_diff),
         "index_diff_sha256": _sha256_bytes(index_diff),
         "untracked": _untracked_entries(root),
+        "ignored": _ignored_entries(root),
     }
 
 
@@ -145,13 +160,19 @@ def _is_within(path: Path, directory: Path) -> bool:
 
 
 def write_snapshot(repo_root: Path, output: Path) -> None:
+    lexical_root = Path(os.path.abspath(os.fspath(repo_root)))
     root = _repository_root(repo_root)
     output_path = Path(output)
     try:
+        lexical_output = Path(os.path.abspath(os.fspath(output_path)))
         resolved_output = output_path.resolve(strict=False)
     except (OSError, RuntimeError, ValueError) as exc:
         raise SnapshotError(f"invalid output path: {output}") from exc
-    if _is_within(resolved_output, root):
+    if (
+        _is_within(lexical_output, lexical_root)
+        or _is_within(lexical_output, root)
+        or _is_within(resolved_output, root)
+    ):
         raise SnapshotError("output must be outside the target repository")
 
     snapshot = snapshot_repository(root)
