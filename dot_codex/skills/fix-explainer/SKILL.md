@@ -39,7 +39,7 @@ Proceed only when supplied evidence establishes the diagnosis and provides the r
 
    A validation error is a stop, not permission to weaken evidence.
 
-5. The output is a static HTML file. In Codex Desktop, serve it on a temporary `127.0.0.1` HTTP port and open that URL in the in-app browser; never use `file://` there. Keep the server and `$ARTIFACT_DIR` alive while the tab is a user-facing deliverable. If in-app delivery fails, open `$ARTIFACT_DIR/index.html` directly in the system browser; this needs no server. If neither browser works, return the active local path.
+5. The output is static HTML. Open it directly in the system browser by default with `open "$ARTIFACT_DIR/index.html"`; no server is needed. Only when the user explicitly requests the in-app browser, serve `$ARTIFACT_DIR` on temporary `127.0.0.1`; never use `file://`. Keep the server and `$ARTIFACT_DIR` alive while the tab is a user-facing deliverable. If that tab is blank or cannot attach, use the direct system-browser path. If both paths fail, return the active local path.
 
 6. Prove the repository stayed unchanged. The snapshot covers HEAD/ref, status, tracked and index binary-diff hashes, and untracked/ignored path, mode, and content hashes:
 

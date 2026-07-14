@@ -34,16 +34,34 @@ EXPECTED_CSP = (
 
 
 class SkillContractTests(unittest.TestCase):
+    def test_static_html_defaults_to_direct_system_browser_delivery(self) -> None:
+        skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "Open it directly in the system browser by default with `open "
+            "\"$ARTIFACT_DIR/index.html\"`",
+            skill,
+        )
+        self.assertIn(
+            "Only when the user explicitly requests the in-app browser",
+            skill,
+        )
+        self.assertIn(
+            "If that tab is blank or cannot attach, use the direct "
+            "system-browser path.",
+            skill,
+        )
+        self.assertIn(
+            "If both paths fail, return the active local path.",
+            skill,
+        )
+
     def test_in_app_delivery_remains_available_while_user_is_viewing(self) -> None:
         skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
 
         self.assertIn(
             "Keep the server and `$ARTIFACT_DIR` alive while the tab is a "
             "user-facing deliverable.",
-            skill,
-        )
-        self.assertIn(
-            "open `$ARTIFACT_DIR/index.html` directly in the system browser",
             skill,
         )
         self.assertIn(
