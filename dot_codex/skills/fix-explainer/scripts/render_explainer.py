@@ -85,6 +85,7 @@ class _TemplateSafetyParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__()
         self.csp_values: List[Optional[str]] = []
+        self.in_head = False
 
     def _validate_start_tag(
         self, tag: str, attrs: List[Tuple[str, Optional[str]]]
@@ -92,7 +93,6 @@ class _TemplateSafetyParser(HTMLParser):
         if tag in PROHIBITED_TEMPLATE_TAGS:
             raise ValidationError(f"template: {tag} elements are not allowed")
 
-        attributes = dict(attrs)
         for name, value in attrs:
             if name.startswith("on"):
                 raise ValidationError(
@@ -105,20 +105,48 @@ class _TemplateSafetyParser(HTMLParser):
                     "template: href attributes must be fragment-only"
                 )
 
-        if (attributes.get("http-equiv") or "").lower() == (
-            "content-security-policy"
-        ):
-            self.csp_values.append(attributes.get("content"))
+        http_equiv_values = [
+            value for name, value in attrs if name == "http-equiv"
+        ]
+        if http_equiv_values:
+            if len(http_equiv_values) != 1 or tag != "meta":
+                raise ValidationError(
+                    "template: http-equiv is allowed only once on a meta element"
+                )
+            if (http_equiv_values[0] or "").lower() != (
+                "content-security-policy"
+            ):
+                raise ValidationError(
+                    "template: only Content-Security-Policy http-equiv is allowed"
+                )
+            if not self.in_head:
+                raise ValidationError(
+                    "template: Content-Security-Policy meta must be inside head"
+                )
+            content_values = [value for name, value in attrs if name == "content"]
+            if len(content_values) != 1:
+                raise ValidationError(
+                    "template: Content-Security-Policy meta requires one content attribute"
+                )
+            self.csp_values.append(content_values[0])
 
     def handle_starttag(
         self, tag: str, attrs: List[Tuple[str, Optional[str]]]
     ) -> None:
+        if tag == "head":
+            self.in_head = True
+        elif tag == "body":
+            self.in_head = False
         self._validate_start_tag(tag, attrs)
 
     def handle_startendtag(
         self, tag: str, attrs: List[Tuple[str, Optional[str]]]
     ) -> None:
         self._validate_start_tag(tag, attrs)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "head":
+            self.in_head = False
 
 
 def _require_mapping(value: Any, field: str) -> Dict[str, Any]:

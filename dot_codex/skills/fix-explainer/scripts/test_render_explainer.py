@@ -432,6 +432,12 @@ class RenderingTests(unittest.TestCase):
             "</html>\n"
         )
 
+    def csp_meta(self) -> str:
+        return (
+            '<meta http-equiv="Content-Security-Policy" '
+            f'content="{EXPECTED_CSP}">'
+        )
+
     def initialize_git_fixture(self) -> None:
         tracked = self.repo_root / "tracked.txt"
         tracked.write_text("committed\n", encoding="utf-8")
@@ -699,6 +705,73 @@ class RenderingTests(unittest.TestCase):
         template_path = self.temp_path / "wrong-csp-template.html"
         template_path.write_text(
             self.custom_template(csp="default-src 'self'"), encoding="utf-8"
+        )
+
+        with self.assertRaisesRegex(ValidationError, "template"):
+            render(
+                self.manifest_path,
+                self.repo_root,
+                self.output_path,
+                template_path,
+            )
+
+        self.assertFalse(self.output_path.exists())
+
+    def test_custom_template_rejects_csp_attributes_on_non_meta_element(self) -> None:
+        self.write_manifest(self.manifest())
+        template_path = self.temp_path / "non-meta-csp-template.html"
+        template_path.write_text(
+            self.custom_template().replace(
+                self.csp_meta(),
+                '<div http-equiv="Content-Security-Policy" '
+                f'content="{EXPECTED_CSP}"></div>',
+                1,
+            ),
+            encoding="utf-8",
+        )
+
+        with self.assertRaisesRegex(ValidationError, "template"):
+            render(
+                self.manifest_path,
+                self.repo_root,
+                self.output_path,
+                template_path,
+            )
+
+        self.assertFalse(self.output_path.exists())
+
+    def test_custom_template_rejects_csp_meta_outside_head(self) -> None:
+        self.write_manifest(self.manifest())
+        template_path = self.temp_path / "body-csp-template.html"
+        template = self.custom_template().replace(self.csp_meta(), "", 1)
+        template_path.write_text(
+            template.replace(
+                "<body>\n", f"<body>\n{self.csp_meta()}\n", 1
+            ),
+            encoding="utf-8",
+        )
+
+        with self.assertRaisesRegex(ValidationError, "template"):
+            render(
+                self.manifest_path,
+                self.repo_root,
+                self.output_path,
+                template_path,
+            )
+
+        self.assertFalse(self.output_path.exists())
+
+    def test_custom_template_rejects_other_http_equiv(self) -> None:
+        self.write_manifest(self.manifest())
+        template_path = self.temp_path / "refresh-template.html"
+        template_path.write_text(
+            self.custom_template(
+                extra_head=(
+                    '<meta http-equiv="refresh" '
+                    'content="0; URL=https://evil.invalid/">'
+                )
+            ),
+            encoding="utf-8",
         )
 
         with self.assertRaisesRegex(ValidationError, "template"):
