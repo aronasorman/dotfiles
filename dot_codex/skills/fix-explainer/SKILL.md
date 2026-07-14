@@ -39,7 +39,13 @@ Require diagnosis, repository root, and source paths/ranges. Put external claims
 
    Validation errors do not permit weaker evidence.
 
-5. Open it directly in the system browser by default with `open "$ARTIFACT_DIR/index.html"`; no server is needed. Only when the user explicitly requests the in-app browser, serve `$ARTIFACT_DIR` on temporary `127.0.0.1`; never use `file://`. Keep the server and `$ARTIFACT_DIR` alive while the tab is a user-facing deliverable. If that tab is blank or cannot attach, use the direct system-browser path. If both paths fail, return the active local path.
+5. Return the artifact as a clickable Markdown link in the final response:
+
+   ```markdown
+   Regenerated explainer: [index.html](/absolute/path/to/index.html)
+   ```
+
+   Use the artifact's actual filename and absolute path. Do not run `open`, start a loopback server, or navigate a browser.
 
 6. Prove the repository stayed unchanged. The snapshot covers HEAD/ref, status, tracked and index binary-diff hashes, and untracked/ignored path, mode, and content hashes:
 
@@ -48,7 +54,7 @@ Require diagnosis, repository root, and source paths/ranges. Put external claims
    cmp -s "$ARTIFACT_DIR/repo-before.json" "$ARTIFACT_DIR/repo-after.json"
    ```
 
-   Clean up only after the user finishes viewing or the delivery session ends. Then stop the server, if any, and remove `$ARTIFACT_DIR`.
+   Keep `$ARTIFACT_DIR` alive through the delivery session. Remove it only after the delivery session ends.
 
 ## Quick reference
 

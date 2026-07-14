@@ -98,47 +98,42 @@ class SkillContractTests(unittest.TestCase):
             with self.subTest(expected=expected):
                 self.assertIn(expected, original["expected"])
 
-    def test_static_html_defaults_to_direct_system_browser_delivery(self) -> None:
+    def test_static_html_is_delivered_as_a_clickable_chat_link(self) -> None:
         skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
 
         self.assertIn(
-            "Open it directly in the system browser by default with `open "
-            "\"$ARTIFACT_DIR/index.html\"`",
+            "Return the artifact as a clickable Markdown link in the final "
+            "response:",
             skill,
         )
         self.assertIn(
-            "Only when the user explicitly requests the in-app browser",
+            "Regenerated explainer: [index.html](/absolute/path/to/index.html)",
             skill,
         )
         self.assertIn(
-            "If that tab is blank or cannot attach, use the direct "
-            "system-browser path.",
-            skill,
-        )
-        self.assertIn(
-            "If both paths fail, return the active local path.",
+            "Use the artifact's actual filename and absolute path.",
             skill,
         )
 
-    def test_in_app_delivery_remains_available_while_user_is_viewing(self) -> None:
+    def test_delivery_does_not_launch_or_serve_a_browser(self) -> None:
         skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
 
         self.assertIn(
-            "Keep the server and `$ARTIFACT_DIR` alive while the tab is a "
-            "user-facing deliverable.",
+            "Do not run `open`, start a loopback server, or navigate a browser.",
             skill,
         )
         self.assertIn(
-            "Clean up only after the user finishes viewing or the delivery "
-            "session ends.",
+            "Keep `$ARTIFACT_DIR` alive through the delivery session.",
             skill,
         )
-        self.assertNotIn("After a page loads, stop the server.", skill)
-        self.assertNotIn(
-            "After the comparison succeeds and the page has loaded, remove "
-            "`$ARTIFACT_DIR`.",
+        self.assertIn(
+            "Remove it only after the delivery session ends.",
             skill,
         )
+        self.assertNotIn("system browser", skill)
+        self.assertNotIn("in-app browser", skill)
+        self.assertNotIn("127.0.0.1", skill)
+        self.assertNotIn('open "$ARTIFACT_DIR/index.html"', skill)
 
 
 def valid_manifest(path: Path, digest: str) -> dict:
