@@ -11,15 +11,16 @@ Create one temporary, static annotated-source page. This is read-only: do not di
 
 ## Evidence gate
 
-Proceed only when supplied evidence establishes the diagnosis and provides the repository root plus real source paths and ranges. Attribute external claims (for example, Slack or logs) in `verification`; reserve evidence cards for observed source; label any reasoning as `Inference:`. If logs, source anchors, or a confirmed diagnosis are missing, stop, name what is missing, and create nothing. Do not investigate to fill gaps.
+Proceed only when supplied evidence establishes the diagnosis and provides the repository root plus real source paths and ranges. Attribute external claims (for example, Slack or logs) in `verification`; reserve evidence cards for observed source; label reasoning as `Inference:`. If source anchors, a confirmed diagnosis, or evidence supporting it are missing, stop, name what is missing, and create nothing. Logs are required only for claims that depend on them. Do not investigate to fill gaps.
 
 ## Workflow
 
-1. Create a session directory outside the repository and snapshot its Git state:
+1. Create a session directory outside the repository and snapshot its exact state:
 
    ```bash
+   SKILL_DIR="${CODEX_HOME:-$HOME/.codex}/skills/fix-explainer"
    ARTIFACT_DIR=$(mktemp -d "${TMPDIR:-/tmp}/fix-explainer.XXXXXX")
-   git -C "$REPO_ROOT" status --porcelain=v1 --untracked-files=all > "$ARTIFACT_DIR/repo-before.txt"
+   python3 "$SKILL_DIR/scripts/snapshot_repo.py" --repo-root "$REPO_ROOT" --output "$ARTIFACT_DIR/repo-before.json"
    ```
 
 2. Read `references/explainer-schema.json` and the fixture in `evaluations/fixtures/`. Write `$ARTIFACT_DIR/manifest.json`; never copy unverified prose into it. Calculate every source hash from exact bytes:
@@ -28,12 +29,11 @@ Proceed only when supplied evidence establishes the diagnosis and provides the r
    python3 -c 'import hashlib,sys; print(hashlib.sha256(open(sys.argv[1],"rb").read()).hexdigest())' "$REPO_ROOT/$REL_PATH"
    ```
 
-3. Arrange the narrative as problem -> file role and flow -> observed source in causal order -> proposed change -> verification -> takeaway. Use 1-5 evidence blocks; target 8-24 source lines and never exceed 24. Keep each block's combined Situation-Mechanism-Implication-Gotcha callout at 90 words or fewer. Use `proposed_fix: null` when none exists. Otherwise show only supplied candidate code and keep the rendered `Proposed — not applied` label. Verification status is exactly `verified`, `not_run`, or `unsupported`.
+3. Arrange the narrative as problem -> file role and flow -> observed source in causal order -> proposed change -> verification -> takeaway. Use 1-5 evidence blocks. For each block, target 8-24 source lines; never exceed 24. Keep its combined Situation-Mechanism-Implication-Gotcha callout at 90 words or fewer. Use `proposed_fix: null` when none exists. Otherwise show only supplied candidate code and keep the rendered `Proposed — not applied` label. Verification status is exactly `verified`, `not_run`, or `unsupported`.
 
 4. Render with the bundled validator:
 
    ```bash
-   SKILL_DIR="${CODEX_HOME:-$HOME/.codex}/skills/fix-explainer"
    python3 "$SKILL_DIR/scripts/render_explainer.py" --manifest "$ARTIFACT_DIR/manifest.json" --repo-root "$REPO_ROOT" --output "$ARTIFACT_DIR/index.html"
    ```
 
@@ -41,14 +41,14 @@ Proceed only when supplied evidence establishes the diagnosis and provides the r
 
 5. In Codex Desktop, serve the artifact on a temporary `127.0.0.1` HTTP port and open that URL with the in-app browser; never navigate that browser to `file://`. If in-app control fails, use the system browser with `open "$URL"`. If the loopback server cannot start, open the local HTML directly in the system browser. If neither browser works, return the still-active local path. After a page loads, stop the server.
 
-6. Prove the repository stayed unchanged:
+6. Prove the repository stayed unchanged. The snapshot covers HEAD/ref, status, tracked and index binary-diff hashes, and untracked path/mode/content hashes:
 
    ```bash
-   git -C "$REPO_ROOT" status --porcelain=v1 --untracked-files=all > "$ARTIFACT_DIR/repo-after.txt"
-   diff -u "$ARTIFACT_DIR/repo-before.txt" "$ARTIFACT_DIR/repo-after.txt"
+   python3 "$SKILL_DIR/scripts/snapshot_repo.py" --repo-root "$REPO_ROOT" --output "$ARTIFACT_DIR/repo-after.json"
+   cmp -s "$ARTIFACT_DIR/repo-before.json" "$ARTIFACT_DIR/repo-after.json"
    ```
 
-   After the diff succeeds and the page has loaded, remove `$ARTIFACT_DIR`. Keep it only when returning the active local path fallback.
+   After the comparison succeeds and the page has loaded, remove `$ARTIFACT_DIR`. Keep it only when returning the active local path fallback.
 
 ## Quick reference
 

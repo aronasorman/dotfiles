@@ -104,8 +104,13 @@
 
     .content-stack {
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
       gap: 1.25rem;
       margin-top: 1.25rem;
+    }
+
+    .content-stack > * {
+      min-width: 0;
     }
 
     .section-card,
@@ -168,11 +173,13 @@
     .flow-list li {
       display: flex;
       align-items: center;
+      max-width: 100%;
       gap: 0.45rem;
       padding: 0.45rem 0.65rem;
       border-radius: 999px;
       background: var(--accent-soft);
       counter-increment: flow;
+      overflow-wrap: anywhere;
     }
 
     .flow-list li::before {
@@ -339,9 +346,15 @@
     }
 
     .verification-list {
+      grid-template-columns: minmax(0, 1fr);
       margin: 0;
       padding: 0;
       list-style: none;
+    }
+
+    .verification-list > *,
+    .verification-item > * {
+      min-width: 0;
     }
 
     .verification-item {
@@ -349,6 +362,11 @@
       grid-template-columns: auto minmax(0, 1fr);
       gap: 0.9rem;
       align-items: start;
+    }
+
+    .verification-item h3,
+    .verification-item p {
+      overflow-wrap: anywhere;
     }
 
     .status {

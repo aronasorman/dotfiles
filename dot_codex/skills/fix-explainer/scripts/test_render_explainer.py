@@ -23,6 +23,7 @@ from render_explainer import (
     render,
     validate_and_collect,
 )
+from snapshot_repo import SnapshotError, snapshot_repository, write_snapshot
 
 
 SKILL_ROOT = Path(__file__).resolve().parents[1]
@@ -330,6 +331,17 @@ class ValidationTests(unittest.TestCase):
             fixture_manifest["evidence"][0]["start_line"],
         )
 
+        code_only_source = fixture_root / "code-only-example.ts"
+        code_only_evidence = (fixture_root / "code-only-evidence.md").read_text(
+            encoding="utf-8"
+        )
+        code_only_digest = hashlib.sha256(code_only_source.read_bytes()).hexdigest()
+        self.assertIn(code_only_digest, code_only_evidence)
+        self.assertIn(
+            "dot_codex/skills/fix-explainer/evaluations/fixtures/code-only-example.ts",
+            code_only_evidence,
+        )
+
     def proposed_fix(
         self,
         path: str = "example.ts",
@@ -354,6 +366,74 @@ class StartTagCollector(HTMLParser):
 
     def handle_starttag(self, tag: str, attrs: list) -> None:
         self.tags.append((tag, dict(attrs)))
+
+
+class RepositorySnapshotTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary_directory = tempfile.TemporaryDirectory()
+        self.repo_root = Path(self.temporary_directory.name) / "repo"
+        self.repo_root.mkdir()
+        subprocess.run(["git", "init", "-q"], cwd=str(self.repo_root), check=True)
+        subprocess.run(
+            ["git", "config", "user.email", "test@example.invalid"],
+            cwd=str(self.repo_root),
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.name", "Fix Explainer Test"],
+            cwd=str(self.repo_root),
+            check=True,
+        )
+        self.tracked = self.repo_root / "tracked.txt"
+        self.tracked.write_text("committed\n", encoding="utf-8")
+        subprocess.run(
+            ["git", "add", "tracked.txt"], cwd=str(self.repo_root), check=True
+        )
+        subprocess.run(
+            ["git", "commit", "-qm", "fixture"],
+            cwd=str(self.repo_root),
+            check=True,
+        )
+        self.untracked = self.repo_root / "untracked.txt"
+
+    def tearDown(self) -> None:
+        self.temporary_directory.cleanup()
+
+    def test_snapshot_is_stable_when_dirty_repository_is_unchanged(self) -> None:
+        self.tracked.write_text("dirty tracked\n", encoding="utf-8")
+        self.untracked.write_text("dirty untracked\n", encoding="utf-8")
+
+        before = snapshot_repository(self.repo_root)
+        after = snapshot_repository(self.repo_root)
+
+        self.assertEqual(before, after)
+
+    def test_snapshot_detects_edits_hidden_by_unchanged_porcelain(self) -> None:
+        self.tracked.write_text("dirty tracked before\n", encoding="utf-8")
+        self.untracked.write_text("dirty untracked before\n", encoding="utf-8")
+        before = snapshot_repository(self.repo_root)
+
+        self.tracked.write_text("dirty tracked after\n", encoding="utf-8")
+        self.untracked.write_text("dirty untracked after\n", encoding="utf-8")
+        after = snapshot_repository(self.repo_root)
+
+        self.assertEqual(before["status_sha256"], after["status_sha256"])
+        self.assertNotEqual(
+            before["tracked_worktree_diff_sha256"],
+            after["tracked_worktree_diff_sha256"],
+        )
+        self.assertNotEqual(
+            before["untracked"][0]["content_sha256"],
+            after["untracked"][0]["content_sha256"],
+        )
+
+    def test_snapshot_output_must_stay_outside_repository(self) -> None:
+        output = self.repo_root / "snapshot.json"
+
+        with self.assertRaises(SnapshotError):
+            write_snapshot(self.repo_root, output)
+
+        self.assertFalse(output.exists())
 
 
 class RenderingTests(unittest.TestCase):
@@ -395,6 +475,22 @@ class RenderingTests(unittest.TestCase):
         self.write_manifest(manifest)
         render(self.manifest_path, self.repo_root, self.output_path)
         return self.output_path.read_text(encoding="utf-8")
+
+    def test_shipped_template_constrains_narrow_width_overflow(self) -> None:
+        template = (
+            SKILL_ROOT / "assets" / "explainer-template.html"
+        ).read_text(encoding="utf-8")
+
+        for pattern in (
+            r"(?s)\.content-stack\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\);",
+            r"(?s)\.content-stack\s*>\s*\*\s*\{[^}]*min-width:\s*0;",
+            r"(?s)\.flow-list li\s*\{[^}]*max-width:\s*100%;[^}]*overflow-wrap:\s*anywhere;",
+            r"(?s)\.verification-list\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\);",
+            r"(?s)\.verification-list\s*>\s*\*,\s*\.verification-item\s*>\s*\*\s*\{[^}]*min-width:\s*0;",
+            r"(?s)\.verification-item h3,\s*\.verification-item p\s*\{[^}]*overflow-wrap:\s*anywhere;",
+        ):
+            with self.subTest(pattern=pattern):
+                self.assertRegex(template, pattern)
 
     def custom_template(
         self,

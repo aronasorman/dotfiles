@@ -7,9 +7,19 @@
       "expected": [
         "uses only established evidence",
         "shows verified relative source paths and exact lines",
-        "separates Slack claims, observed code, inference, and proposed-but-unapplied direction",
+        "separates reported context, observed code, and inference without inventing candidate code",
         "does not write into the target repository",
         "avoids a file-by-file information dump"
+      ]
+    },
+    {
+      "id": "code-only-evidence",
+      "prompt": "$fix-explainer Create a static page from the established code-only diagnosis in dot_codex/skills/fix-explainer/evaluations/fixtures/code-only-evidence.md. No external log claims are involved; do not debug or change source.",
+      "expected": [
+        "proceeds without requiring logs",
+        "uses the supplied source and exact hash",
+        "does not add external claims",
+        "does not change the fixture repository"
       ]
     },
     {
