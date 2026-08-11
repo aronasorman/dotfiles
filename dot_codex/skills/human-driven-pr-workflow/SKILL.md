@@ -1,295 +1,236 @@
 ---
 name: human-driven-pr-workflow
-description: Use when the user wants to personally implement a PR-scoped change from an agent-reviewed spec, including command-guided, bootstrap, or BDD/TDD pairing.
+description: Use when a developer using OpenSpec and Jujutsu wants to personally write and understand the behavior-defining parts of a PR-scoped change without doing every supporting edit.
 ---
 
 # Human-Driven PR Workflow
 
-Orchestrate a feature-scoped spec-reviewed PR workflow where agents own spec writing, review, verification, code review gates, commit narrative, push, and draft PR creation, while the build implementation phase is guided for the human developer.
+## Overview
 
-This is the counterpart to `agent-driven-pr-workflow`: the review machinery stays agent-driven, but the code build is a walkthrough.
+The human writes the parts whose design and behavior they need to own. The controller preserves velocity around that work by managing the spec, reviewing each human-authored slice, implementing bounded non-critical work, running proof, shaping the final JJ history, and preparing one ready-for-review PR.
 
-## Core Contract
+**Core invariant:** if a section could surprise the human in design review, debugging, or on-call, the human writes it.
 
-The user is the build driver.
+Writing and debugging the critical code is the comprehension gate. Do not add quizzes, recitation, or a separate “prove you understand it” ceremony.
 
-The controller is the navigator:
+## Required Route
 
-- Read local instructions and repo context.
-- Resolve or bootstrap the spec.
-- Run spec review gates and apply required spec edits.
-- Stop for human spec review after spec review gates pass, and do not begin build until the human passes the spec or feedback has been incorporated and re-reviewed.
-- During build, provide exact commands, one reversible step at a time.
-- During build, write failing tests or behavior specs when the selected build mode allows it.
-- Interpret pasted output, test failures, diffs, and screenshots.
-- Receive feedback on the spec, justify decisions from evidence, and update the spec when feedback changes requirements or exposes a bad assumption.
-- After build, run verifier and PR review gates, iterating back through the human-guided build loop when fixes are needed.
-- Prepare the commit narrative, push the branch, and create a draft PR after required gates pass.
+Use this sequence:
 
-Default autonomy:
+1. Materialize and validate the OpenSpec change.
+2. Run `spec-review-gates`, then obtain explicit human spec approval.
+3. Create a dynamic criticality map and work contract.
+4. Alternate human-owned critical slices with controller-owned supporting work and focused proof.
+5. Assemble the full PR and run applicable E2E or runtime proof.
+6. Only after that proof passes, propose and execute the final JJ split.
+7. Propose the exact PR title and body; after approval, open one non-draft PR.
+8. Use CodeRabbit as the first independent whole-PR reviewer and route its findings by criticality.
 
-- The controller may run read-only inspection commands when useful.
-- The controller may edit specs, tests, fixtures, docs, gate artifacts, PR text, and tracking comments as required by the workflow.
-- The controller must not edit production implementation during the build phase. If the user wants the agent to patch production code, stop and switch to the appropriate non-human-driven workflow after explicit confirmation.
-- In BDD/TDD build mode, the controller may edit tests, fixtures, docs, or specs that define desired behavior; the user writes the implementation that makes them pass.
-- In command-only mode, the controller gives commands and waits for pasted output instead of running commands locally.
-- Push and draft PR creation are part of this workflow after verifier and PR review gates pass, unless the user explicitly asks to keep those steps human-run.
+Do not invoke Fable, `verifier`, or `pr-review-gates` anywhere in this workflow. Final local verification is still required.
 
-Do not silently fall back to `agent-driven-pr-workflow`. If the user asks the agent to take over implementation, state that this changes the workflow and use the appropriate autonomous skill only after explicit confirmation.
+## Ownership Boundary
 
-## Build Modes
+Classify decisions and hunks, not whole file types. One file may contain both ownership classes.
 
-Default the build phase to `command-guided` unless the user explicitly asks for tests-first, BDD, TDD, pairing, or project bootstrap.
+| Class | Default owner | Typical work |
+| --- | --- | --- |
+| `human-critical` | Human | Data structures and schemas; migrations; core algorithms; state/lifecycle/concurrency logic; architectural boundaries; public contracts; auth, security, destructive, rollback, recovery, transaction, retry, or failure semantics; behavior the human expects to explain later |
+| `controller-bounded` | Controller | Call-site adaptation with no new semantic choice; imports, exports, registration, and wiring; small local tweaks required by an approved interface; tests and fixtures for already-approved behavior; docs; generated artifacts; formatting; mechanical rename or cleanup |
 
-- `command-guided`: the controller gives exact commands and explains expected signals; the user edits code.
-- `bdd-tdd`: the controller writes one failing behavior test at a time, verifies RED, then the user writes production code until GREEN.
-- `bootstrap`: the controller guides project setup through commands, first smoke test, initial verification, and baseline commit.
-- `hybrid`: combine command-guided steps with BDD/TDD slices when a feature has behavior worth pinning down.
+The human may escalate any slice to `human-critical` at any time. Downgrade a default-critical slice only after explicit discussion and evidence that no behavior-defining decision remains; deadline, diff size, or agent convenience is not sufficient. The controller should also reclassify work when new evidence shows it is more consequential than expected.
 
-## Inputs
+### Boundary red flags — stop and reclassify
 
-Resolve before execution:
+The controller must not continue a supposedly bounded edit when it requires any of these:
 
-- Goal, feature, bug, or bootstrap target.
-- Repo or project path.
-- Desired build mode.
-- Whether the controller may run read-only commands or should only provide commands.
-- What file categories the controller may edit, if any.
-- Existing spec, issue, bead, or tracking source, if any.
-- Architecture model packet path or Beads attachment, if the spec includes one.
-- Target base branch and whether a PR is expected.
-- Local instructions: `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, repo docs, and project-specific runbooks.
-- Any repo-local production smoke skill or runbook required after merge.
+- Choosing behavior not settled by the approved spec.
+- Defining or changing a data shape, migration, invariant, public interface, or architecture boundary.
+- Choosing error, retry, transaction, concurrency, authorization, privacy, destructive, rollback, or recovery semantics.
+- Expanding blast radius beyond the named slice or touching an unexpected subsystem.
+- Writing a test whose expected result introduces a new product or correctness decision.
+- Making a change the controller cannot precisely explain as a mechanical consequence of an approved decision.
 
-If the repo path, base branch, build mode, or implementation edit boundary cannot be resolved safely, stop and ask for the missing decision.
+Return that decision or hunk to the human. Do not disguise semantic work as “just wiring,” “just a test,” or “a small tweak.”
 
-## Orientation And Safety
+## Operating Choices
 
-Start with safety and context:
+Ownership mode defaults to `critical-pair`:
 
-1. Read applicable instruction files.
-2. Check whether the current path is a git repo.
-3. Check `git status --short` before suggesting edits.
-4. Check for Beads or other repo-local tracking when present.
-5. Identify package manager, test runner, build commands, and app entry points from repo files instead of guessing.
-6. Summarize only the constraints that affect this work.
+- `critical-pair`: the human writes `human-critical` code; the controller writes `controller-bounded` work.
+- `strict-driver`: on explicit request, the human writes all production code and the controller limits edits to specs, tests, fixtures, and docs.
 
-If there are unrelated user changes, preserve them. Do not suggest reset, checkout, clean, or force operations unless the user explicitly asks for that exact destructive action.
+Separately record the testing strategy (`existing-suite` or `bdd-tdd`) and workflow shape (`feature` or `bootstrap`). BDD/TDD can layer onto either ownership mode. Bootstrap uses the same ownership boundary; the human owns consequential stack, architecture, data, auth, and deployment choices.
 
-## Spec Bootstrap And Review
+Do not switch the whole workflow merely because the controller is asked to make a bounded production edit. That is part of `critical-pair`.
 
-Before the build walkthrough:
+## Orientation
 
-1. Inspect the tracking bead with `bd show <bead-id> --json` when a bead id is available.
-2. Treat an existing `spec-id`, design attachment, or repo spec path as the spec only if it resolves to a readable file.
-3. If no usable spec exists, invoke `feature-spec-writing`.
-4. Save the spec to a repo-local file. Prefer `history/port-specs/<feature-slug>.md` unless repo conventions point somewhere more specific.
-5. Sync the file to the bead when Beads is available:
+Before changing anything:
 
-```bash
-bd update <bead-id> --spec-id <spec-path> --design-file <spec-path> --json
-bd comment <bead-id> "Spec materialized at <spec-path>; synced to bead design/spec-id."
-```
+1. Read applicable `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, repo docs, and runbooks.
+2. Resolve the repository, target base, current JJ change/stack, publication bookmark, remote, tracking item, package manager, tests, entry points, and publication rules from evidence.
+3. Use `jj status`, `jj log`, and `jj diff` in a JJ repository. Do not assume Git three-dot ranges or use Git commit commands to shape JJ history.
+4. Preserve unrelated user changes. Stop if this work overlaps edits whose ownership cannot be resolved safely.
+5. Identify whether E2E/runtime proof is applicable and what environment it would touch. Never infer authority to deploy or mutate an environment.
 
-6. Run `spec-review-gates` and iterate until `PASS`.
-7. Confirm the final spec path is readable and describes the feature or PR slice at enough detail for the human builder to work from it.
-8. If the spec includes an architecture model packet, carry that packet into verifier runs.
+The controller may run safe inspection and normal in-scope implementation commands. Give the human exact commands for history changes and for any risky, credentialed, destructive, deploy, or publication step unless the human explicitly asks the controller to run them.
 
-If Beads is unavailable, record the spec path in the repo artifact or PR body and continue only when the user provided another tracking source.
+## OpenSpec Contract And Human Gate
 
-## Human Spec Review Gate
+This workflow requires an OpenSpec change before implementation.
 
-After `spec-review-gates` returns `PASS`, stop for human review before implementation.
+1. Resolve the supplied root or store. Otherwise run `openspec doctor --json` from the coordination or target root. Do not initialize OpenSpec implicitly; stop for a root decision if none resolves.
+2. For an existing change, run:
 
-Present:
+   ```bash
+   openspec status --change "<name>" --json
+   openspec validate "<name>" --type change --strict --json --no-interactive
+   ```
 
-- Spec path.
-- Spec review gate result.
-- Feature scope covered by the spec.
-- Non-goals and assumptions that constrain implementation.
-- Expected build mode.
+   Add `--store <id>` where the resolved store requires it.
+3. If the change is missing, use the repo-local OpenSpec proposal workflow when available. Otherwise use the installed OpenSpec schema, instructions, and templates to create the proposal, design, delta specs, and task checklist. Do not substitute a chat summary or issue title.
+4. Treat the proposal, design, and every delta spec as one authoritative feature contract. Treat `tasks.md` as an execution checklist, not canonical tracking.
+5. Run `spec-review-gates` over the whole bundle and iterate until `PASS`.
+6. Rerun strict OpenSpec validation after every gate-driven edit. Record the final approved bundle identity using an immutable VCS revision or content digests for every authoritative artifact.
+7. Present the change name, approved bundle identity, artifact paths, requirements/scenarios, important design decisions, non-goals, acceptance proof, and material gate-driven revisions.
+8. Stop for the human's explicit approval. Immediately before implementation, confirm the bundle still matches the approved identity and strict validation still passes. Do not begin on silence, partial review, drift, or an unresolved decision.
 
-Human outcomes:
+For requested spec changes, use `receiving-spec-feedback`, update the OpenSpec bundle, rerun strict validation and `spec-review-gates`, then obtain approval again. Any material change to scope, behavior, data shape, architecture, risk, or acceptance proof invalidates the earlier approval.
 
-- `PASS`: continue to the build-phase spec contract and work contract.
-- `FAIL with feedback`: invoke `receiving-spec-feedback`, apply accepted spec edits, rerun `spec-review-gates`, then repeat this human review gate.
-- `HUMAN DECISION`: stop until the decision is resolved.
+If implementation already exists when this skill starts, freeze further edits, pin the pre-existing diff, materialize/reconcile the OpenSpec bundle from evidence, pass the same review and human approval gate, then classify every existing hunk before continuing. Any `human-critical` hunk not authored by the human must be replaced through the human-owned slice loop; reviewing or approving it does not convert its authorship. Approval is not retroactive permission to preserve code that contradicts the contract.
 
-Do not start command-guided, BDD/TDD, bootstrap, or hybrid build work before this gate passes.
+## Criticality Map And Work Contract
 
-## Build-Phase Spec Contract
-
-No build phase starts without a readable spec path that has passed both `spec-review-gates` and the human spec review gate.
-
-Before the build walkthrough, the controller must:
-
-- Treat the spec as the authoritative feature-level contract.
-- Keep the spec level of detail proportional to the feature or PR slice, not the whole project.
-- Include architecture model packet path when present.
-- Include any spec review gate findings or human review feedback that materially shape implementation.
-- Stop if the only available requirements are chat history, bead title, issue summary, or inferred intent.
-
-Do not expand the spec into a whole-project design unless the requested work is project bootstrap.
-
-## Work Contract
-
-After spec review and human spec review pass, and before build implementation, write a compact contract:
+After spec approval, inspect the implementation surface and present:
 
 ```markdown
 Human-driven workflow ready.
-Build mode: command-guided | bdd-tdd | bootstrap | hybrid
-Spec: <path>
-Architecture model: <path | not used>
-Repo: <path>
-Goal: <one sentence>
-Non-goals:
-- <items, if any>
-Controller may edit: <spec/tests/docs/gate artifacts/PR text/tracking>
-Human owns during build: <production implementation | all commands | other>
-Success signals:
-- <focused build checks>
-- <final verifier/review gate expectations>
-Tracking: <bead/issue/spec path | not present>
-Human spec review: PASS
+Ownership mode: critical-pair | strict-driver
+Testing strategy: existing-suite | bdd-tdd
+Workflow shape: feature | bootstrap
+OpenSpec: <root/store, change name, approved identity, artifact paths>
+Repo and base: <path and exact base>
+Current JJ change: <change id and description>
+
+| Slice | Class | Owner | Why | Focused proof |
+| --- | --- | --- | --- | --- |
+| <slice> | human-critical | human | <risk/decision> | <command/signal> |
+| <slice> | controller-bounded | controller | <mechanical consequence> | <command/signal> |
+
+E2E/runtime proof: <required command/environment/signal | not applicable with reason>
+Publication boundary: one PR; exact title/body require approval
 ```
 
-For a one-line fix, keep this contract short. For broad or ambiguous work, decompose before build.
+The map is a living agreement, not a one-time file allowlist. Refine it as the implementation reveals new decisions.
 
-## Spec Feedback During Build
+## Slice Loop
 
-During the walkthrough, the user may challenge the spec, ask why a decision was made, or provide new constraints.
+For each `human-critical` slice:
 
-For directed spec feedback after `spec-review-gates` has passed, invoke `receiving-spec-feedback` and follow its feedback ledger, edit, and review loop. If that skill is unavailable, use the same categories explicitly:
+1. Give one coherent slice card:
 
-- `correction`: fix the spec and explain the prior incorrect assumption.
-- `preference`: state the tradeoff and whether the preference changes the implementation contract.
-- `scope change`: stop the build loop until the user accepts the scope change and the spec is updated.
-- `re-think`: pause implementation, revise the design, and rerun required spec review gates.
+   ```markdown
+   Critical slice: <outcome>
+   Why the human owns it: <decision or risk>
+   Invariants and constraints: <approved contract>
+   Relevant evidence: <paths, APIs, prior pattern>
+   Allowed scope: <files/interfaces>
+   Focused proof: <exact command and expected signal>
+   Stop conditions: <when to discuss or update the spec>
+   ```
 
-When justifying a spec decision:
+2. Let the human write the code and ask questions in the same conversation. Answer directly from evidence with constraints, alternatives, targeted hints, or small illustrative examples. Illustrations must not accumulate into the target patch. Do not supply a paste-ready implementation of the target critical slice; if the human asks the controller to own it, stop this workflow for an explicit workflow change. On re-entry, pin and classify all intervening changes; every controller-authored `human-critical` hunk must be removed and reimplemented by the human before this workflow continues.
+3. Pin and review the exact human-authored diff for accuracy against the approved OpenSpec contract and surrounding code. Report actionable findings; do not silently repair critical code.
+4. The human fixes critical findings. Review the new exact diff until no blocking critical finding remains.
+5. Implement the mapped `controller-bounded` consequences. Before editing, name the files/hunks and avoid files the human is actively changing.
+6. Run the focused proof for the assembled slice. Diagnose failures from evidence and route the fix by criticality.
+7. Keep the product and focused test suite working before moving to the next critical slice.
 
-- Cite repo evidence, user requirements, constraints, or gate feedback.
-- Acknowledge uncertainty instead of defending weak assumptions.
-- Update the spec when the feedback changes behavior, data shape, architecture, risk, or success criteria.
-- Rerun `spec-review-gates` after material spec changes before continuing build.
-- If material feedback is accepted during build, repeat the human spec review gate before continuing implementation.
+Use exact command cards for risky operations or when the human requests command guidance. Routine implementation does not need command-by-command interruption.
 
-## Driver Cards
+### Tests
 
-Use driver cards for human-run steps. Give one card at a time by default. Use a short batch only when the commands are atomic and low risk.
+The controller may write and run tests only for behavior settled by the approved OpenSpec contract. If the human's implementation reveals intended behavior absent from that contract, update, strictly validate, review, and reapprove OpenSpec before encoding the expectation. If a test exposes an unanswered behavioral decision, return that decision to the human.
 
-````markdown
-Step <n>: <purpose>
-cwd: <absolute path>
-risk: read-only | local edit | install | network | destructive
-command:
-```bash
-<exact command>
-```
-expected success:
-<specific output, exit code, file, screenshot, or state>
-paste back:
-<the exact output or file snippet needed>
-rollback:
-<how to undo this step, or "not needed">
-````
+For TDD/BDD, verify the focused test fails for the intended reason before implementation and passes afterward. Ownership of the test file does not grant ownership of the product decision.
 
-Rules:
+### Supporting agent lanes
 
-- Never say "run the tests" without the exact command.
-- Include the expected success signal before the user runs the command.
-- Include a paste-back target so the next step has concrete evidence.
-- Mark network, install, destructive, credentialed, push, deploy, and PR commands clearly.
-- Split risky work into smaller reversible cards.
-- If the command fails, diagnose from the output and issue a new card; do not stack speculative commands.
+The controller may keep up to two bounded supporting lanes moving. In the human's active working copy, supporting lanes are read-only: they must not edit, mutate JJ state, run formatters/generators, or run commands that alter shared state. A lane may make a non-overlapping `controller-bounded` edit only in an isolated worktree/change with an explicit file scope; the controller inspects and deliberately integrates it into the single feature stack and PR after the human's active slice ends. Lanes have no publication authority and may not make critical decisions or create separate PRs. Batch ordinary results between human slices; interrupt immediately only for safety, scope invalidation, or collision.
 
-## BDD/TDD Loop
+## Verification Before History Shaping
 
-Use this loop during the build phase when the user asks for BDD, TDD, tests-first pairing, or "write failing tests and I will make them pass."
+Focused checks keep each slice healthy; they do not replace assembled behavior proof.
 
-1. Select one behavior slice.
-2. State the scenario in Given/When/Then or equivalent plain language.
-3. Write one focused failing test or behavior spec.
-4. Give the RED driver card and verify the failure is for the expected reason.
-5. If the test passes immediately, rewrite it; it did not prove the missing behavior.
-6. The user writes production code.
-7. Give the GREEN driver card and interpret the result.
-8. After GREEN, allow refactor-only cleanup while preserving the passing signal.
-9. Repeat with the next behavior slice.
+After all planned slices are assembled:
 
-Test rules:
+1. Review the aggregate diff for accidental scope and confirm the criticality map still matches reality.
+2. Run all relevant local checks.
+3. Run the applicable E2E, integration, migration, or runtime acceptance proof named in the work contract. Static validation, rendering, preflight, or a deployment preview alone is not behavioral proof.
+4. If E2E fails, diagnose the cause before editing. A `human-critical` fix goes back to the human; a `controller-bounded` fix may be implemented by the controller. Rerun the focused proof and then E2E.
+5. If E2E is genuinely not applicable, present the evidence for non-applicability, name the strongest observable acceptance proof, and obtain the human's explicit acceptance before omitting it.
 
-- Test behavior, not implementation details.
-- Prefer existing test framework and local patterns.
-- Avoid mocks unless the real dependency is slow, nondeterministic, paid, destructive, or unavailable.
-- Keep each test narrow enough that the human can implement the next step without a large hidden design jump.
-- Do not edit production code in this mode unless the user explicitly changes the boundary.
+Do not split the JJ change while behavior is still being assembled or while required E2E is failing. The mutable change is deliberate: integration feedback can be fixed without repeatedly rewriting a premature commit stack.
 
-After the final GREEN for a slice, run only the quick confirmation needed to prove the guided build step works. Full verification belongs to the post-build gates.
+## Final JJ Narrative
 
-## Bootstrap Loop
+Maintain one mutable JJ change through implementation, focused testing, and assembled E2E/runtime proof. A useful WIP description is allowed; narrative commits are not required per slice.
 
-Use this loop during the build phase when the user wants to bootstrap a project themselves.
+Only after required proof passes:
 
-1. Identify target stack, package manager, runtime versions, and deployment expectations.
-2. Prefer official scaffolding commands or existing organization templates.
-3. Give preflight driver cards for tool versions and destination directory.
-4. Give scaffold commands with risk and rollback.
-5. Add or guide creation of the smallest smoke test that proves the project runs.
-6. Verify install, format, lint, test, and run commands.
-7. Guide the baseline commit only after the smoke signal passes.
+1. Inspect the final aggregate diff and propose the smallest coherent developer narrative. Prefer fewer meaningful commits. Split by behavior and reviewability, not by human versus controller authorship.
+2. Record the current JJ operation ID and a tested rollback command before mutation. For JJ 0.40, inspect without snapshotting with `jj --at-op=@ --ignore-working-copy op log -n 1` and plan `jj op restore <operation-id>` as the rollback; recheck installed help when the version differs. Show the intended stack and exact `jj split -r <change-id>`/`jj describe -r <change-id>` commands derived from the actual diff and installed JJ version; do not rely on a movable `@`. Immediately before every mutating command, reread the operation ID, stack, target change, and target diff. Any drift invalidates the proposed command and rollback plan; rederive both. Never restore a stale operation across later work without inspecting the lost operations and obtaining explicit approval. The human runs history commands unless they explicitly ask the controller to do so.
+3. Prefer fileset splits when boundaries are clean and interactive hunk selection when a file contains multiple narrative units. State what selected changes remain in the first revision and what becomes the child.
+4. Verify the resulting `jj log`, each commit diff, and the aggregate base-to-tip diff. Confirm no content was lost, duplicated, or pulled in from unrelated work.
+5. Rerun checks affected by the split. Where practical, keep each commit independently coherent; always re-prove the final aggregate tree.
 
-Do not add large architecture, auth, database, CI, or deployment machinery during bootstrap unless the user explicitly includes it in scope.
+Before the PR opens, history may be reshaped to improve the narrative. After review begins, append focused follow-up JJ revisions by default so CodeRabbit and human review anchors remain stable; do not force-push or rewrite reviewed history without explicit approval.
 
-## Post-Build Gates
+## Ready PR And CodeRabbit
 
-After the human-guided build phase and quick confirmation:
+After final local verification and JJ narrative checks:
 
-1. Run `verifier` as a fresh-context gate. Include the spec, implementation summary, success criteria, and architecture model packet when present.
-2. If verifier returns `FAIL` or `ITERATE`, route the finding back into the human-guided build loop with a focused driver card or BDD/TDD test. Rerun verifier after the fix.
-3. Rewrite the final commit history into a coherent developer narrative before final review and push.
-4. Run `pr-review-gates`. Use a fresh reviewer and make clear that the production implementation was human-authored under controller guidance.
-5. If PR review gates return `FAIL` or `ITERATE`, route fixes back into the human-guided build loop unless the issue is only spec/docs/PR text.
-6. Push the branch and create a draft PR after required gates pass.
-7. Create or confirm the post-merge `main` CI/deploy and production smoke Bead when required by repo instructions, the spec, or the user.
+1. Prepare the exact PR title and body. The body must include the OpenSpec change/artifact paths, behavior, human-authored critical slices, controller-authored bounded work, verification evidence, migration/rollback notes when applicable, tracking item, and residual risk.
+2. Present the exact title and body as a publication boundary. Let the human edit them and wait for explicit approval.
+3. Resolve and show the exact bookmark, remote, base revision/branch, and tip revision to publish. Push and open one non-draft PR. Do not split human and controller work into separate PRs merely because authorship differs.
+4. Read the hosted PR back and verify its title, body, base, head/tip, and `isDraft=false` match the approved publication.
+5. Let CodeRabbit be the first deliberately invoked independent whole-PR reviewer. Required CI and automatically triggered bots may run concurrently; Fable, `verifier`, and `pr-review-gates` remain out of scope, and no other whole-diff reviewer is deliberately invoked before CodeRabbit. Local testing remains evidence; CodeRabbit is not a substitute for it.
+6. Route every actionable finding:
+   - Semantic, architectural, data, security, concurrency, lifecycle, failure-mode, or otherwise critical finding → human fixes it.
+   - Mechanical, documentation, fixture, or already-decided test/call-site finding → controller may fix it.
+   - Ambiguous finding → discuss and classify before editing.
+7. Wait for the CodeRabbit check/review to reach a terminal result and inspect every actionable finding. No critical finding may remain unresolved.
+8. Rerun affected focused checks and applicable E2E after fixes. Push focused follow-up JJ revisions and let CodeRabbit review the updated PR. Repeat until CodeRabbit has no unresolved actionable finding; do not repeatedly recurate the pre-review stack.
 
-Commit narrative should:
+If the implementation changes materially after title/body approval but before publication, regenerate the affected text and obtain approval again. After publication, propose exact PR-body edits for approval whenever review fixes make the published behavior, proof, migration/rollback notes, or residual-risk statements inaccurate.
 
-- Tell the story from spec/test foundation to behavior to verification.
-- Keep mechanical setup, behavior, tests, and docs/spec updates reviewable.
-- Avoid rewriting unrelated user commits.
-- Avoid force-pushing shared branches unless explicitly approved.
+If CodeRabbit is unavailable or cannot review, report that plainly and stop. This workflow cannot complete with a silently substituted reviewer; a different reviewer requires the human to choose a different publication workflow explicitly. Do not restore Fable, `verifier`, or `pr-review-gates`.
 
-The draft PR body should include:
+## Common Mistakes
 
-- Spec path.
-- Architecture model packet path or `not used`.
-- Build mode used.
-- Human-guided build summary.
-- Assistant-authored artifacts.
-- Verifier result or results.
-- PR review gate result or results.
-- Tracking issue or bead, when required.
-- Post-merge `main` CI/deploy and production smoke Bead plus expected trigger, when required.
-
-Do not mark the PR ready for review. Create a draft PR.
+| Mistake or rationalization | Correction |
+| --- | --- |
+| “Any production edit makes this agent-driven.” | Ownership follows criticality. Bounded production wiring is allowed; behavior-defining code remains human-owned. |
+| “It is only a few lines, so it is non-critical.” | Diff size does not determine consequence. Reclassify using semantics and blast radius. |
+| “The test is mechanical, so I can choose the expected behavior.” | Test syntax may be mechanical; the behavioral oracle is not. Return unresolved behavior to the human. |
+| “Focused tests pass, so split commits now.” | Keep the mutable change until the assembled PR passes its applicable E2E/runtime proof. |
+| “Separate authorship deserves separate PRs or commits.” | Use one PR and split commits by developer narrative, not authorship. |
+| “Another local whole-diff reviewer is safer.” | The human already reviewed critical slices. Run final evidence, then use CodeRabbit as the independent whole-PR reviewer. |
+| “Open a draft while waiting for approval.” | First obtain exact title/body approval, then open a non-draft PR. |
 
 ## Stop States
 
-Stop and report the blocker when:
+Stop and state the precise blocker when:
 
-- Required repo path or mode cannot be resolved.
-- A readable feature-scoped spec is not available by the time build would start.
-- The human spec review gate has not passed.
-- The worktree has conflicting user changes.
-- A proposed command would be destructive and the user has not explicitly approved it.
-- The RED test cannot be made to fail for the intended reason.
-- Spec feedback changes material requirements and spec review has not rerun.
-- A gate returns `HUMAN DECISION`.
-- The user asks the controller to implement production code while still expecting a human-driven build.
-- Required credentials, paid services, or network access are unavailable.
-- Verification fails and the next step would be speculative.
-- Push, PR creation, hosted CI, or required production smoke cannot run with available noninteractive credentials.
+- No healthy OpenSpec root/store or complete feature contract can be resolved.
+- `spec-review-gates` or human spec approval has not passed.
+- A material spec change has not been updated, re-reviewed, and re-approved.
+- Criticality is ambiguous and choosing an owner would itself choose behavior or risk.
+- User changes overlap the intended edit and ownership cannot be resolved safely.
+- Required E2E/runtime proof would touch an environment without authorization.
+- A required critical fix is waiting for the human.
+- The exact final JJ split cannot be derived safely from the current stack.
+- PR title/body approval, credentials, push, PR creation, CodeRabbit, CI, or required runtime access is unavailable.
 
 ## Report Format
 
@@ -297,45 +238,34 @@ For checkpoints:
 
 ```markdown
 Human-driven workflow checkpoint.
-Build mode: <mode>
-Spec: <path>
-Current state: <short summary>
-Evidence: <command/output/test signal>
-Next driver card:
-<driver card>
+OpenSpec: <change and approval state>
+Current critical slice: <slice and owner>
+Human-authored: <current diff summary>
+Controller-authored: <current diff summary>
+Evidence: <focused signal>
+Next: <human slice | bounded work | assembled E2E | final JJ split | PR approval | CodeRabbit>
 ```
 
 For completion:
 
 ```markdown
 Human-driven workflow complete.
-Build mode: <mode>
-Spec: <path>
-Architecture model: <path | not used>
-Repo: <path>
-Goal: <goal>
-Human-owned implementation: <summary>
-Assistant-authored artifacts: <tests/docs/specs/none>
+OpenSpec: <change and artifact paths>
+Repo/base: <path and exact base>
+Human-authored critical implementation:
+- <summary>
+Controller-authored bounded work:
+- <summary>
+Behavior and design:
+- <what changed and how it works>
 Verification:
-- <signals>
-Verifier:
-- <result summary>
-PR review gates:
-- <result summary>
-Commit narrative:
-<rewrite summary>
-Draft PR:
-<url or not created with reason>
-Post-merge CI/deploy and smoke:
-<not required | bead pending merge/deploy | main CI failed | no deploy for this code | PASS/FAIL evidence>
+- <focused and E2E/runtime evidence>
+JJ narrative:
+- <final commits>
+Ready PR: <URL>
+CodeRabbit: <result and addressed findings>
 Residual risk:
 - <risk or none>
 ```
 
-If stopped early, replace the first line with:
-
-```markdown
-Human-driven workflow stopped.
-Reason: <specific stop state>
-Next required action: <specific user action or decision>
-```
+If stopped, replace the first line with `Human-driven workflow stopped.` and name the next required human action.

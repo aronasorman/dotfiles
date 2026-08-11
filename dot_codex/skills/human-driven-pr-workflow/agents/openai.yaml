@@ -1,7 +1,7 @@
 interface:
   display_name: "Human-Driven PR Workflow"
-  short_description: "Guide the human-driven build-to-PR flow"
-  default_prompt: "Use $human-driven-pr-workflow to take an agent-reviewed spec through a human-guided build phase, verifier and PR review gates, and draft PR creation."
+  short_description: "Pair on critical code and ship one reviewed PR"
+  default_prompt: "Use $human-driven-pr-workflow to help me write the critical implementation, complete bounded supporting work, verify the assembled change, shape the final JJ history, and prepare a ready-for-review PR for CodeRabbit."
 
 policy:
   allow_implicit_invocation: false

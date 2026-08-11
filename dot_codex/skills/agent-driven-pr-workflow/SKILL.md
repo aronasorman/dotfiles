@@ -10,7 +10,10 @@ Orchestrate a feature-scoped approved spec through build, verification, hard rev
 Full and lite both use hard gates and iterate until they pass. Full mode adds
 a second implementation pass; lite mode stops after one implementation pass.
 
-This skill normally starts from an approved spec. If the target bead has no readable spec or design attachment, the controller first writes one with `feature-spec-writing`, saves it to a repo file, syncs it to the bead, and then runs `spec-review-gates` until PASS before implementation. The spec is for the feature or PR slice being built, not a full-project design unless the project bootstrap itself is the feature.
+This skill starts from an approved implementation contract: a readable spec, an
+approved OpenSpec artifact bundle, or an approved `fix-explainer` contract for a
+qualifying small fix. When no contract is supplied, the controller must create
+one and obtain explicit user approval before any execution stage begins.
 
 ## Modes
 
@@ -26,6 +29,8 @@ The controller owns:
 
 - Workflow state and stop decisions.
 - Invoking each skill or gate in order.
+- Selecting the pre-build contract route and enforcing its explicit approval
+  checkpoint.
 - Applying required spec edits if `spec-review-gates` returns actionable spec feedback.
 - The `second-pass` stage in full mode.
 - Rewriting the final commit history into a better developer narrative that is easy to review commit by commit before the final review gate and push.
@@ -74,10 +79,11 @@ not replace Claude Code Opus as the builder.
 Use `claude-fable-5` for these stages unless the user's environment provides a
 newer explicit Fable model alias.
 
-Run the Fable planner after the final pre-build spec gate passes and before the
-first Opus build starts. Pass only bounded context: the final spec, architecture
-model packet when present, material spec-gate findings, repo map, and selected
-files or excerpts needed to reason about the implementation path. The planner
+Run the Fable planner after the final pre-build contract approval and before
+the first Opus build starts. Pass only bounded context: the approved contract,
+architecture model packet when present, material spec-gate findings, repo map,
+and selected files or excerpts needed to reason about the implementation path.
+The planner
 must output implementation strategy, likely touched areas, risk list,
 acceptance checks, and "avoid" guidance for the builder. It must not implement
 the feature.
@@ -103,7 +109,12 @@ skipping the decision gate.
 
 Resolve these before starting:
 
-- Spec path, or the bead id whose design/spec attachment must be checked and populated.
+- Spec path, OpenSpec change name, or the bead id whose design/spec attachment
+  must be checked and populated.
+- OpenSpec root or registered store id when the contract is or may become an
+  OpenSpec change.
+- Whether the current request explicitly invokes `fix-explainer` for a
+  qualifying small, already-evidenced fix.
 - Architecture model packet path or Beads attachment, if the spec includes one.
 - Repo/worktree path.
 - Target base branch for reset, review, push, and draft PR.
@@ -119,7 +130,9 @@ Resolve these before starting:
   fields to flag during the user handoff, tests, or hosted CI.
 - Any repo-local production smoke skill or runbook, target `main` CI/deploy workflow, and noninteractive credential path needed to run it autonomously.
 
-If the repo path or base branch cannot be resolved safely, stop before making changes. If no spec path can be resolved from inputs or Beads, run the spec bootstrap before implementation.
+If the repo path or base branch cannot be resolved safely, stop before making
+changes. If no approved contract can be resolved, run the pre-build contract
+selection and approval process before implementation.
 
 ## Publication Boundary
 
@@ -152,52 +165,26 @@ target repo. It must not become a PR or carry internal workflow artifacts.
 Proving pushes are implementation activity, not publication. They do not
 trigger PR review gates.
 
-## Spec Bootstrap
+## Pre-Build Contract Selection and Approval
 
-Before choosing full or lite implementation steps, ensure there is a readable feature-scoped spec for the build phase:
+**REQUIRED REFERENCE:** Read
+`references/pre-build-contract.md` before resolving or creating the build
+contract, and follow its route selection, approval, Beads, and OpenSpec
+lifecycle rules.
 
-1. Inspect the tracking bead with `bd show <bead-id> --json` when a bead id is available.
-2. Treat an existing `spec-id`, design attachment, or repo spec path as the spec only if it resolves to a readable file.
-3. If no usable spec exists, invoke `feature-spec-writing`.
-4. Save the spec to a repo-local file only when the publication boundary is
-   `internal/controlled` and repo conventions allow it. Prefer
-   `history/port-specs/<feature-slug>.md` unless repo conventions point
-   somewhere more specific. For `external/uncontrolled` repos, save the spec in
-   Beads, Obsidian, `/private/tmp`, or another local/internal location outside
-   the target repo worktree.
-5. Sync the file to the bead:
+No Fable call, worktree creation, implementation edit, builder invocation, or
+implementation subagent may start until the selected route has a readable
+contract and any required explicit user approval is recorded for the current
+contract version.
 
-```bash
-bd update <bead-id> --spec-id <spec-path> --design-file <spec-path> --json
-bd comment <bead-id> "Spec materialized at <spec-path>; synced to bead design/spec-id."
-```
+The small-fix route is available only when the current request explicitly
+invokes `fix-explainer` and every observable eligibility condition in the
+reference passes. `fix-explainer` explains a proposed fix without applying it;
+the agent-driven builder executes it only after the user approves that proposal.
 
-6. Continue with `spec-review-gates` and iterate until PASS.
-7. Confirm the final spec path is readable and describes the feature or PR slice at enough detail for the builder to work from it.
-
-If Beads is unavailable, record the spec path in the repo artifact only for
-`internal/controlled` repos and include it in the internal handoff bullets when
-useful. Never insert it into the user's PR description. For
-`external/uncontrolled` repos, keep the spec path local/internal and continue
-only when the user provided another tracking source. Do not silently skip the
-spec materialization step.
-
-## Build-Phase Spec Contract
-
-No build phase starts without a readable spec path.
-
-Before invoking Claude Code Opus or `subagent-driven-development`, the controller must:
-
-- Pass the spec path to the builder.
-- State that the spec is the authoritative feature-level contract.
-- Include architecture model packet path when present.
-- Include any spec review gate findings that materially shape implementation.
-- State the publication boundary, and for `external/uncontrolled` repos tell
-  builders and verifiers that specs, workflow notes, and one-off validation
-  scripts must remain uncommitted.
-- Stop if the only available requirements are chat history, bead title, issue summary, or inferred intent.
-
-The spec should be as detailed as the feature requires. Do not expand it into a whole-project design unless the requested work is project bootstrap.
+All other missing-contract work uses OpenSpec. Treat its proposal, design, and
+delta specs as one authoritative feature-level bundle, run strict OpenSpec
+validation plus `spec-review-gates`, then stop for explicit user approval.
 
 ## Prove Before Review
 
@@ -222,52 +209,68 @@ verifier is returning `FAIL` or `ITERATE`.
 
 ## Full Mode
 
-Run this sequence continuously. Do not pause between stages unless blocked, a gate returns `HUMAN DECISION`, the diff annotation approval checkpoint needs user approval, the PR description handoff is waiting for user-authored text, or the next destructive operation cannot be made safe.
+Run this sequence continuously after the pre-build approval gate. Do not pause
+between later stages unless blocked, a gate returns `HUMAN DECISION`, a
+materially revised contract needs renewed approval, the diff annotation
+approval checkpoint needs user approval, the PR description handoff is waiting
+for user-authored text, or the next destructive operation cannot be made safe.
 
-1. Resolve or bootstrap the feature-scoped spec, run `spec-review-gates` on it, and confirm the build-phase spec contract. Iterate until PASS.
+1. Resolve or create the feature-scoped contract and complete the required
+   pre-build approval gate.
 2. Run the Fable planner decision gate. Iterate only on spec or plan blockers;
    do not let the planner implement code.
 3. Build with Claude Code Opus using `--include-partial-messages --verbose`.
-4. Run `verifier` as a fresh-context gate. Iterate until PASS or `HUMAN DECISION`.
-5. Run `pr-review-gates` with writer recorded as Claude Opus so the hard reviewer is a Codex subagent. Iterate until PASS or an issue needs human judgment.
-6. Run the Fable V1 judge decision gate. Treat the result as advisory evidence
+4. For an OpenSpec-backed contract, run `openspec-verify-change` as a
+   conformance precheck. Its PASS does not replace runtime verification.
+5. Run `verifier` as a fresh-context gate. Iterate until PASS or `HUMAN DECISION`.
+6. Run `pr-review-gates` with writer recorded as Claude Opus so the hard reviewer is a Codex subagent. Iterate until PASS or an issue needs human judgment.
+7. Run the Fable V1 judge decision gate. Treat the result as advisory evidence
    for the second pass and spec update, not as a substitute for Codex hard code
    review.
-7. Run the second pass in the controller context.
+8. Run the second pass in the controller context.
    - Use the existing `second-pass` workflow if available.
    - Treat the V1 implementation as evidence, not a template.
    - Fold durable learnings from the first implementation, verifier,
-     `pr-review-gates`, and Fable V1 judge into the spec.
+     `pr-review-gates`, and Fable V1 judge into the contract. For OpenSpec,
+     use `openspec-update-change` to keep the artifact bundle coherent.
    - Reset the code worktree to the target base branch.
    - Preserve the intended spec update if the spec lives inside the worktree.
-8. Rerun `spec-review-gates` on the updated spec and reconfirm the build-phase spec contract. Iterate until PASS before any second build starts.
-9. Build again with Claude Code Opus from the updated spec, using `--include-partial-messages --verbose`.
-10. Run `verifier` again as a fresh-context gate. Iterate until PASS or `HUMAN DECISION`.
-11. Rewrite the final commit history into a better developer narrative that is easy to review commit by commit.
-12. Run `pr-review-gates` again with writer recorded as Claude Opus so the hard reviewer is a Codex subagent. Iterate until PASS or an issue needs human judgment.
-13. Run the Codex diff annotation approval stage. If the user asks for changes, return to the builder stage, then rerun verification, commit narrative rewrite, final `pr-review-gates`, and this annotation stage.
-14. Present the completed-work and implementation-tip bullets, then stop for
+9. Rerun `spec-review-gates` on the updated contract. If scope, requirements, or
+   behavior changed materially, obtain renewed explicit user approval before
+   the second build.
+10. Build again with Claude Code Opus from the updated contract, using `--include-partial-messages --verbose`.
+11. For an OpenSpec-backed contract, rerun `openspec-verify-change`.
+12. Run `verifier` again as a fresh-context gate. Iterate until PASS or `HUMAN DECISION`.
+13. Rewrite the final commit history into a better developer narrative that is easy to review commit by commit.
+14. Run `pr-review-gates` again with writer recorded as Claude Opus so the hard reviewer is a Codex subagent. Iterate until PASS or an issue needs human judgment.
+15. For an OpenSpec-backed contract, run `openspec-sync-specs` after final gates.
+16. Run the Codex diff annotation approval stage. If the user asks for changes, return to the builder stage, then rerun verification, commit narrative rewrite, final `pr-review-gates`, OpenSpec sync when applicable, and this annotation stage.
+17. Present the completed-work and implementation-tip bullets, then stop for
     the user's exact PR description text.
-15. Push the branch and create a draft PR only after the user approves the
+18. Push the branch and create a draft PR only after the user approves the
     annotated diff and supplies the description for this workflow iteration.
-16. Create or confirm the post-merge `main` CI/deploy and production smoke Bead when required.
+19. Create or confirm the post-merge `main` CI/deploy and production smoke Bead when required.
 
 ## Lite Mode
 
 Lite is a single implementation pass with hard gates and iteration. Iterate
 inside this one pass until each gate returns `PASS` or reaches a stop state.
 
-1. Resolve or bootstrap the feature-scoped spec, run `spec-review-gates` on it, and confirm the build-phase spec contract. Iterate until PASS.
+1. Resolve or create the feature-scoped contract and complete the required
+   pre-build approval gate.
 2. Build with `subagent-driven-development`.
-3. Run `verifier` as a fresh-context gate. Iterate until PASS or `HUMAN DECISION`.
-4. Rewrite the commit history into a better developer narrative that is easy to review commit by commit.
-5. Run `pr-review-gates`. Iterate until PASS or an issue needs human judgment.
-6. Run the Codex diff annotation approval stage. If the user asks for changes, return to the builder stage, then rerun verification, commit narrative rewrite, `pr-review-gates`, and this annotation stage.
-7. Present the completed-work and implementation-tip bullets, then stop for
+3. For an OpenSpec-backed contract, run `openspec-verify-change` as a
+   conformance precheck.
+4. Run `verifier` as a fresh-context gate. Iterate until PASS or `HUMAN DECISION`.
+5. Rewrite the commit history into a better developer narrative that is easy to review commit by commit.
+6. Run `pr-review-gates`. Iterate until PASS or an issue needs human judgment.
+7. For an OpenSpec-backed contract, run `openspec-sync-specs` after final gates.
+8. Run the Codex diff annotation approval stage. If the user asks for changes, return to the builder stage, then rerun verification, commit narrative rewrite, `pr-review-gates`, OpenSpec sync when applicable, and this annotation stage.
+9. Present the completed-work and implementation-tip bullets, then stop for
    the user's exact PR description text.
-8. Push the branch and create a draft PR only after the user approves the
+10. Push the branch and create a draft PR only after the user approves the
    annotated diff and supplies the description for this workflow iteration.
-9. Create or confirm the post-merge `main` CI/deploy and production smoke Bead when required.
+11. Create or confirm the post-merge `main` CI/deploy and production smoke Bead when required.
 
 Lite never runs `second-pass` or a second implementation build unless the user
 explicitly upgrades to full mode.
@@ -419,6 +422,10 @@ After the PR is merged:
 - If `main` CI fails before deployment, record the failure evidence in the smoke Bead and stop for repair.
 - If the workflow succeeds and deployed the agent's code to production, run the repo-defined production smoke against production and record pass/fail evidence in the smoke Bead.
 - If the workflow succeeds but did not deploy the agent's code, record the no-deploy evidence in the smoke Bead and close it without running production smoke.
+- For an OpenSpec-backed contract, run `openspec-archive-change` only after the
+  required merge, CI/deploy, and production-smoke outcome is recorded. If no
+  post-merge follow-through is required, archive after merge. Keep failed or
+  blocked changes active.
 - Use only noninteractive credentials: GitHub Actions secrets, a 1Password service account, 1Password Connect, or an already-approved runner secret.
 - Do not trigger desktop-biometric, Touch ID, or other interactive 1Password prompts for autonomous post-deploy smoke.
 - If credentials or network access are unavailable without prompting, stop with `Authentication unavailable` or `Network unavailable`, leave the smoke Bead open, and record the blocker.
@@ -429,7 +436,10 @@ After the PR is merged:
 Stop and report clearly when:
 
 - Required input cannot be resolved.
-- A readable feature-scoped spec is not available by the time build would start.
+- A readable feature-scoped contract is not available by the time build would start.
+- A generated or materially revised contract is waiting for explicit user
+  approval. This is an expected pre-build handoff, not a blocker.
+- `fix-explainer` was explicitly requested but its evidence gate cannot be met.
 - A destructive reset would be unsafe.
 - A gate returns `HUMAN DECISION`.
 - A full-mode gate cannot be made to pass after a technically valid fix path is exhausted.
@@ -445,7 +455,10 @@ Report:
 ```markdown
 Agent-driven PR workflow complete.
 Mode: full | lite
-Spec: <path> (<pre-existing | bootstrapped with feature-spec-writing>)
+Contract: <spec path | OpenSpec change and artifact paths | fix-explainer manifest>
+Contract source: <pre-existing spec | pre-existing OpenSpec | bootstrapped OpenSpec | approved small fix>
+Pre-build approval: <not required for unchanged approved input | approved | waiting>
+OpenSpec lifecycle: <not used | active | synced | archived | blocked with reason>
 Architecture model: <path | not used>
 Repo: <path>
 Base: <branch/ref>
