@@ -44,8 +44,26 @@ existing stable ID. This recovers the current cycle without spawning another
 tab when controller context was lost.
 
 After launch, use `tuicr review list --repo /absolute/repository/path` to find
-the active review. Tell Aron the tab name. When he says his comments are ready,
-read them with `tuicr review comments --repo <path> --session <slug>`.
+the exact active review and read its existing comments.
+
+Before telling Aron the review is ready, seed that tuicr session once. This
+workflow explicitly permits these agent comments despite tuicr's general rule
+for user-led reviews. Apply the `annotate-diffs` selection rules, but transport
+the output with `tuicr review add`:
+
+- Add 3-8 comments: one review note for the net change, important flow, and
+  watch item, then tight line or file notes for intent, invariants, risk, and
+  why important blocks exist.
+- Use `--username "Codex"`, prefix each body with `[Codex focus]`, and default
+  to `--type note`. Reserve `suggestion` or `issue` for a real unresolved concern.
+- Keep them local. Do not restate syntax, add generic praise, or publish them.
+
+If `[Codex focus]` is already present, do not seed again. Recovery, changed
+`HEAD`, fixes, and `:e` remain the same cycle. After a material revision, add
+only a net-new focus note for an important area the existing notes do not cover.
+
+Tell Aron the tab name. When he says his comments are ready, read them with
+`tuicr review comments --repo <path> --session <slug>`.
 
 After changing the code, keep the same review open and tell Aron to enter `:e`
 in tuicr to reload the diff. Read the next comments from the same tuicr session.
