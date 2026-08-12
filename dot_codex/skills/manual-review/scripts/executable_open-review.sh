@@ -27,6 +27,30 @@ done <<< "$sessions"
 
 session="${session:-${current_session:-${sessions%%$'\n'*}}}"
 
+existing_tab_id=$(
+  zellij --session "$session" action list-panes --all --json |
+    jq -r --arg directory "$directory" --arg tab_title "$tab_title" '
+      [
+        .[] |
+        select(
+          .is_plugin == false and
+          .exited == false and
+          .tab_name == $tab_title and
+          .pane_cwd == $directory and
+          ((.pane_command // "") | test("(^|/)tuicr( |$)"))
+        ) |
+        .tab_id
+      ] |
+      unique |
+      first // empty
+    '
+)
+
+if [[ -n "$existing_tab_id" ]]; then
+  printf '%s\t%s\n' "$session" "$existing_tab_id"
+  exit 0
+fi
+
 tab_id=$(zellij --session "$session" action new-tab \
   --name "$tab_title" \
   --cwd "$directory" \
