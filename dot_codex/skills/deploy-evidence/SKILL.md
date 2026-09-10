@@ -28,7 +28,12 @@ Explain expected special exit codes, such as a diff exit code of 1.
 Exclude credentials, tokens, connection strings, patient data, and other sensitive values from displayed commands and saved output.
 Prefer secure references over literal secrets. Label necessary redactions.
 
-Do not present an illustrative command as executed. For a scripted batch, show the actual command pattern and summarize its per-target results.
+Do not present an illustrative command as executed.
+Include all verification commands and requests: curl calls, health/readiness probes, and other checks used to establish that the deployment works.
+For helpers, batches, or subagents, print each distinct executed command with its actual arguments and expanded URL or target.
+A helper invocation, `<URL>` placeholder, or results table alone is insufficient.
+Show the corresponding output or concise result summary in commentary as the checks run.
+For identical repeated requests, print the full command once, then report each round's result and timing.
 Keep shell setup and bookkeeping out of the progress narrative unless they explain a blocker.
 
 Example after a successful apply:
