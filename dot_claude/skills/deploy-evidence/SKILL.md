@@ -1,11 +1,11 @@
 ---
-name: prod-deploy-tracking
-description: Use when preparing or executing a Production apply, rollout, restart, or configuration deployment, or when the user explicitly requests this reporting style in another environment.
+name: deploy-evidence
+description: Use when preparing or executing a deployment in any environment, including infrastructure applies, service configuration changes, migrations, and rollouts, where commands, results, and verification need to be tracked.
 ---
 
-# Production Deploy Tracking
+# Deploy Evidence
 
-Make each meaningful deployment step visible as it happens. Show the command, its result, and what that result proves.
+Make each meaningful deployment step visible as it happens, in any environment. Show the command, its result, and what that result proves.
 Keep the existing deployment procedure simple.
 
 ## Scope and state

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Deploy Evidence"
+  short_description: "Track deployment commands, results, and verification"
+policy:
+  allow_implicit_invocation: true

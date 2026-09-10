@@ -1,5 +1,0 @@
-interface:
-  display_name: "Production Deploy Tracking"
-  short_description: "Show Production apply commands and smoke results"
-policy:
-  allow_implicit_invocation: true
