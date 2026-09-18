@@ -20,13 +20,14 @@ Choose exactly one route in this order:
 1. **Passed readable spec**: use the supplied approved spec path.
 2. **Passed OpenSpec change**: resolve its artifact bundle and validate it.
 3. **Explicit small-fix request**: use the small-fix route only when the current
-   request explicitly invokes `fix-explainer` and every eligibility condition
-   below passes.
+   request explicitly invokes `guided-code-explainer` and every eligibility
+   condition below passes.
 4. **No contract**: create an OpenSpec change and require approval.
 
 Do not classify a fix from expected line count alone. If the user explicitly
-requested `fix-explainer` but the diagnosis or source evidence is incomplete,
-stop with the missing evidence instead of diagnosing inside the explainer. If
+requested `guided-code-explainer` but the diagnosis or source evidence is
+incomplete, stop with the missing evidence instead of diagnosing inside the
+explainer. If
 the evidence exists but the change is not small, use the OpenSpec route.
 
 ## Passed Spec Route
@@ -41,9 +42,9 @@ stop for explicit user approval before execution.
 
 The route is eligible only when all of these observable conditions are true:
 
-- The current workflow request explicitly invokes `fix-explainer` because the
-  already-evidenced problem or proposed fix still needs explanation and
-  approval.
+- The current workflow request explicitly invokes `guided-code-explainer`
+  because the already-evidenced problem or proposed fix still needs explanation
+  and approval.
 - An already-evidenced diagnosis, repository root, exact source paths/ranges,
   and proposed fix exist. Log-dependent claims include the supporting logs.
 - The fix restores one intended behavior through one localized root cause.
@@ -56,19 +57,19 @@ The route is eligible only when all of these observable conditions are true:
 
 When eligible:
 
-1. **REQUIRED SUB-SKILL:** Use `fix-explainer`. It must create only its
-   temporary annotated-source page and must prove the target repository stayed
-   unchanged.
-2. Ensure the page labels the candidate as `Proposed — not applied` and shows
-   the diagnosis, exact source evidence, proposed change, and verification
-   plan.
+1. **REQUIRED SUB-SKILL:** Use `guided-code-explainer`. It creates only its own
+   explainer directory and a detached worktree. It must not change the target
+   branch, the working tree, or any tracked file.
+2. Ensure the walkthrough keeps its fix status at `proposed` and shows the
+   diagnosis, exact source evidence, proposed change, and what was run.
 3. Present the page and stop for explicit user approval. Do not treat viewing,
    silence, or a request for clarification as approval.
 4. On requested changes, revise only from supplied evidence, rerender, prove the
    repository is still unchanged, and ask again.
-5. After approval, keep the approved manifest available outside the target
-   repository through build and verification. Pass it to the builder as the
-   authoritative small-fix contract. `fix-explainer` never implements the fix.
+5. After approval, keep the approved `walkthrough.json` and its explainer
+   directory available through build and verification. Pass the walkthrough path
+   to the builder as the authoritative small-fix contract.
+   `guided-code-explainer` never implements the fix.
 
 ## OpenSpec Route
 

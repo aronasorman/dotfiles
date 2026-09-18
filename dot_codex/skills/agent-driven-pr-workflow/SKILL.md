@@ -11,8 +11,8 @@ Full and lite both use hard gates and iterate until they pass. Full mode adds
 a second implementation pass; lite mode stops after one implementation pass.
 
 This skill starts from an approved implementation contract: a readable spec, an
-approved OpenSpec artifact bundle, or an approved `fix-explainer` contract for a
-qualifying small fix. When no contract is supplied, the controller must create
+approved OpenSpec artifact bundle, or an approved `guided-code-explainer`
+walkthrough for a qualifying small fix. When no contract is supplied, the controller must create
 one and obtain explicit user approval before any execution stage begins.
 
 ## Modes
@@ -113,7 +113,7 @@ Resolve these before starting:
   must be checked and populated.
 - OpenSpec root or registered store id when the contract is or may become an
   OpenSpec change.
-- Whether the current request explicitly invokes `fix-explainer` for a
+- Whether the current request explicitly invokes `guided-code-explainer` for a
   qualifying small, already-evidenced fix.
 - Architecture model packet path or Beads attachment, if the spec includes one.
 - Repo/worktree path.
@@ -178,9 +178,10 @@ contract and any required explicit user approval is recorded for the current
 contract version.
 
 The small-fix route is available only when the current request explicitly
-invokes `fix-explainer` and every observable eligibility condition in the
-reference passes. `fix-explainer` explains a proposed fix without applying it;
-the agent-driven builder executes it only after the user approves that proposal.
+invokes `guided-code-explainer` and every observable eligibility condition in
+the reference passes. `guided-code-explainer` explains a proposed fix without
+applying it. The agent-driven builder executes it only after the user approves
+that proposal.
 
 All other missing-contract work uses OpenSpec. Treat its proposal, design, and
 delta specs as one authoritative feature-level bundle, run strict OpenSpec
@@ -439,7 +440,7 @@ Stop and report clearly when:
 - A readable feature-scoped contract is not available by the time build would start.
 - A generated or materially revised contract is waiting for explicit user
   approval. This is an expected pre-build handoff, not a blocker.
-- `fix-explainer` was explicitly requested but its evidence gate cannot be met.
+- `guided-code-explainer` was explicitly requested but its evidence gate cannot be met.
 - A destructive reset would be unsafe.
 - A gate returns `HUMAN DECISION`.
 - A full-mode gate cannot be made to pass after a technically valid fix path is exhausted.
@@ -455,7 +456,7 @@ Report:
 ```markdown
 Agent-driven PR workflow complete.
 Mode: full | lite
-Contract: <spec path | OpenSpec change and artifact paths | fix-explainer manifest>
+Contract: <spec path | OpenSpec change and artifact paths | guided-code-explainer walkthrough path>
 Contract source: <pre-existing spec | pre-existing OpenSpec | bootstrapped OpenSpec | approved small fix>
 Pre-build approval: <not required for unchanged approved input | approved | waiting>
 OpenSpec lifecycle: <not used | active | synced | archived | blocked with reason>

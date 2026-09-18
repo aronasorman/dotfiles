@@ -31,4 +31,6 @@ For a bug, emphasize expected versus actual behavior and reproduction conditions
 
 ## Boundary
 
-Use this skill for ordinary chat explanations. If the user explicitly invokes `$fix-explainer`, use that artifact-producing skill instead. Do not mutate systems while explaining unless the user separately asks for a change.
+Use this skill for ordinary chat explanations. Do not mutate systems while explaining unless the user separately asks for a change.
+
+When the explanation depends on source the agent can read, end with one short question: ask whether the user wants a guided code explanation. On a yes, use the `guided-code-explainer` skill. On anything else, stop. Ask once for each explanation.
