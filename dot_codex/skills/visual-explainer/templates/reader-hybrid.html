@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reader Hybrid Template</title>
+<script>
+/* Per-page preference key. Change the string per generated page so two pages
+   do not share a saved theme or text size. */
+window.__READER_KEY = "ve-reader-hybrid:";
+/* Applied before first paint. Only an explicit saved choice is honoured:
+   never the OS setting, never a random default. */
+(function () {
+  try {
+    var t = localStorage.getItem(window.__READER_KEY + "theme");
+    if (t === "paper" || t === "night") document.documentElement.setAttribute("data-theme", t);
+    var f = parseInt(localStorage.getItem(window.__READER_KEY + "font"), 10);
+    if (f >= 18 && f <= 28) document.documentElement.style.setProperty("--prose-size", f + "px");
+  } catch (e) {}
+})();
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+html[data-theme="night"] {
+  --bg: #131210;
+  --surface: #1c1a17;
+  --border: #33302a;
+  --text: #e7e2d7;
+  --dim: #aaa397;
+  --link: #d9b781;
+  color-scheme: dark;
+}
+html[data-theme="paper"] {
+  --bg: #faf7f0;
+  --surface: #f4f0e6;
+  --border: #e2dacb;
+  --text: #211f1b;
+  --dim: #6d665a;
+  --link: #7a4a13;
+  color-scheme: light;
+}
+:root {
+  --prose-size: 19px;
+  --gutter: 20px;
+  --wide: 1040px;
+  --serif: -apple-system-ui-serif, ui-serif, "Iowan Old Style", Palatino, Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: var(--prose-size);
+  line-height: 1.5;
+  overflow-wrap: break-word;
+}
+
+/* ---- reader chrome ---- */
+.chrome {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px var(--gutter);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.chrome-group { display: flex; gap: 6px; align-items: center; }
+.chrome button,
+.toc-head button {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 12px;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1;
+  color: var(--dim);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.chrome button:hover,
+.toc-head button:hover { color: var(--text); background: var(--bg); }
+.chrome button[disabled] { opacity: 0.45; cursor: default; }
+.chrome button:focus-visible,
+.toc-head button:focus-visible,
+.toc a:focus-visible,
+a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+/* ---- contents dialog ---- */
+dialog.toc {
+  display: none;
+  width: min(560px, calc(100vw - 2 * var(--gutter)));
+  max-height: min(72vh, 660px);
+  padding: 0;
+  overflow: hidden;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+dialog.toc[open] { display: flex; flex-direction: column; }
+dialog.toc::backdrop { background: rgba(0, 0, 0, 0.55); }
+.toc-head {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px 6px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.toc-head h2 {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.toc-body { min-height: 0; overflow-y: auto; }
+.toc-body ul { margin: 0; padding: 0 14px 20px; list-style: none; }
+.toc-body li { margin: 0; }
+.toc-body a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 2px;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+}
+.toc-body a:hover { color: var(--link); }
+
+/* ---- bands: choose the width per section ----
+   Gutters live on .page, so a narrow band is 690px of actual text. */
+.page { padding: 34px var(--gutter) 76px; }
+.band { margin: 0 auto 34px; }
+.band.narrow { max-width: min(690px, 62ch); }
+.band.wide { max-width: var(--wide); }
+
+h1, h2, h3 {
+  margin: 20px 0 0.3rem;
+  font-family: var(--serif);
+  font-weight: 600;
+  line-height: 1.25;
+  scroll-margin-top: 86px;
+}
+h1 { font-size: 1.85em; }
+h2 { font-size: 1.3em; }
+h3 { font-size: 1.12em; }
+.band > :first-child { margin-top: 0; }
+
+p { margin: 0 0 8px; }
+ul, ol { margin: 0 0 20px; padding-left: 1.4em; }
+li { margin: 0 0 8px; min-width: 0; }
+a { color: var(--link); text-underline-offset: 2px; }
+.eyebrow {
+  margin: 0 0 8px;
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.dek { font-size: 1.1em; color: var(--dim); }
+
+code, pre { font-family: var(--mono); }
+code {
+  padding: 0.1em 0.3em;
+  font-size: 0.86em;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+pre {
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+pre code { padding: 0; font-size: 0.84em; background: none; border: 0; }
+
+/* ---- wide region: cards for comparable peers ---- */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.card {
+  min-width: 0;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.card h3 { margin: 0 0 0.3rem; font-size: 1.05em; }
+.card p { font-size: 0.95em; }
+.card dl { margin: 12px 0 0; }
+.card dt {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.card dd { margin: 2px 0 8px; font-size: 0.95em; min-width: 0; }
+.card dd:last-child { margin-bottom: 0; }
+
+/* ---- wide region: sequence, when order and hand-offs matter ---- */
+.steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
+.step {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 14px;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+  margin: 0;
+}
+.step:last-child { border-bottom: 1px solid var(--border); }
+.step::before {
+  counter-increment: step;
+  content: counter(step);
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 34px;
+  text-align: center;
+  color: var(--dim);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  height: 34px;
+}
+.step-actor {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.step p { margin: 2px 0 0; }
+
+/* ---- reference region: skippable detail, and labeled entries instead of tables ---- */
+.ref {
+  margin: 0 0 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.ref > summary {
+  padding: 11px 14px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--dim);
+  cursor: pointer;
+}
+.ref > summary:focus-visible { outline: 2px solid var(--link); outline-offset: -2px; }
+.ref-body { padding: 0 14px 12px; }
+.entry {
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+}
+.field { margin: 0 0 8px; min-width: 0; }
+.field:last-child { margin-bottom: 0; }
+.field .key {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.colophon {
+  max-width: min(690px, 62ch);
+  margin: 40px auto 0;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--dim);
+}
+
+@media print {
+  html[data-theme="night"], html[data-theme="paper"] {
+    --bg: #faf7f0;
+    --surface: #f4f0e6;
+    --border: #e2dacb;
+    --text: #211f1b;
+    --dim: #6d665a;
+    --link: #7a4a13;
+    color-scheme: light;
+  }
+  .chrome, dialog.toc { display: none !important; }
+  body { background: #fff; }
+  .band, .colophon { max-width: none; }
+  .ref[open] > summary { color: inherit; }
+  pre { overflow: visible; white-space: pre-wrap; }
+  a { color: inherit; }
+}
+</style>
+<noscript><style>.chrome { display: none; }</style></noscript>
+</head>
+<body>
+
+<!-- Reader UI ids are namespaced so they cannot collide with section anchors
+     generated from the page's own headings. -->
+<header class="chrome">
+  <div class="chrome-group">
+    <button id="reader-ui-contents" type="button" aria-haspopup="dialog">Contents</button>
+  </div>
+  <div class="chrome-group">
+    <button id="reader-ui-font-down" type="button" aria-label="Decrease text size">A&minus;</button>
+    <button id="reader-ui-font-up" type="button" aria-label="Increase text size">A+</button>
+    <button id="reader-ui-theme" type="button">Paper</button>
+  </div>
+</header>
+
+<dialog id="reader-ui-toc" class="toc" aria-label="Contents">
+  <div class="toc-head">
+    <h2>Contents</h2>
+    <button id="reader-ui-toc-close" type="button" aria-label="Close contents">Close</button>
+  </div>
+  <div class="toc-body">
+    <ul>
+      <li><a href="#overview">How the queue keeps writes safe</a></li>
+      <li><a href="#options">Three ways to hold the backlog</a></li>
+      <li><a href="#sequence">What happens to one write</a></li>
+      <li><a href="#reference">Settings reference</a></li>
+    </ul>
+  </div>
+</dialog>
+
+<div class="page">
+
+  <!-- Narrow prose: the default. Explanation, rationale, caveats. No card around it.
+       Headings stay on the same 690px measure as the prose they introduce,
+       including the heading above the wide card comparison further down. -->
+  <section class="band narrow" id="overview">
+    <p class="eyebrow">Illustrative sample</p>
+    <h1>How the queue keeps writes safe</h1>
+    <p class="dek">Why a durable backlog turns a lost write into a delayed one, and what it costs to run.</p>
+    <h2>The problem in one paragraph</h2>
+    <p>A write arrives faster than the store can accept it. Without somewhere to park the write, the request either blocks until the store catches up or fails outright, and the caller cannot tell which writes survived. A durable backlog turns that choice into a delay instead of a loss.</p>
+    <p>The cost is that the backlog becomes a component with its own failure modes. It can fill, it can reorder, and it can hand the same item to two workers. Everything below is about those three risks, and usually only the first one shows up in practice.</p>
+  </section>
+
+  <section class="band narrow" id="options">
+    <h2>Three ways to hold the backlog</h2>
+    <p>Each option keeps the same backlog; they differ in what survives a restart and what you have to operate.</p>
+  </section>
+
+  <!-- Wide region: cards for genuinely comparable peers, judged on the same
+       attributes, so the reader can scan across them. This is what the wide
+       band is for. Prose never goes in cards. -->
+  <section class="band wide">
+    <ul class="cards">
+      <li class="card">
+        <h3>In-process buffer</h3>
+        <p>An in-memory list inside the writer, drained by a background loop.</p>
+        <dl>
+          <dt>Durability</dt>
+          <dd>None. A restart loses the backlog.</dd>
+          <dt>Operational cost</dt>
+          <dd>Nothing to run or monitor.</dd>
+          <dt>Fits when</dt>
+          <dd>Writes are reproducible and the caller can retry.</dd>
+        </dl>
+      </li>
+      <li class="card">
+        <h3>Table in the store</h3>
+        <p>A pending-writes table in the same database, polled by workers.</p>
+        <dl>
+          <dt>Durability</dt>
+          <dd>Same guarantees as the data itself.</dd>
+          <dt>Operational cost</dt>
+          <dd>One more table and a poll interval to tune.</dd>
+          <dt>Fits when</dt>
+          <dd>The store has headroom and you want one backup to restore.</dd>
+        </dl>
+      </li>
+      <li class="card">
+        <h3>Dedicated broker</h3>
+        <p>A separate queue service between the writer and the workers.</p>
+        <dl>
+          <dt>Durability</dt>
+          <dd>Configurable, and independent of the store.</dd>
+          <dt>Operational cost</dt>
+          <dd>A service to run, patch, and watch.</dd>
+          <dt>Fits when</dt>
+          <dd>Several producers and consumers need the same backlog.</dd>
+        </dl>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Sequence, when order and hand-offs carry the meaning. These steps are
+       prose in rows, so they stay on the prose measure rather than going wide.
+       For a rendered graph instead, use the diagram-shell pattern from
+       templates/mermaid-flowchart.html inside a wide band. -->
+  <section class="band narrow" id="sequence">
+    <h2>What happens to one write</h2>
+    <ol class="steps">
+      <li class="step">
+        <div>
+          <span class="step-actor">Caller to gateway</span>
+          <p>The caller submits a write and waits only for the gateway to acknowledge that it has been recorded.</p>
+        </div>
+      </li>
+      <li class="step">
+        <div>
+          <span class="step-actor">Gateway to backlog</span>
+          <p>The gateway appends the write with a generated key, then returns that key so the caller can ask about it later.</p>
+        </div>
+      </li>
+      <li class="step">
+        <div>
+          <span class="step-actor">Worker to store</span>
+          <p>A worker claims the item, applies it to the store, and marks it done. Claims expire, so a worker that dies mid-flight releases its item.</p>
+        </div>
+      </li>
+      <li class="step">
+        <div>
+          <span class="step-actor">Worker to backlog</span>
+          <p>A write that fails repeatedly moves to a parking area with its error attached, rather than blocking the items behind it.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="band narrow">
+    <h2>Where this usually goes wrong</h2>
+    <p>Expiring claims mean an item can be applied twice, so each write needs to be safe to repeat. That is a property of the write, not of the queue, and it is the part most often left until after the first incident.</p>
+  </section>
+
+  <!-- Reference region: technical detail a reader can skip. Tabular material
+       stays as labeled entries so each value keeps its column name. -->
+  <section class="band narrow" id="reference">
+    <h2>Settings reference</h2>
+    <details class="ref">
+      <summary>Worker settings and defaults</summary>
+      <div class="ref-body">
+        <div class="entry">
+          <div class="field"><div class="key">Setting</div><div><code>claim_timeout</code></div></div>
+          <div class="field"><div class="key">Default</div><div>30s</div></div>
+          <div class="field"><div class="key">Effect</div><div>How long a claimed item stays invisible before another worker may take it.</div></div>
+        </div>
+        <div class="entry">
+          <div class="field"><div class="key">Setting</div><div><code>max_attempts</code></div></div>
+          <div class="field"><div class="key">Default</div><div>5</div></div>
+          <div class="field"><div class="key">Effect</div><div>Attempts before the item is parked with its last error.</div></div>
+        </div>
+        <div class="entry">
+          <div class="field"><div class="key">Setting</div><div><code>batch_size</code></div></div>
+          <div class="field"><div class="key">Default</div><div>50</div></div>
+          <div class="field"><div class="key">Effect</div><div>Items claimed per poll. Larger batches trade latency for throughput.</div></div>
+        </div>
+      </div>
+    </details>
+    <details class="ref">
+      <summary>Draining the backlog by hand</summary>
+      <div class="ref-body">
+<pre><code>worker drain --batch 10 --once
+worker parked list --since 24h</code></pre>
+      </div>
+    </details>
+  </section>
+
+  <footer class="colophon">Invented sample content. Replace every region with real material and delete the regions the content does not need.</footer>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var KEY = window.__READER_KEY;
+  var MIN = 18, MAX = 28, DEFAULT = 19;
+
+  function save(name, value) { try { localStorage.setItem(KEY + name, value); } catch (e) {} }
+  function load(name) { try { return localStorage.getItem(KEY + name); } catch (e) { return null; } }
+
+  var down = document.getElementById("reader-ui-font-down");
+  var up = document.getElementById("reader-ui-font-up");
+  var size = parseInt(load("font"), 10);
+  if (!(size >= MIN && size <= MAX)) size = DEFAULT;
+
+  function applySize() {
+    root.style.setProperty("--prose-size", size + "px");
+    down.disabled = size <= MIN;
+    up.disabled = size >= MAX;
+  }
+  function step(delta) {
+    size = Math.min(MAX, Math.max(MIN, size + delta));
+    applySize();
+    save("font", size);
+  }
+  down.addEventListener("click", function () { step(-1); });
+  up.addEventListener("click", function () { step(1); });
+  applySize();
+
+  var themeBtn = document.getElementById("reader-ui-theme");
+  function applyTheme(theme) {
+    root.setAttribute("data-theme", theme);
+    themeBtn.textContent = theme === "night" ? "Paper" : "Night";
+    themeBtn.setAttribute("aria-label", theme === "night" ? "Switch to paper theme" : "Switch to night theme");
+  }
+  applyTheme(root.getAttribute("data-theme") === "paper" ? "paper" : "night");
+  themeBtn.addEventListener("click", function () {
+    var next = root.getAttribute("data-theme") === "night" ? "paper" : "night";
+    applyTheme(next);
+    save("theme", next);
+  });
+
+  var dialog = document.getElementById("reader-ui-toc");
+  var tocBody = dialog.querySelector(".toc-body");
+  var tocBtn = document.getElementById("reader-ui-contents");
+  if (!tocBody.querySelector("a")) {
+    tocBtn.hidden = true;
+  }
+  tocBtn.addEventListener("click", function () {
+    tocBody.scrollTop = 0;
+    dialog.showModal();
+    document.getElementById("reader-ui-toc-close").focus();
+  });
+  document.getElementById("reader-ui-toc-close").addEventListener("click", function () { dialog.close(); });
+  tocBody.addEventListener("click", function (event) {
+    if (event.target.closest("a")) dialog.close();
+  });
+})();
+</script>
+</body>
+</html>

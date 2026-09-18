@@ -1,0 +1,7 @@
+interface:
+  display_name: "Markdown Reader"
+  short_description: "Render existing Markdown as a readable page"
+  default_prompt: "Use $markdown-reader to render an existing Markdown file into a self-contained, readable HTML page without rewriting or summarising it."
+
+policy:
+  allow_implicit_invocation: true

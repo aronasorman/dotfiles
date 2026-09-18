@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{DOC_TITLE}}</title>
+<script>
+/* Per-document preferences. Applied before first paint so there is no theme flash.
+   Only an explicit saved choice is honoured: never the OS setting, never a random default. */
+window.__READER_KEY = {{PREF_KEY}};
+(function () {
+  try {
+    var t = localStorage.getItem(window.__READER_KEY + "theme");
+    if (t === "paper" || t === "night") document.documentElement.setAttribute("data-theme", t);
+    var f = parseInt(localStorage.getItem(window.__READER_KEY + "font"), 10);
+    if (f >= 18 && f <= 28) document.documentElement.style.setProperty("--prose-size", f + "px");
+  } catch (e) {}
+})();
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+html[data-theme="night"] {
+  --bg: #131210;
+  --surface: #1c1a17;
+  --border: #33302a;
+  --text: #e7e2d7;
+  --dim: #aaa397;
+  --link: #d9b781;
+  color-scheme: dark;
+}
+html[data-theme="paper"] {
+  --bg: #faf7f0;
+  --surface: #f4f0e6;
+  --border: #e2dacb;
+  --text: #211f1b;
+  --dim: #6d665a;
+  --link: #7a4a13;
+  color-scheme: light;
+}
+:root {
+  --prose-size: 19px;
+  --gutter: 20px;
+  --serif: -apple-system-ui-serif, ui-serif, "Iowan Old Style", Palatino, Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: var(--prose-size);
+  line-height: 1.5;
+  overflow-wrap: break-word;
+}
+
+/* ---- reader chrome ---- */
+.chrome {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px var(--gutter);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.chrome-group { display: flex; gap: 6px; align-items: center; }
+.chrome button,
+.toc-head button {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 12px;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1;
+  color: var(--dim);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.chrome button:hover,
+.toc-head button:hover { color: var(--text); background: var(--bg); }
+.chrome button[disabled] { opacity: 0.45; cursor: default; }
+.chrome button:focus-visible,
+.toc-head button:focus-visible,
+.toc a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+/* ---- contents dialog ---- */
+dialog.toc {
+  display: none;
+  width: min(560px, calc(100vw - 2 * var(--gutter)));
+  max-height: min(72vh, 660px);
+  padding: 0;
+  overflow: hidden;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+dialog.toc[open] { display: flex; flex-direction: column; }
+dialog.toc::backdrop { background: rgba(0, 0, 0, 0.55); }
+.toc-head {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px 6px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.toc-head h2 {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.toc-body { min-height: 0; overflow-y: auto; }
+.toc-body ul { margin: 0; padding: 0 14px 20px; list-style: none; }
+.toc-body li { margin: 0; }
+.toc-body a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 2px;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+}
+.toc-body a:hover { color: var(--link); }
+.toc-body li.lvl-3 a { padding-left: 18px; font-size: 0.94em; color: var(--dim); }
+.toc-body li.lvl-4 a { padding-left: 34px; font-size: 0.9em; color: var(--dim); }
+
+/* ---- document ---- */
+.page { padding: 34px var(--gutter) 76px; }
+.doc { max-width: min(690px, 62ch); margin: 0 auto; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 0.3rem;
+  font-family: var(--serif);
+  font-weight: 600;
+  line-height: 1.25;
+  scroll-margin-top: 86px;
+}
+h1 {
+  /* Title scale from the approved reader. First-child rule below zeroes the
+     top margin for the document title; a mid-document h1 keeps its gap. */
+  margin: 20px 0 1.75rem;
+  font-size: clamp(34px, 2em, 46px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+@media (max-width: 600px) {
+  h1 { font-size: clamp(30px, 1.55em, 34px); }
+}
+h2 { font-size: 1.3em; }
+h3 { font-size: 1.12em; }
+h4, h5, h6 { font-size: 1em; }
+.doc > :first-child { margin-top: 0; }
+
+p { margin: 0 0 8px; }
+ul, ol { margin: 0 0 20px; padding-left: 1.4em; }
+li { margin: 0 0 8px; min-width: 0; }
+li > ul, li > ol { margin: 8px 0 0; }
+blockquote {
+  margin: 20px 0;
+  padding: 2px 0 2px 16px;
+  color: var(--dim);
+  border-left: 2px solid var(--border);
+}
+hr { margin: 28px 0; border: 0; border-top: 1px solid var(--border); }
+a { color: var(--link); text-underline-offset: 2px; }
+img { max-width: 100%; height: auto; }
+
+code, pre, kbd, samp { font-family: var(--mono); }
+code {
+  padding: 0.1em 0.3em;
+  font-size: 0.86em;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+pre {
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+pre code { padding: 0; font-size: 0.84em; background: none; border: 0; }
+
+/* ---- source metadata (frontmatter), kept out of the reading body ---- */
+.meta {
+  margin: 0 0 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.meta > summary {
+  padding: 11px 14px;
+  font-family: var(--sans);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--dim);
+  cursor: pointer;
+}
+.meta dl { margin: 0; padding: 0 14px 12px; }
+.meta dt {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.meta dd {
+  margin: 2px 0 8px;
+  font-size: 0.94em;
+  white-space: pre-wrap;
+  min-width: 0;
+}
+.meta dd:last-child { margin-bottom: 0; }
+
+/* ---- source tables, rendered as labeled entries (header/value pairs kept together) ---- */
+.table-entries { margin: 0 0 20px; }
+.entry {
+  margin: 0 0 20px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.entry:last-child { margin-bottom: 0; }
+.field { margin: 0 0 8px; min-width: 0; }
+.field:last-child { margin-bottom: 0; }
+.field .key {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.field .val { min-width: 0; }
+.field .val p { margin: 0 0 8px; }
+.field .val p:last-child { margin-bottom: 0; }
+
+/* ---- footnotes (markdown-it footnote markup) ---- */
+.footnotes-sep { margin-top: 34px; }
+.footnotes { font-size: 0.94em; color: var(--dim); }
+.footnotes-list { padding-left: 1.4em; }
+.footnote-item { scroll-margin-top: 86px; }
+.footnote-backref, sup.footnote-ref a { text-decoration: none; }
+
+.colophon {
+  max-width: min(690px, 62ch);
+  margin: 40px auto 0;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--dim);
+}
+
+@media print {
+  html[data-theme="night"], html[data-theme="paper"] {
+    --bg: #faf7f0;
+    --surface: #f4f0e6;
+    --border: #e2dacb;
+    --text: #211f1b;
+    --dim: #6d665a;
+    --link: #7a4a13;
+    color-scheme: light;
+  }
+  .chrome, dialog.toc { display: none !important; }
+  body { background: #fff; }
+  .doc, .colophon { max-width: none; }
+  pre { overflow: visible; white-space: pre-wrap; }
+  a { color: inherit; }
+}
+</style>
+<noscript><style>.chrome { display: none; }</style></noscript>
+</head>
+<body>
+
+<!-- Reader UI ids are namespaced so they cannot collide with heading anchors
+     generated from the document's own text. -->
+<header class="chrome">
+  <div class="chrome-group">
+    <button id="reader-ui-contents" type="button" aria-haspopup="dialog">Contents</button>
+  </div>
+  <div class="chrome-group">
+    <button id="reader-ui-font-down" type="button" aria-label="Decrease text size">A&minus;</button>
+    <button id="reader-ui-font-up" type="button" aria-label="Increase text size">A+</button>
+    <button id="reader-ui-theme" type="button">Paper</button>
+  </div>
+</header>
+
+<dialog id="reader-ui-toc" class="toc" aria-label="Contents">
+  <div class="toc-head">
+    <h2>Contents</h2>
+    <button id="reader-ui-toc-close" type="button" aria-label="Close contents">Close</button>
+  </div>
+  <div class="toc-body">
+    <ul>{{TOC_ITEMS}}</ul>
+  </div>
+</dialog>
+
+<div class="page">
+  <main class="doc">
+{{META_BLOCK}}
+{{BODY}}
+  </main>
+  <footer class="colophon">{{SOURCE_NOTE}}</footer>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var KEY = window.__READER_KEY;
+  var MIN = 18, MAX = 28, DEFAULT = 19;
+
+  function save(name, value) { try { localStorage.setItem(KEY + name, value); } catch (e) {} }
+  function load(name) { try { return localStorage.getItem(KEY + name); } catch (e) { return null; } }
+
+  var down = document.getElementById("reader-ui-font-down");
+  var up = document.getElementById("reader-ui-font-up");
+  var size = parseInt(load("font"), 10);
+  if (!(size >= MIN && size <= MAX)) size = DEFAULT;
+
+  function applySize() {
+    root.style.setProperty("--prose-size", size + "px");
+    down.disabled = size <= MIN;
+    up.disabled = size >= MAX;
+  }
+  function step(delta) {
+    size = Math.min(MAX, Math.max(MIN, size + delta));
+    applySize();
+    save("font", size);
+  }
+  down.addEventListener("click", function () { step(-1); });
+  up.addEventListener("click", function () { step(1); });
+  applySize();
+
+  var themeBtn = document.getElementById("reader-ui-theme");
+  function applyTheme(theme) {
+    root.setAttribute("data-theme", theme);
+    themeBtn.textContent = theme === "night" ? "Paper" : "Night";
+    themeBtn.setAttribute("aria-label", theme === "night" ? "Switch to paper theme" : "Switch to night theme");
+  }
+  applyTheme(root.getAttribute("data-theme") === "paper" ? "paper" : "night");
+  themeBtn.addEventListener("click", function () {
+    var next = root.getAttribute("data-theme") === "night" ? "paper" : "night";
+    applyTheme(next);
+    save("theme", next);
+  });
+
+  var dialog = document.getElementById("reader-ui-toc");
+  var tocBody = dialog.querySelector(".toc-body");
+  var tocBtn = document.getElementById("reader-ui-contents");
+  if (!tocBody.querySelector("a")) {
+    tocBtn.hidden = true;
+  }
+  tocBtn.addEventListener("click", function () {
+    tocBody.scrollTop = 0;
+    dialog.showModal();
+    document.getElementById("reader-ui-toc-close").focus();
+  });
+  document.getElementById("reader-ui-toc-close").addEventListener("click", function () { dialog.close(); });
+  tocBody.addEventListener("click", function (event) {
+    if (event.target.closest("a")) dialog.close();
+  });
+})();
+</script>
+</body>
+</html>
