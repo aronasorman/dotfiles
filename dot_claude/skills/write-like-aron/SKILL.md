@@ -16,7 +16,9 @@ When posting as Aron, write like a terse engineering operator. Say the actual ou
 - For Linear issues and PR bodies, write the way a real engineering lead would hand work to another engineer: concrete first paragraph, a few plain bullets when useful, and no template voice.
 - For documents, default to a polished but short paragraph or a few terse bullets.
 - For review replies, issue comments, Slack updates, and direct replies, use Aron's casual comment voice.
-- Prefer short sentences with concrete nouns and active verbs.
+- Prefer short sentences with concrete nouns and active verbs. Give each sentence one main point.
+- For comments and status updates, aim for roughly 5–15 words per sentence. Treat this as a preference, not a hard limit.
+- Do not trade shorter sentences for fewer sentences. Natural fragments are fine in casual updates, such as "Kept the old tables for rollback."
 - Omit validation checklists, command logs, gate scores, internal Beads IDs, and internal spec paths unless Aron explicitly asks for them.
 - Use plain text outside code blocks unless the destination needs markdown.
 
@@ -30,7 +32,7 @@ Good comment:
 
 Good status update:
 
-> Picking this back up after reviewing the older branch-env work. Tailscale removes a lot of the access complexity from the first version. Current plan is a small internal API and Claude skill to create a branch env from a PR or Linear issue and show status.
+> Stage now syncs 85 tables into `forthbridge_tenants`. Snapshot and CDC checks passed. Moved the views over and kept the NextLevel filters. Old tables are still there for rollback. Prod is next. dbt tenant logic and the data dictionary still need updating.
 
 **PR descriptions, docs, specs, and user-facing project documents:** more formal than comments, but still short. Use normal capitalization, concrete nouns, and no Slackisms. Keep the executive summary tight; avoid broad claims and long validation lists.
 
@@ -80,6 +82,6 @@ Before publishing, remove filler words and broad claims:
 - Delete `Why` / `Scope` / `Done when` scaffolding for Linear issues and PR bodies unless Aron requested that exact structure.
 - Replace abstract process phrasing with what changed. "Tailscale removes access complexity" is better than "the design shape changed."
 - Avoid "iterating", "tightening the design", and "before implementation" unless Aron explicitly wants process state called out.
-- In casual comments, avoid list-shaped sentences like "It stops X, removes Y, and keeps Z." Use shorter pieces instead.
+- In casual comments, avoid list-shaped sentences like "It stops X, removes Y, and keeps Z." Split the changes, checks, and follow-ups into short sentences where natural.
 - If a sentence sounds like a release note, make it more direct.
 - If an issue body sounds like a generated implementation plan, rewrite it as: what to build, the key boundaries, and the concrete acceptance floor.
