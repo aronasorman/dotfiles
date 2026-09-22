@@ -72,7 +72,7 @@ brew "redis"
 
 # ai clis
 brew "aider"
-brew "claude-code"
+cask "claude-code@latest"
 brew "gemini-cli"
 
 # apis / oauth / work

@@ -2,11 +2,65 @@
 
 ## Project Guidance
 
-Read `CLAUDE.md` in this directory before starting work. It contains the current project-specific workflow, documentation, swamp, and prior-session context instructions.
+This file contains shared Forthbridge guidance for Codex, Claude, and delegated agents.
+Resolve its relative paths against `/Users/aron/src/forthbridge`.
+Apply the user-level rules in `~/.codex/AGENTS.md`, including incident delegation and independent verification.
+Keep platform-specific incident routing in that user file.
 
-This folder is a Forthbridge coordination hub with nested application git
-repositories. Follow the repository boundary and worktree policy in
-`CLAUDE.md` before using any Codex, Claude, or git worktree flow.
+Read the relevant section of [Operations - Agent Reference](</Users/aron/Desktop/notes/PER/PER.73 Forth Bridge/Operations - Agent Reference.md>)
+before using Swamp inventory, troubleshooting branch environments, locating detailed project notes, or recovering project context.
+This local note preserves operational details and historical procedures. Verify live state before relying on them.
+
+## Repository Boundary And Worktrees
+
+`/Users/aron/src/forthbridge` (`fb`) is a coordination hub with nested application repositories.
+Keep the hub on `main`. Use it for cross-repository context, operations, tracking, and documentation.
+Gather shared context from this file, Beads, Swamp, Obsidian, and Atuin when command provenance matters.
+
+Resolve the actual owning repository before implementation, such as `backend`, `forthbridge-os`, or `terraform`.
+Run changes, local checks, review gates, commits, pushes, and PR creation from that repository or its worktree.
+Do not start the Codex or Claude app-native worktree flow from the hub. It selects the wrong Git root.
+For isolated work, use `using-git-worktrees` inside the owning repository and reuse its `.worktrees/` convention when present.
+Open the app session on that leaf worktree. Read its instructions and this hub file.
+Leaf-specific build and test commands take precedence for the leaf repository.
+
+Start delegated Claude sessions with both options:
+
+```bash
+claude --add-dir /Users/aron/src/forthbridge \
+  --append-system-prompt-file /Users/aron/src/forthbridge/AGENTS.md
+```
+
+The directory option supplies shared `.claude/skills` and `.claude/commands`, including Swamp and OpenSpec.
+The prompt-file option supplies hub guidance even from external worktrees. Instruction visibility alone does not provide skills.
+The local Operations - Agent Reference note preserves the detailed worktree procedure.
+
+## Claude Opus Implementation Delegation
+
+Keep planning, architecture, scope, and consequential decisions with Codex.
+For Codex sessions, an OpenSpec change dominated by code changes and tests is
+the strongest signal to delegate execution to Claude Opus.
+Once the change is ready for implementation, invoke Claude Code with
+`--model opus` by default. This standing instruction authorizes delegation
+without a separate confirmation for each task.
+
+- Start Claude in the owning repository or its worktree, following this file.
+  Include `--add-dir /Users/aron/src/forthbridge` to load shared skills.
+  Include `--append-system-prompt-file /Users/aron/src/forthbridge/AGENTS.md`
+  so Claude receives the hub policy from any owning repository or worktree.
+- Pass the exact OpenSpec change, accepted scope, constraints, acceptance
+  criteria, and relevant Beads issue.
+- Delegate implementation and the complete test/fix loop. Claude runs the
+  applicable checks and fixes routine failures, resuming as needed.
+- Bring scope changes and consequential design decisions back to Codex.
+  Leave routine implementation choices and test repairs with Claude.
+- Keep detailed logs outside the Codex conversation. Request a concise report
+  with changed files, validation evidence, remaining risks, and decisions needed.
+- Codex examines the relevant diff and evidence before reporting completion.
+  Avoid repeating the full implementation or test/fix loop in Codex.
+- If Claude is unavailable, report the blocker instead of silently switching
+  implementation to Codex. Existing review, publishing, and Production
+  authorization rules still apply.
 
 ## Local Aliases And Shell
 
@@ -17,6 +71,18 @@ repositories. Follow the repository boundary and worktree policy in
 - Kubernetes/Swamp fan-out workflows can exceed macOS' default open-file
   limit. User shell startup files should keep the soft descriptor limit at
   `8192` for both fish and zsh.
+
+## Granola Meeting Links
+
+When Aron provides a Granola meeting link, use the `granola` Swamp model.
+For `notes.granola.ai/t/<share-id>` links, first resolve the HTTP redirect to
+the supported Granola meeting URL. Pass that destination to the model.
+Run `direnv exec . swamp model method run granola fetch_meeting --input 'link=<URL>'`
+from this folder. Use `fetch_transcript` when exact wording is needed. Read the
+returned resource with `swamp data get granola <resource-name> --json` and reuse
+that data within the task. Both `notes.granola.ai/d/<UUID>` and
+`notes.granola.ai/meetings/<UUID>` links are supported. This is an on-demand
+read. OAuth refresh uses the existing `op-aronbot` vault.
 
 ## Swamp Kubernetes Debugging
 
@@ -60,74 +126,42 @@ repositories. Follow the repository boundary and worktree policy in
   1Password, or vault references; Atuin's secrets filter remains enabled as a
   secondary safeguard.
 
+## Kubernetes Context Discipline
+
+Always pass the Kubernetes context explicitly on every `kubectl` command that
+touches a cluster, for example `kubectl --context aks-stage ...` or
+`kubectl --context aks-prod ...`. Do not run `kubectl config use-context` as
+part of Forthbridge work, and do not rely on the ambient current context. This
+keeps multiple Codex or Claude threads from racing over shared kubeconfig state
+when they are investigating or deploying to different clusters.
+
+## Test Code
+
+Continue writing and running tests to validate changes.
+Commit test code when it tests application code.
+For infrastructure, configuration, and operational changes, keep generated test
+code local and outside tracked repository paths. Do not commit those tests.
+Record validation results in the normal task or deployment evidence.
+
+## Source Artifact Comments
+
+Do not add rollout approvals, process warnings, operational gate reminders, or
+review-status notes as comments in manifests or source files unless they are
+machine-enforced, required by repo convention, or explain non-obvious runtime
+behavior. Put process guidance in README files, runbooks, PR text, Beads
+comments, or PER notes instead.
+
 ## Bug and Incident Problem/Fix Explanations
 
-When explaining a bug, incident, failure, regression, or proposed repair, use
-the local `explaining-bugs-and-incidents` skill when available and present the
-answer in this order:
-
-1. **Short version** — State the user-visible symptom and whether the issue is
-   ongoing, historical, latent, mitigated, fixed, or unverified.
-2. **Symptom** — Contrast expected and observed behavior. Name the trigger,
-   affected scope, and exact error when known.
-3. **Problem** — Give a numbered causal chain from trigger or context, through
-   the failing mechanism and any masking or propagation, to downstream impact.
-   Separate the primary defect from secondary errors.
-4. **Evidence** — Put direct links beside the claims they prove. Prefer the
-   exact failing run or log, immutable source lines, governing ticket, and
-   relevant Slack thread. Label inference, correlation, and missing proof.
-5. **Proposed fix** — Separate the root repair from safety hardening. Explain
-   what changes, why it prevents recurrence, and what existing behavior stays
-   unchanged.
-6. **Acceptance** — State what proves the repair in the real runtime.
-   Distinguish historical failures, a still-present code defect, a workaround,
-   an implemented fix, and successful live acceptance.
-
-Use a compact outcome table when it materially clarifies allowed success,
-no-op, and failure states. A canceled run proves neither failure nor recovery;
-a successful manual bypass does not validate the broken automatic path; ticket
-status is not runtime proof; and a downstream error is not the root cause when
-an earlier failure explains it. Link to exact evidence, not a system homepage.
+Use `explaining-bugs-and-incidents` when explaining bugs, incidents, failures, regressions, or repairs.
+Read the matching section in the local Operations - Agent Reference note for the complete explanation and evidence rules.
+Present the short version, symptom, numbered causal chain, linked evidence, proposed fix, and runtime acceptance in that order.
+Separate confirmed facts from inference, primary defects from secondary errors, root repairs from hardening, and implementation from verified recovery.
+A canceled run or successful manual bypass does not prove recovery of the automatic path. Ticket status is not runtime proof.
 
 ## Linear Project IDs
 
 - **SRE & Observability**: `ba3bd0fc-c7a5-44ab-a105-aef891cc7628`
-
-## Branch Environment Setup — Known Issues
-
-### auth_config URL mismatch for patient apps
-
-Branch environments use `forthbridge-patient-app-{env}.inservice.ai` as the cloudflared hostname, but the auth_config table in tenant-info (cloned from stage) only has `ftb-patient-app-{env}.inservice.ai`. The supertokens service matches the `X-ORIGIN` header against `auth_config.url_pattern` using Postgres regex. Without a matching entry, login returns "Configuration for {url} not found".
-
-**Fix:** After cloning tenant-info, insert the missing auth_config row:
-
-```sql
-INSERT INTO auth_config (url_pattern, tenant_id, config)
-SELECT 'https://forthbridge-patient-app-{ENV}.inservice.ai', tenant_id, config
-FROM auth_config
-WHERE url_pattern = 'https://ftb-patient-app-{ENV}.inservice.ai' AND deleted_on IS NULL
-LIMIT 1;
-```
-
-### branch-db-clone pipeline — ftb database race condition
-
-The CloneFtbOs job runs parallel `kubectl exec` commands that write `query_N.sql` files to `/root/` on the postgresdb pod. The parallel writes clobber each other, causing most databases to silently fail the "db exists" check. Only the first database (clinical) actually gets cloned. The job reports success because it doesn't exit on these errors.
-
-**Workaround:** Clone ftb databases manually one at a time:
-
-```bash
-# From the postgresdb pod, for each db in (master_data, configuration, personnel, process_automation, scheduling):
-PGPASSWORD='...' pg_dump -h {stage-host} -p 5432 -U {user} -F c -Z 9 -O -x -d {db} -f /var/lib/postgresql/data/{db}.dump
-psql -U test -d postgres -c 'DROP DATABASE IF EXISTS "{db}" WITH (FORCE);'
-pg_restore -d postgres -U test -C -O -x -Fc -j 4 /var/lib/postgresql/data/{db}.dump
-rm /var/lib/postgresql/data/{db}.dump
-```
-
-Write dump files to the PVC (`/var/lib/postgresql/data/`) not `~/` to avoid ephemeral storage eviction.
-
-### branch-db-clone pipeline — ActivePieces timeout
-
-The CloneActivePieces job was missing `timeoutInMinutes: 360` (fixed in PR 11439). The ActivePieces `file` table is ~32GB on stage. Also needs `-Z 9` compression to avoid ephemeral storage eviction during dump.
 
 ## Notes
 
@@ -137,7 +171,7 @@ Anything that requires the user to read and review (design docs, smoke test plan
 
 ## Opus Review Gate
 
-Apply **Simplicity And Review Discipline** from `CLAUDE.md` to this gate and
+Apply **Simplicity And Review Discipline** from `~/.codex/AGENTS.md` to this gate and
 all reviewer feedback. Include that policy in every review prompt. Verify
 findings before escalation. Unjustified suggestions cannot block or lower scores.
 
@@ -161,9 +195,8 @@ owns the change. Do not rely on the bare `claude -p 'review gate'` shortcut; it
 can produce an unscored review. Pass the hard-gate rubric and the already-run
 local gate evidence explicitly:
 
-```bash
-claude -p $'Run the Forthbridge saute review gate on the current branch diff against <BASE_BRANCH>.\n\nPrerequisite build/test gate evidence already passed in this worktree:\n- <COMMAND>: PASS\n- <COMMAND>: PASS\n\nReview only the diff from <BASE_BRANCH>...HEAD. Apply the Simplicity And Review Discipline policy in CLAUDE.md. Extra flexibility and edge-case handling need a concrete requirement or credible, reachable failure. Explain why a simpler approach is insufficient. Speculative suggestions must not block the gate or reduce scores. Apply these six lenses and provide feedback for each lens:\n1. Test completeness — required behavior and credible failure cases are tested, applicable checks pass\n2. Correctness — bugs, data integrity, error handling, race conditions\n3. Simplicity — least code that works, no over-engineering\n4. Commit story — commits tell a narrative reviewable commit-by-commit\n5. Excellence — would a human be proud to ship this?\n6. Architecture — follows repo conventions including file placement, layer boundaries, naming patterns, and how existing code is organized\n\nHard gate: all lenses must score 4+/5 AND total must be at least 27/30. If any lens is below 4 or total is below 27, result is ITERATE.\n\nOutput exactly:\n- Result: PASS or ITERATE\n- Total: X/30\n- Lens scores: each lens score plus concise rationale\n- Significant findings to surface before push\n- Concrete next actions\n' --model opus
-```
+The exact invocation is preserved under **Opus Review Invocation** in the local
+Operations - Agent Reference note linked above. Pass the rubric and local gate evidence explicitly.
 
 Use this hard gate for the review:
 
@@ -181,6 +214,27 @@ findings, failing scores, or uncertainty about correctness/architecture, surface
 those findings to the user for a decision before pushing or rewriting the
 approach. Obvious small fixes can be handled directly, then rerun the local
 quality gates and Opus review gate.
+
+## CodeRabbit Pre-PR Review
+
+Before pushing code to a branch that will open or update a PR, run CodeRabbit
+against the local diff from the repo or worktree that owns the change. Treat it
+as a shift-left version of PR review: it is useful for catching actionable
+review findings early, but it is not a replacement for local builds, tests, or
+human judgment.
+
+Use the intended PR target branch as the base and pass the local project
+guidance as review context, for example:
+
+```bash
+coderabbit review --agent --base <target-branch> -c /Users/aron/src/forthbridge/AGENTS.md
+```
+
+If CodeRabbit raises significant feedback (critical/major findings, broad
+architecture concerns, data-safety risks, or changes that would meaningfully
+alter the implementation), surface it to the user for a decision before
+rewriting the approach or pushing the PR branch. Obvious small fixes can be
+handled directly, then rerun CodeRabbit before pushing.
 
 ## ASD-STE100 Writing
 
@@ -208,6 +262,79 @@ Omit validation checklists, command logs, gate scores, and internal Beads IDs
 unless Aron explicitly asks for them. Keep validation evidence and Beads
 tracking in Beads comments, PER notes, and handoff notes instead of
 public-facing text.
+
+## Prior-Session Context
+
+For previous-chat context, read Session Digests first, then Beads and the relevant Obsidian project notes.
+Follow the user-level lookup order in `~/.codex/AGENTS.md`.
+The local Operations - Agent Reference note preserves Beads sync details, workspace memory paths, and raw transcript locations.
+Use raw transcripts only when the curated sources do not answer the question.
+
+## Beads Workflow
+
+Read **Beads Workflow** in the local Operations - Agent Reference note before tracking coding or investigation work.
+Reuse durable workstream roots. Name them by outcome, and put progress and results in root comments.
+Use child beads only for questions that need human input. Mirror answers on those children and close them when resolved.
+Keep PR URLs, branches, and status on the root bead. Omit internal Beads IDs from public PR descriptions unless Aron requests them.
+Implementation beads must contain the spec text and link the canonical PER note. Keep them aligned or explain which is canonical.
+
+## Swamp Building Blocks
+
+Keep `.swamp.yaml` set to `tool: codex` so Swamp maintains its section in `AGENTS.md`.
+
+Reuse the kit in `~/src/workflows`. Search loaded model types and community extensions before building or calling service CLIs directly.
+Read **Companion swamp kit** in the local Operations - Agent Reference note for available types, instances, methods, and caveats.
+Add reusable types in `~/src/workflows/extensions/models/` and create project instances with `swamp model create`.
+Keep the shell descriptor limit at `8192`. If it is `256`, restart the shell or run `ulimit -n 8192`.
+
+<!-- BEGIN swamp managed section - DO NOT EDIT -->
+# Project
+
+This repository is managed with [swamp](https://github.com/systeminit/swamp).
+
+## Rules
+
+1. **Search before you build.** When automating AWS, APIs, or any external service: (a) search local types with `swamp model type search <query>`, (b) search community extensions with `swamp extension search <query>`, (c) if a community extension exists, install it with `swamp extension pull <package>` instead of building from scratch, (d) only create a custom extension model in `extensions/models/` if nothing exists. Read `.agents/skills/swamp-extension-model/SKILL.md` for guidance. The `command/shell` model is ONLY for ad-hoc one-off shell commands, NEVER for wrapping CLI tools or building integrations.
+2. **Extend, don't be clever.** When a model covers the domain but lacks the method you need, extend it with `export const extension` — don't bypass it with shell scripts, CLI tools, or multi-step hacks. One method, one purpose. Use `swamp model type describe <type> --json` to check available methods.
+3. **Use the data model.** Once data exists in a model (via `lookup`, `start`, `sync`, etc.), reference it with CEL expressions. Don't re-fetch data that's already available.
+4. **CEL expressions everywhere.** Wire models together with CEL expressions. Always prefer `data.latest("<name>", "<dataName>").attributes.<field>` over the deprecated `model.<name>.resource.<spec>.<instance>.attributes.<field>` pattern.
+5. **Verify before destructive operations.** Always `swamp model get <name> --json` and verify resource IDs before running delete/stop/destroy methods.
+6. **Prefer fan-out methods over loops.** When operating on multiple targets, use a single method that handles all targets internally (factory pattern) rather than looping N separate `swamp model method run` calls against the same model. Multiple parallel calls against the same model contend on the per-model lock, causing timeouts. A single fan-out method acquires the lock once and produces all outputs in one execution. Check `swamp model type describe` for methods that accept filters or produce multiple outputs.
+7. **Extension npm deps are bundled, not lockfile-tracked.** Swamp's bundler inlines all npm packages (except zod) into extension bundles at bundle time. `deno.lock` and `package.json` do NOT cover extension model dependencies — this is by design. Always pin explicit versions in `npm:` import specifiers (e.g., `npm:lodash-es@4.17.21`).
+8. **Reports for reusable data pipelines.** When the task involves building a repeatable pipeline to transform, aggregate, or analyze model output (security reports, cost analysis, compliance checks, summaries), create a report extension. Read `.agents/skills/swamp-report/SKILL.md` for guidance.
+
+## Skills
+
+**IMPORTANT:** Skills are detailed guides stored in `.agents/skills/`. When a task
+matches a skill area below, read the corresponding `SKILL.md` file for guidance.
+
+- `.agents/skills/swamp-model/SKILL.md` - Work with swamp models (creating, editing, validating)
+- `.agents/skills/swamp-workflow/SKILL.md` - Work with workflows (creating, editing, running)
+- `.agents/skills/swamp-vault/SKILL.md` - Manage secrets and credentials
+- `.agents/skills/swamp-data/SKILL.md` - Manage model data lifecycle
+- `.agents/skills/swamp-report/SKILL.md` - Create and run reports for models and workflows
+- `.agents/skills/swamp-repo/SKILL.md` - Repository management
+- `.agents/skills/swamp-extension-model/SKILL.md` - Create custom TypeScript models
+- `.agents/skills/swamp-extension-driver/SKILL.md` - Create custom execution drivers
+- `.agents/skills/swamp-extension-datastore/SKILL.md` - Create custom datastore backends
+- `.agents/skills/swamp-extension-vault/SKILL.md` - Create custom vault providers
+- `.agents/skills/swamp-issue/SKILL.md` - Submit bug reports and feature requests
+- `.agents/skills/swamp-troubleshooting/SKILL.md` - Debug and diagnose swamp issues
+
+## Getting Started
+
+**IMPORTANT:** At the start of every conversation, run
+`swamp model search --json`. If no models are returned (empty result), you MUST
+immediately read `.agents/skills/swamp-getting-started/SKILL.md` and follow its
+instructions. This walks new users through an interactive onboarding tutorial.
+
+If models already exist, start by reading `.agents/skills/swamp-model/SKILL.md`
+to work with swamp models.
+
+## Commands
+
+Use `swamp --help` to see available commands.
+<!-- END swamp managed section -->
 
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:ca08a54f -->
 ## Beads Issue Tracker
