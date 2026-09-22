@@ -137,6 +137,10 @@ Anything that requires the user to read and review (design docs, smoke test plan
 
 ## Opus Review Gate
 
+Apply **Simplicity And Review Discipline** from `CLAUDE.md` to this gate and
+all reviewer feedback. Include that policy in every review prompt. Verify
+findings before escalation. Unjustified suggestions cannot block or lower scores.
+
 Use the local `pr-review-gates` skill whenever preparing to push code to a PR
 branch, open or update a PR, or push a branch that is about to become a PR. It
 runs the full loop: local quality gates, Opus saute gate until pass, then
@@ -158,12 +162,12 @@ can produce an unscored review. Pass the hard-gate rubric and the already-run
 local gate evidence explicitly:
 
 ```bash
-claude -p $'Run the Forthbridge saute review gate on the current branch diff against <BASE_BRANCH>.\n\nPrerequisite build/test gate evidence already passed in this worktree:\n- <COMMAND>: PASS\n- <COMMAND>: PASS\n\nReview only the diff from <BASE_BRANCH>...HEAD. Apply these six lenses and provide feedback for each lens:\n1. Test completeness — new code has tests, all pass, edge cases covered\n2. Correctness — bugs, data integrity, error handling, race conditions\n3. Simplicity — least code that works, no over-engineering\n4. Commit story — commits tell a narrative reviewable commit-by-commit\n5. Excellence — would a human be proud to ship this?\n6. Architecture — follows repo conventions including file placement, layer boundaries, naming patterns, and how existing code is organized\n\nHard gate: all lenses must score 4+/5 AND total must be at least 27/30. If any lens is below 4 or total is below 27, result is ITERATE.\n\nOutput exactly:\n- Result: PASS or ITERATE\n- Total: X/30\n- Lens scores: each lens score plus concise rationale\n- Significant findings to surface before push\n- Concrete next actions\n' --model opus
+claude -p $'Run the Forthbridge saute review gate on the current branch diff against <BASE_BRANCH>.\n\nPrerequisite build/test gate evidence already passed in this worktree:\n- <COMMAND>: PASS\n- <COMMAND>: PASS\n\nReview only the diff from <BASE_BRANCH>...HEAD. Apply the Simplicity And Review Discipline policy in CLAUDE.md. Extra flexibility and edge-case handling need a concrete requirement or credible, reachable failure. Explain why a simpler approach is insufficient. Speculative suggestions must not block the gate or reduce scores. Apply these six lenses and provide feedback for each lens:\n1. Test completeness — required behavior and credible failure cases are tested, applicable checks pass\n2. Correctness — bugs, data integrity, error handling, race conditions\n3. Simplicity — least code that works, no over-engineering\n4. Commit story — commits tell a narrative reviewable commit-by-commit\n5. Excellence — would a human be proud to ship this?\n6. Architecture — follows repo conventions including file placement, layer boundaries, naming patterns, and how existing code is organized\n\nHard gate: all lenses must score 4+/5 AND total must be at least 27/30. If any lens is below 4 or total is below 27, result is ITERATE.\n\nOutput exactly:\n- Result: PASS or ITERATE\n- Total: X/30\n- Lens scores: each lens score plus concise rationale\n- Significant findings to surface before push\n- Concrete next actions\n' --model opus
 ```
 
 Use this hard gate for the review:
 
-- Test completeness — new code has tests, all pass, edge cases covered
+- Test completeness — required behavior and credible failure cases are tested, applicable checks pass
 - Correctness — bugs, data integrity, error handling, race conditions
 - Simplicity — least code that works, no over-engineering
 - Commit story — commits tell a narrative reviewable commit-by-commit

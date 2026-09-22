@@ -65,11 +65,24 @@ only a net-new focus note for an important area the existing notes do not cover.
 Tell Aron the tab name. When he says his comments are ready, read them with
 `tuicr review comments --repo <path> --session <slug>`.
 
-After changing the code, keep the same review open and tell Aron to enter `:e`
-in tuicr to reload the diff. Read the next comments from the same tuicr session.
-Repeat this fix, reload, and comment loop until explicit acceptance. Do not
-launch another tab merely because `HEAD` or the working tree changed, Aron left
-comments, or Aron asks to review the revision.
+After changing the code, reload the same review without changing Aron's focused
+tab or pane:
+
+```bash
+<skill-directory>/scripts/reload-review.sh \
+  /absolute/repository/path \
+  "Review: <repo> <target>" \
+  <session> \
+  <tab-id>
+```
+
+The helper resolves exactly one live tuicr pane in the retained tab, then sends
+`:e` and Enter directly to that pane. If it finds zero or multiple matches,
+stop and surface the mismatch; never fall back to the focused pane. Read the
+next comments from the same tuicr session. Repeat this fix, reload, and comment
+loop until explicit acceptance. Do not launch another tab merely because
+`HEAD` or the working tree changed, Aron left comments, or Aron asks to review
+the revision.
 
 In tuicr, focus the Comments panel with `Shift-Tab` or `Tab`, move with `j`/`k`,
 and press `Enter` to jump to a comment.

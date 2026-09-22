@@ -11,6 +11,21 @@
 - When writing a spec, persist it to the appropriate file and also persist the spec in Beads when the active bead is a speccing/design bead. Update that bead with the current spec text so the tracker can be read without opening the file. When creating an implementation bead from a spec, include the spec text in the implementation bead description; do not rely on a file path alone.
 - When finalizing a design spec — before invoking `writing-plans`, any implementation skill, or claiming a design is approved — run the `spec-review-gates` skill if present. It enforces a strict cross-family review (Claude-written specs reviewed by Codex GPT-5.5; Codex-written specs reviewed by Claude Opus) with a hard gate of every lens ≥ 4/5 AND total ≥ 27/30 across six lenses: architectural fitness, onboarding ergonomics, simplicity vs legacy, alignment with stated requirements, succinctness, ease of reading. ITERATE until PASS. After hard gate PASS, the skill triggers a presentation rewrite + presentation gate (3 lenses, ≥4 each AND total ≥12/15) so the artifact reads cleanly for external technical readers.
 - When the user provides directed feedback on a spec — typically after `spec-review-gates` has produced a reader-ready artifact — run the `receiving-spec-feedback` skill. It categorizes each piece of feedback by shape (correction / preference / scope change / re-think), routes to the right response (apply + re-run gates / surface for clearance / exit to brainstorming), tracks dispositions in a temporary Feedback Ledger that gets stripped at the end, and re-runs the presentation gate after user acceptance.
+- Keep README changes concise. Summarize what exists, where it applies, and the few prerequisites or operational risks a maintainer needs. Do not duplicate configuration fields, design evidence, capacity calculations, provider internals, live-state details, or review history. Put deeper material in source comments, design documents, runbooks, or issue trackers. Prefer two short paragraphs over an exhaustive reference section.
+
+## Simplicity And Review Discipline
+
+These rules apply to every AI agent, including Codex and Claude, during planning, implementation, testing, and automated review.
+
+- Prefer the smallest clear change that meets the agreed requirements. Reuse existing patterns.
+- Extra flexibility, configuration, abstractions, compatibility paths, fallback behavior, and edge-case handling need strong justification.
+- Identify the concrete requirement or credible, reachable failure. Explain its consequence and why the simpler approach is insufficient.
+- A prior incident is not required. Use code, contracts, or runtime evidence to establish the risk, including security and data integrity.
+- Future possibilities, reviewer preference, and "best practice" alone are insufficient. When justification is weak, omit the extra complexity.
+- Treat automated review findings as proposals. Verify their premises before changing code. Decline speculative or unnecessary suggestions without seeking routine confirmation.
+- Unjustified suggestions must not block a gate or lower its scores. Do not add complexity merely to raise a score or satisfy every comment.
+- Include these rules in delegated tasks and review prompts. They govern how all review skills and rubrics are interpreted.
+- Keep plans, documentation, tests, and review effort proportional to the change. Stop when the agreed outcome and required checks are satisfied.
 
 ## Response Style
 
