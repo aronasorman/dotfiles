@@ -4,6 +4,7 @@ description: Produce a self-contained HTML reading page from Markdown. Renders a
 license: MIT
 metadata:
   author: aron
+  visual_resources_author: nicobailon
   version: "0.2.0"
 ---
 
@@ -53,7 +54,7 @@ These are the point of the mode. Do not trade them for a nicer-looking page.
 
 ## Author mode: what to write
 
-Gather evidence before writing. The bundled commands in `commands/` carry the per-deliverable procedure: what to read, what to verify, and which sections the page needs. Read the one that matches the request.
+Gather evidence before writing. If a bundled command in `commands/` matches the deliverable, read it for the relevant research and verification steps. Otherwise use the guidance below.
 
 **Evidence and qualifiers.** Cite file paths, `file:line`, or command output for claims about code, history, and state. Keep every supplied fact, number, name, link, and code snippet, and keep the qualifiers attached to them - status, dates, scope, ownership, "proposed", "draft", "estimated", "not yet decided". Never promote a proposal into a completed action, a target into an achieved result, or an estimate into a measurement. Do not invent rationale or code paths. If something is missing, leave the gap visible rather than filling it in.
 
@@ -72,7 +73,7 @@ The renderer escapes raw HTML, so there is no inline SVG or Mermaid in the prose
 - **An image**, with normal Markdown image syntax. Relative targets resolve to absolute local `file://` paths, so keep the image beside the Markdown in `~/.agent/diagrams/`. External URLs are left untouched.
 - **A standalone interactive diagram page**, built from `templates/` and written beside the Markdown, then linked from the prose with a normal Markdown link.
 
-Both only load when the reading page is opened directly from disk on a machine that has those files. HTTP previews cannot load them. Say so when it matters. Do not add asset copying or a custom server.
+Local image and diagram targets require opening the reading page directly from disk on a machine that has those files. HTTP previews cannot load local file targets; remote URLs are unaffected. Say so when it matters. Do not add asset copying or a custom server.
 
 ## Standalone visual pages
 
