@@ -1,6 +1,6 @@
 ---
 name: guided-code-explainer
-description: Use only when Aron explicitly asks for a guided code explainer, a guided walkthrough, or to "explain this in the explainer" for a bug, incident signal, or proposed fix. Builds a local page that shows complete source files with causal notes, argument provenance, step-into navigation, and inline questions answered by GPT-5.6 Terra through Pi. Never use it automatically during incident work.
+description: Use only when Aron explicitly asks for a guided code explainer, a guided source walkthrough, or a PR walkthrough in the explainer. Shows complete source files, evidence, change markers, and inline questions answered by GPT-5.6 Terra through Pi. Never use it automatically during incident work.
 disable-model-invocation: true
 user-invocable: true
 ---
@@ -10,6 +10,16 @@ user-invocable: true
 Build a local walkthrough that lets Aron inspect and challenge a source-backed explanation. The page shows complete files. Your notes sit under the lines they explain. Aron can select lines and ask questions. GPT-5.6 Terra answers in the background through Pi, using the same worktree.
 
 Prototype home: `~/src/guided-code-explainer-prototype`. Below, `gce` means `node ~/src/guided-code-explainer-prototype/bin/gce.ts`.
+
+## Consistent presentation
+
+Reuse the existing renderer and assets. Keep the sidebar, navigation, full-file views, reading controls, and inline questions when creating or refreshing a guide. Update its content data without rebuilding its CSS, JavaScript, or layout per invocation.
+
+For bug walkthroughs, follow the procedure below: `walkthrough.json` is the input to `gce render`. For a requested PR walkthrough, follow [the local PR page workflow](../review-other-authors-prs/references/local-review-page.md). Reuse its `assets/review-data.json`, renderer, and question interface. That page workflow also applies to Aron's own PRs; it grants no review or publishing authority. `gce render` only renders bug walkthroughs, so do not run it over a custom PR page.
+
+When showing an actual patch, derive change markers from the recorded Git comparison. Show additions with green `+` markers and removals with red `-` markers. A replacement has a removed line and an added line. Keep unchanged context neutral, and keep reading highlights distinct from change markers. Preserve the original text and line coordinates on each side; removed lines belong to the before view or exact diff. Label a proposed replacement as proposed until it exists in the compared source.
+
+Before delivery, compare markers and counts with Git, then check the sidebar, navigation, source selection, and narrow-screen layout. Preserve existing discussions and their revision context when refreshing.
 
 ## Boundaries
 

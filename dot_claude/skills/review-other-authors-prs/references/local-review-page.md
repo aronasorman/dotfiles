@@ -43,6 +43,18 @@ gce up
 
 Use the server URL returned by `gce up`; the sample's recorded port is not a permanent configuration. Do not overwrite another explainer or restart an active answer merely to refresh the page.
 
+## Consistent layout and diff markers
+
+Reuse the reader's sidebar, commit navigation, full-file views, controls, and question interface. Populate `assets/review-data.json`; keep the layout and assets consistent between PRs. Preserve discussions and their saved revisions when refreshing an existing page.
+
+The verified marker example is `/Users/aron/.local/share/guided-code-explainer/explainers/be-k8s-pr72`. Inspect its `render-review.mjs`, `assets/review.css`, and `verification.json` for the existing treatment. The sample contains PR-specific titles, anchors, and counts; derive those from the new review's data. It is an artifact renderer, not a `gce` PR command.
+
+- Derive markers from the exact Git patch. Show added lines with green `+` and removed lines with red `-`. A replacement shows both sides.
+- Compare each commit with its first parent. For the final PR diff, use the recorded merge base and PR head. Name the comparison on the page.
+- Keep source-reading highlights separate. An unchanged line can be important without being an addition.
+- In full after-source, mark only actual additions. Show removed lines in the before-source or exact diff, with their original coordinates.
+- Check the displayed patch, counts, and source markers against Git. Also check sidebar navigation, source selection, and narrow-screen layout.
+
 ## Build historical evidence
 
 Fetch current PR metadata, including head, base, commits, and changed files. Fetch the required git objects into the owning repository. Preserve existing local changes.
